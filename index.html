@@ -1,66 +1,34 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web dev site</title>
+
 </head>
+
 <body>
-    <h1>Formulaire</h1>
+    <header> 
+        <a href="#">MonSite</a> 
+        <nav> 
+            <a href="#">Accueil</a> 
+            <a href="#">Services</a> 
+            <a href="#">Contact</a> 
+        </nav> <button>Connexion</button> 
+    </header>
 
-    <form action="#" method="post">
-        <h2>Informations personnelles</h2>
+    <h1>Mon super site</h1> 
+            
+    <h1>Je suis un dev</h1>
 
-        <label for="nom">Nom complet *</label><br>
-        <input type="text" id="nom" name="nom" required> <br><br>
+    <h1>Je suis un cuisinier</h1>
 
-        <label for="email">Adresse e-mail *</label><br>
-        <input type="email" id="email" name="email" placeholder="@domain..." required> <br><br>
+    <p>Bonjour et bienvenue sur mon site !</p>
 
-        <label for="phone">Numero de telephone</label><br>
-        <input type="tel" id="phone" name="phone"> <br><br>
-
-        <label for="entps">Nom de l'entreprise</label><br>
-        <input type="text" id="entps" name="entps"> <br><br>
-
-        <h2>Sujet de la demande</h2>
-        <label for="sujet">Sujet *</label><br>
-        <select name="sujet" id="sujet" required>
-            <option value="">---Selectionnez un sujet ---</option>
-            <option value="info">Demande d’information </option>
-            <option value="devis">Demande de devis </option>
-            <option value="tech">Support technique </option>
-            <option value="part">Partenariat </option>
-            <option value="autre">Autre </option>
-        </select><br><br>
-
-        <h2>Detail du message</h2>
-        <label for="message">Message *</label><br>
-        <textarea name="message" id="message" cols="30" rows="10" required></textarea><br><br>
-
-        <h2>Information complementaires</h2>
-        <label for="budget">Budget</label><br>
-        <select name="budget" id="budget">
-            <option value="">---Selectionnez un budget ---</option>
-            <option value="-500k">Moins de 500 000f</option>
-            <option value="500k-2M">500 000f - 2 000 000f </option>
-            <option value="2M-10">2 000 000f - 10 000 000f</option>
-            <option value="+10M">Plus de 10 000 000f </option>
-        </select><br><br>
-
-        <label for="delai">Delai souhaite</label><br>
-        <input type="text" id="delai" name="delai" placeholder="ex: 3 mois"> <br><br>
-
-        <label for="projet">Type de projet</label><br>
-        <input type="text" id="projet" name="projet" placeholder="ex : IA, cybersécurité, développement, etc."> <br><br>
-
-        <h2>Consentement et validation</h2>
-        <input type="checkbox" id="consent" name="consent" required>
-        <label for="consent">J’accepte que mes données soient utilisées pour être recontacté(e)</label><br><br>
-        
-        <button type="submit">Envoyer</button>
-
-
-    </form>
+    <p>Pour le moment, mon site est un peu <em>vide</em>. Patientez 
+    encore un peu !</p>  
+    
 </body>
+
 </html>

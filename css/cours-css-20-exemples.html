@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 Exemples HTML + CSS — Cours 1ère Année</title>
+<style>
+  /* ===== STYLES GLOBAUX DE LA PAGE ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+
+  /* Barre de navigation de la page */
+  .page-nav { background: #1a1a2e; padding: 14px 32px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
+  .page-nav span { color: #a5b4fc; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+  .page-nav a { color: #94a3b8; font-size: 12px; text-decoration: none; padding: 4px 10px; border-radius: 4px; transition: background .2s, color .2s; }
+  .page-nav a:hover { background: #312e81; color: white; }
+
+  .page-body { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+  .page-title { font-size: 28px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+  .page-subtitle { font-size: 14px; color: #64748b; margin-bottom: 40px; }
+
+  /* ===== STRUCTURE EXEMPLE ===== */
+  .exemple { background: white; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 40px; overflow: hidden; }
+  .exemple-header { background: #1a1a2e; padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+  .ex-num { background: #4f46e5; color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .ex-title { color: white; font-size: 15px; font-weight: 600; }
+  .ex-tags { margin-left: auto; display: flex; gap: 6px; }
+  .tag { background: rgba(255,255,255,.1); color: #a5b4fc; font-size: 10px; padding: 3px 8px; border-radius: 4px; font-family: monospace; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; }
+  .half { padding: 0; }
+  .half:first-child { border-right: 1px solid #e2e8f0; }
+  .half-header { padding: 10px 16px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; background: #f8f9fa; }
+  .badge-avant { background: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .badge-apres { background: #dcfce7; color: #166534; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .half-label { font-size: 12px; color: #64748b; }
+  .code-zone { background: #0f172a; padding: 14px 16px; font-family: 'Courier New', monospace; font-size: 12px; color: #94a3b8; line-height: 1.7; overflow-x: auto; min-height: 130px; }
+  .code-zone .t { color: #f1f5f9; }
+  .code-zone .p { color: #a5b4fc; }
+  .code-zone .v { color: #86efac; }
+  .code-zone .s { color: #fde68a; }
+  .code-zone .c { color: #6b7280; font-style: italic; }
+  .render-zone { padding: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; flex-direction: column; border-top: 1px solid #e2e8f0; background: #fafafa; }
+  .render-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; align-self: flex-start; }
+
+  /* ===== EX 2 : TYPO ===== */
+  .typo h1 { font-family: Georgia, serif; font-size: 26px; color: #1a1a2e; border-bottom: 3px solid #4f46e5; padding-bottom: 6px; margin-bottom: 4px; }
+  .typo h2 { font-family: Georgia, serif; font-size: 18px; color: #374151; margin-bottom: 4px; }
+  .typo h3 { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .typo p { font-size: 13px; color: #4b5563; line-height: 1.7; }
+
+  /* ===== EX 3 : BOUTONS ===== */
+  .btn-primary { background: #4f46e5; color: white; border: none; padding: 10px 22px; border-radius: 7px; font-size: 14px; cursor: pointer; font-family: inherit; transition: background .2s; }
+  .btn-primary:hover { background: #4338ca; }
+  .btn-secondary { background: transparent; color: #4f46e5; border: 2px solid #4f46e5; padding: 8px 22px; border-radius: 7px; font-size: 14px; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .btn-secondary:hover { background: #4f46e5; color: white; }
+  .btn-danger { background: #dc2626; color: white; border: none; padding: 10px 22px; border-radius: 7px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .btn-success { background: #16a34a; color: white; border: none; padding: 10px 22px; border-radius: 7px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .btn-ghost { background: transparent; color: #374151; border: 1px solid #d1d5db; padding: 9px 22px; border-radius: 7px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .btns-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* ===== EX 4 : FORMULAIRE CONTACT ===== */
+  .form-contact { width: 100%; }
+  .form-contact label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+  .form-contact input, .form-contact textarea { width: 100%; border: 1.5px solid #d1d5db; border-radius: 7px; padding: 9px 12px; font-size: 13px; color: #111827; outline: none; font-family: inherit; transition: border-color .2s, box-shadow .2s; }
+  .form-contact input:focus, .form-contact textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,.15); }
+  .form-contact .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-contact .field { margin-bottom: 12px; }
+  .form-contact .submit-btn { background: #4f46e5; color: white; border: none; padding: 11px; border-radius: 7px; font-size: 14px; cursor: pointer; width: 100%; font-family: inherit; font-weight: 600; }
+
+  /* ===== EX 5 : TABLEAU ===== */
+  .table-styled { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table-styled thead tr { background: #4f46e5; color: white; }
+  .table-styled th { padding: 10px 14px; text-align: left; font-weight: 500; }
+  .table-styled tbody tr:nth-child(even) { background: #f8faff; }
+  .table-styled tbody tr:hover { background: #e0e7ff; }
+  .table-styled td { padding: 10px 14px; color: #374151; border-bottom: 1px solid #f1f5f9; }
+  .badge-mention { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+  .bien { background: #dcfce7; color: #166534; }
+  .passable { background: #fef9c3; color: #713f12; }
+  .tb { background: #dbeafe; color: #1e40af; }
+  .insuf { background: #fee2e2; color: #991b1b; }
+
+  /* ===== EX 6 : CARD ===== */
+  .card-produit { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; width: 200px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .card-img { width: 100%; height: 110px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+  .card-body { padding: 14px; }
+  .card-body h3 { font-size: 15px; color: #111827; margin-bottom: 4px; }
+  .card-body p { font-size: 12px; color: #6b7280; margin-bottom: 10px; }
+  .card-price { font-size: 18px; font-weight: 700; color: #4f46e5; }
+  .card-btn { display: block; text-align: center; background: #4f46e5; color: white; padding: 8px; border-radius: 7px; font-size: 13px; text-decoration: none; margin-top: 10px; font-weight: 500; }
+
+  /* ===== EX 7 : HEADER ===== */
+  .header-styled { background: #1a1a2e; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 60px; width: 100%; border-radius: 8px; }
+  .header-logo { color: #a5b4fc; font-size: 18px; font-weight: 700; letter-spacing: .02em; text-decoration: none; }
+  .header-nav { display: flex; gap: 4px; }
+  .header-nav a { color: #94a3b8; text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; transition: all .2s; }
+  .header-nav a:hover, .header-nav a.active { background: #312e81; color: white; }
+  .header-cta { background: #4f46e5; color: white; border: none; padding: 8px 18px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; }
+
+  /* ===== EX 8 : FOOTER ===== */
+  .footer-styled { background: #1a1a2e; color: #94a3b8; padding: 24px; border-radius: 8px; width: 100%; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .footer-brand h3 { color: #a5b4fc; font-size: 16px; margin-bottom: 6px; }
+  .footer-brand p { font-size: 12px; line-height: 1.6; }
+  .footer-col h4 { color: #e2e8f0; font-size: 13px; margin-bottom: 8px; }
+  .footer-col a { display: block; color: #94a3b8; text-decoration: none; font-size: 12px; margin-bottom: 5px; }
+  .footer-col a:hover { color: #a5b4fc; }
+  .footer-bottom { border-top: 1px solid #312e81; padding-top: 14px; font-size: 11px; text-align: center; }
+
+  /* ===== EX 9 : LISTE STYLISEE ===== */
+  .liste-styled { list-style: none; width: 100%; }
+  .liste-styled li { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; color: #374151; transition: background .15s; cursor: pointer; border: 1px solid transparent; }
+  .liste-styled li:hover { background: #f0f4ff; border-color: #e0e7ff; color: #4f46e5; }
+  .liste-styled li::before { content: "→"; color: #4f46e5; font-weight: 700; font-size: 14px; }
+
+  /* ===== EX 10 : IMAGE + LEGENDE ===== */
+  .figure-styled { border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; max-width: 260px; }
+  .figure-img { width: 100%; height: 120px; background: linear-gradient(135deg, #0ea5e9, #6366f1); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+  .figure-caption { padding: 10px 14px; background: white; }
+  .figure-caption strong { display: block; font-size: 13px; color: #111827; margin-bottom: 2px; }
+  .figure-caption span { font-size: 11px; color: #6b7280; }
+
+  /* ===== EX 11 : LOGIN ===== */
+  .login-card { background: white; border-radius: 14px; border: 1px solid #e2e8f0; padding: 28px; width: 280px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  .login-card .logo { text-align: center; font-size: 28px; margin-bottom: 8px; }
+  .login-card h2 { text-align: center; font-size: 18px; color: #1a1a2e; margin-bottom: 4px; }
+  .login-card .subtitle { text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+  .login-card label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+  .login-card input { width: 100%; border: 1.5px solid #d1d5db; border-radius: 7px; padding: 9px 12px; font-size: 13px; outline: none; font-family: inherit; transition: border-color .2s; margin-bottom: 12px; }
+  .login-card input:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,.15); }
+  .login-card .login-btn { width: 100%; background: #4f46e5; color: white; border: none; padding: 10px; border-radius: 7px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
+  .login-card .forgot { text-align: center; font-size: 12px; color: #4f46e5; cursor: pointer; }
+
+  /* ===== EX 12 : BARRE DE RECHERCHE ===== */
+  .search-bar { display: flex; align-items: center; background: white; border: 1.5px solid #d1d5db; border-radius: 50px; padding: 4px 6px 4px 16px; gap: 8px; width: 100%; max-width: 360px; transition: border-color .2s, box-shadow .2s; }
+  .search-bar:focus-within { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,.15); }
+  .search-bar input { flex: 1; border: none; outline: none; font-size: 13px; color: #374151; background: transparent; font-family: inherit; }
+  .search-bar button { background: #4f46e5; color: white; border: none; padding: 7px 16px; border-radius: 50px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+  /* ===== EX 13 : BADGES ===== */
+  .badges-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .badge-info { background: #dbeafe; color: #1e40af; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+  .badge-success { background: #dcfce7; color: #166534; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+  .badge-warning { background: #fef9c3; color: #713f12; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+  .badge-danger { background: #fee2e2; color: #991b1b; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+  .badge-new { background: #4f46e5; color: white; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 700; }
+  .badge-dot { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #374151; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+
+  /* ===== EX 14 : ALERTES ===== */
+  .alerte { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+  .alerte-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alerte-body strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .alerte-body p { font-size: 12px; margin: 0; }
+  .alerte-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+  .alerte-warning { background: #fffbeb; border: 1px solid #fde68a; color: #713f12; }
+  .alerte-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+  .alerte-info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+  /* ===== EX 15 : MENU DEROULANT ===== */
+  .dropdown-wrapper { position: relative; display: inline-block; }
+  .dropdown-toggle { background: #4f46e5; color: white; border: none; padding: 9px 18px; border-radius: 7px; font-size: 13px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+  .dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.1); z-index: 10; display: none; }
+  .dropdown-wrapper:hover .dropdown-menu { display: block; }
+  .dropdown-menu a { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 5px; font-size: 13px; color: #374151; text-decoration: none; transition: background .15s; }
+  .dropdown-menu a:hover { background: #f0f4ff; color: #4f46e5; }
+  .dropdown-menu hr { border: none; border-top: 1px solid #f1f5f9; margin: 4px 0; }
+
+  /* ===== EX 16 : GALERIE ===== */
+  .galerie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+  .galerie-item { border-radius: 8px; overflow: hidden; aspect-ratio: 1; position: relative; cursor: pointer; }
+  .galerie-item .g-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; transition: transform .3s; }
+  .galerie-item:hover .g-img { transform: scale(1.1); }
+  .galerie-item .g-overlay { position: absolute; inset: 0; background: rgba(79,70,229,.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s; color: white; font-size: 12px; font-weight: 600; }
+  .galerie-item:hover .g-overlay { opacity: 1; }
+  .g1 { background: linear-gradient(135deg,#f093fb,#f5576c); }
+  .g2 { background: linear-gradient(135deg,#4facfe,#00f2fe); }
+  .g3 { background: linear-gradient(135deg,#43e97b,#38f9d7); }
+  .g4 { background: linear-gradient(135deg,#fa709a,#fee140); }
+  .g5 { background: linear-gradient(135deg,#a18cd1,#fbc2eb); }
+  .g6 { background: linear-gradient(135deg,#fccb90,#d57eeb); }
+
+  /* ===== EX 17 : PROFIL ===== */
+  .profil-card { background: white; border-radius: 14px; border: 1px solid #e2e8f0; overflow: hidden; width: 240px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .profil-cover { height: 70px; background: linear-gradient(135deg,#667eea,#764ba2); }
+  .profil-avatar { width: 60px; height: 60px; border-radius: 50%; background: #4f46e5; border: 3px solid white; margin: -30px auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 700; }
+  .profil-name { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 2px; }
+  .profil-role { font-size: 12px; color: #6b7280; margin-bottom: 12px; }
+  .profil-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #f1f5f9; }
+  .stat-item { padding: 12px 0; }
+  .stat-num { font-size: 16px; font-weight: 700; color: #4f46e5; }
+  .stat-lbl { font-size: 10px; color: #94a3b8; }
+  .profil-btn { display: block; margin: 0 14px 14px; background: #4f46e5; color: white; padding: 8px; border-radius: 7px; font-size: 13px; text-decoration: none; font-weight: 500; }
+
+  /* ===== EX 18 : BARRE DE PROGRESSION ===== */
+  .progress-list { width: 100%; }
+  .progress-item { margin-bottom: 14px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 13px; }
+  .progress-label { color: #374151; font-weight: 500; }
+  .progress-val { color: #4f46e5; font-weight: 600; }
+  .progress-track { background: #f1f5f9; border-radius: 50px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 50px; transition: width 1s ease; }
+  .fill-blue { background: linear-gradient(90deg,#4f46e5,#818cf8); }
+  .fill-green { background: linear-gradient(90deg,#16a34a,#4ade80); }
+  .fill-orange { background: linear-gradient(90deg,#ea580c,#fb923c); }
+
+  /* ===== EX 19 : BLOCKQUOTE ===== */
+  .quote-styled { border-left: 4px solid #4f46e5; padding: 14px 20px; background: #f8f7ff; border-radius: 0 8px 8px 0; max-width: 400px; }
+  .quote-styled blockquote { font-size: 15px; font-style: italic; color: #374151; line-height: 1.7; margin-bottom: 8px; }
+  .quote-author { font-size: 12px; color: #6b7280; font-weight: 500; }
+  .quote-author::before { content: "— "; }
+
+  /* ===== EX 20 : MINI SITE ===== */
+  .mini-site { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; width: 100%; font-family: 'Segoe UI', sans-serif; }
+  .ms-header { background: #1a1a2e; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .ms-logo { color: #a5b4fc; font-weight: 700; font-size: 16px; }
+  .ms-nav { display: flex; gap: 4px; }
+  .ms-nav a { color: #94a3b8; font-size: 12px; text-decoration: none; padding: 5px 12px; border-radius: 5px; }
+  .ms-nav a.a { background: #312e81; color: white; }
+  .ms-hero { background: linear-gradient(135deg, #1a1a2e, #312e81); padding: 36px 20px; text-align: center; }
+  .ms-hero h1 { color: white; font-size: 24px; margin-bottom: 8px; }
+  .ms-hero p { color: #a5b4fc; font-size: 13px; margin-bottom: 18px; }
+  .ms-hero-btn { background: #4f46e5; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 13px; cursor: pointer; margin-right: 8px; font-family: inherit; }
+  .ms-hero-btn2 { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.4); padding: 9px 24px; border-radius: 7px; font-size: 13px; cursor: pointer; font-family: inherit; }
+  .ms-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; padding: 20px; background: #f8f9fa; }
+  .ms-card { background: white; border-radius: 9px; border: 1px solid #e2e8f0; padding: 14px; }
+  .ms-card-icon { font-size: 24px; margin-bottom: 8px; }
+  .ms-card h3 { font-size: 14px; color: #1a1a2e; margin-bottom: 4px; }
+  .ms-card p { font-size: 12px; color: #6b7280; line-height: 1.5; }
+  .ms-footer { background: #1a1a2e; padding: 14px 20px; text-align: center; color: #6b7280; font-size: 11px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 680px) {
+    .split { grid-template-columns: 1fr; }
+    .half:first-child { border-right: none; border-bottom: 1px solid #e2e8f0; }
+    .ms-cards { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BARRE DE NAV DE LA PAGE -->
+<nav class="page-nav">
+  <span>CSS — 20 Exemples</span>
+  <a href="#ex2">Typo</a>
+  <a href="#ex3">Boutons</a>
+  <a href="#ex4">Formulaire</a>
+  <a href="#ex5">Tableau</a>
+  <a href="#ex6">Card</a>
+  <a href="#ex7">Header</a>
+  <a href="#ex8">Footer</a>
+  <a href="#ex9">Liste</a>
+  <a href="#ex10">Image</a>
+  <a href="#ex11">Login</a>
+  <a href="#ex12">Recherche</a>
+  <a href="#ex13">Badges</a>
+  <a href="#ex14">Alertes</a>
+  <a href="#ex15">Dropdown</a>
+  <a href="#ex16">Galerie</a>
+  <a href="#ex17">Profil</a>
+  <a href="#ex18">Progress</a>
+  <a href="#ex19">Citation</a>
+  <a href="#ex20">Mini Site</a>
+</nav>
+
+<div class="page-body">
+  <h1 class="page-title">20 Exemples HTML + CSS</h1>
+  <p class="page-subtitle">Cours de CSS — 1ère Année · Chaque exemple montre le HTML brut (sans CSS) vs. le résultat stylisé (avec CSS)</p>
+
+  <!-- ========== EXEMPLE 1 : NAV ========== -->
+  <div class="exemple" id="ex1">
+    <div class="exemple-header">
+      <span class="ex-num">01</span>
+      <span class="ex-title">Barre de navigation</span>
+      <div class="ex-tags"><span class="tag">display:flex</span><span class="tag">list-style</span><span class="tag">:hover</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;ul&gt;</span>
+  <span class="t">&lt;li&gt;&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Accueil<span class="t">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>À propos<span class="t">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Contact<span class="t">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="t">&lt;/ul&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu navigateur</div>
+          <ul style="padding-left:20px;">
+            <li><a href="#">Accueil</a></li>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Barre stylisée</span></div>
+        <div class="code-zone"><span class="p">nav ul</span> {
+  <span class="t">display</span>: <span class="v">flex</span>;
+  <span class="t">list-style</span>: <span class="v">none</span>;
+  <span class="t">background</span>: <span class="s">#1a1a2e</span>;
+  <span class="t">border-radius</span>: <span class="v">8px</span>;
+  <span class="t">padding</span>: <span class="v">4px</span>;
+}
+<span class="p">nav a</span> {
+  <span class="t">display</span>: <span class="v">block</span>;
+  <span class="t">padding</span>: <span class="v">8px 16px</span>;
+  <span class="t">color</span>: <span class="s">#e0e0e0</span>;
+  <span class="t">text-decoration</span>: <span class="v">none</span>;
+  <span class="t">border-radius</span>: <span class="v">6px</span>;
+}
+<span class="p">nav a:hover</span> {
+  <span class="t">background</span>: <span class="s">#4f46e5</span>;
+  <span class="t">color</span>: <span class="v">white</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu navigateur</div>
+          <ul style="display:flex;list-style:none;background:#1a1a2e;border-radius:8px;padding:4px;gap:2px;">
+            <li><a href="#" style="display:block;padding:7px 14px;color:white;text-decoration:none;border-radius:6px;background:#4f46e5;font-size:13px;">Accueil</a></li>
+            <li><a href="#" style="display:block;padding:7px 14px;color:#94a3b8;text-decoration:none;border-radius:6px;font-size:13px;">À propos</a></li>
+            <li><a href="#" style="display:block;padding:7px 14px;color:#94a3b8;text-decoration:none;border-radius:6px;font-size:13px;">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 2 : TYPO ========== -->
+  <div class="exemple" id="ex2">
+    <div class="exemple-header">
+      <span class="ex-num">02</span>
+      <span class="ex-title">Titres &amp; typographie</span>
+      <div class="ex-tags"><span class="tag">font-family</span><span class="tag">color</span><span class="tag">letter-spacing</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;h1&gt;</span>Titre principal<span class="t">&lt;/h1&gt;</span>
+<span class="t">&lt;h2&gt;</span>Sous-titre<span class="t">&lt;/h2&gt;</span>
+<span class="t">&lt;h3&gt;</span>Section<span class="t">&lt;/h3&gt;</span>
+<span class="t">&lt;p&gt;</span>Texte de paragraphe ici.<span class="t">&lt;/p&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;">
+            <h1 style="font-size:2em;margin-bottom:4px;">Titre principal</h1>
+            <h2 style="font-size:1.5em;margin-bottom:4px;">Sous-titre</h2>
+            <h3 style="font-size:1.17em;margin-bottom:4px;">Section</h3>
+            <p style="font-size:1em;">Texte de paragraphe ici.</p>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Typographie stylisée</span></div>
+        <div class="code-zone"><span class="p">h1</span> {
+  <span class="t">font-family</span>: <span class="s">Georgia, serif</span>;
+  <span class="t">color</span>: <span class="s">#1a1a2e</span>;
+  <span class="t">border-bottom</span>: <span class="v">3px solid #4f46e5</span>;
+  <span class="t">padding-bottom</span>: <span class="v">6px</span>;
+}
+<span class="p">h2</span> { <span class="t">color</span>: <span class="s">#374151</span>; }
+<span class="p">h3</span> {
+  <span class="t">text-transform</span>: <span class="v">uppercase</span>;
+  <span class="t">letter-spacing</span>: <span class="v">0.08em</span>;
+  <span class="t">color</span>: <span class="s">#6b7280</span>;
+}
+<span class="p">p</span> { <span class="t">line-height</span>: <span class="v">1.7</span>; <span class="t">color</span>: <span class="s">#4b5563</span>; }</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;" class="typo">
+            <h1>Titre principal</h1>
+            <h2>Sous-titre</h2>
+            <h3>Section</h3>
+            <p>Texte de paragraphe avec une belle lisibilité.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 3 : BOUTONS ========== -->
+  <div class="exemple" id="ex3">
+    <div class="exemple-header">
+      <span class="ex-num">03</span>
+      <span class="ex-title">Boutons</span>
+      <div class="ex-tags"><span class="tag">background</span><span class="tag">border-radius</span><span class="tag">:hover</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;button&gt;</span>Envoyer<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button&gt;</span>Annuler<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button&gt;</span>Supprimer<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button&gt;</span>Confirmer<span class="t">&lt;/button&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="btns-row"><button>Envoyer</button><button>Annuler</button><button>Supprimer</button><button>Confirmer</button></div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Boutons stylisés</span></div>
+        <div class="code-zone"><span class="p">.btn-primary</span> {
+  <span class="t">background</span>: <span class="s">#4f46e5</span>;
+  <span class="t">color</span>: <span class="v">white</span>;
+  <span class="t">border</span>: <span class="v">none</span>;
+  <span class="t">border-radius</span>: <span class="v">7px</span>;
+  <span class="t">padding</span>: <span class="v">10px 22px</span>;
+}
+<span class="p">.btn-secondary</span> {
+  <span class="t">background</span>: <span class="v">transparent</span>;
+  <span class="t">border</span>: <span class="v">2px solid #4f46e5</span>;
+  <span class="t">color</span>: <span class="s">#4f46e5</span>;
+}
+<span class="p">.btn-danger</span>  { <span class="t">background</span>: <span class="s">#dc2626</span>; }
+<span class="p">.btn-success</span> { <span class="t">background</span>: <span class="s">#16a34a</span>; }</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="btns-row">
+            <button class="btn-primary">Envoyer</button>
+            <button class="btn-secondary">Annuler</button>
+            <button class="btn-danger">Supprimer</button>
+            <button class="btn-success">Confirmer</button>
+            <button class="btn-ghost">Voir plus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 4 : FORMULAIRE ========== -->
+  <div class="exemple" id="ex4">
+    <div class="exemple-header">
+      <span class="ex-num">04</span>
+      <span class="ex-title">Formulaire de contact</span>
+      <div class="ex-tags"><span class="tag">display:block</span><span class="tag">width:100%</span><span class="tag">:focus</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;form&gt;</span>
+  <span class="t">&lt;label&gt;</span>Nom :<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="p">type</span>=<span class="s">"text"</span><span class="t">&gt;</span>
+  <span class="t">&lt;label&gt;</span>Email :<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="p">type</span>=<span class="s">"email"</span><span class="t">&gt;</span>
+  <span class="t">&lt;label&gt;</span>Message :<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;textarea&gt;&lt;/textarea&gt;</span>
+  <span class="t">&lt;button&gt;</span>Envoyer<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/form&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;width:100%;">
+            <label>Nom :</label><input type="text" style="margin-bottom:5px;"><br>
+            <label>Email :</label><input type="email" style="margin-bottom:5px;"><br>
+            <label>Message :</label><textarea rows="2"></textarea><br>
+            <button>Envoyer</button>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Formulaire stylisé</span></div>
+        <div class="code-zone"><span class="p">label</span> {
+  <span class="t">display</span>: <span class="v">block</span>;
+  <span class="t">font-size</span>: <span class="v">13px</span>; <span class="t">font-weight</span>: <span class="v">600</span>;
+  <span class="t">margin-bottom</span>: <span class="v">5px</span>;
+}
+<span class="p">input, textarea</span> {
+  <span class="t">width</span>: <span class="v">100%</span>;
+  <span class="t">border</span>: <span class="v">1.5px solid #d1d5db</span>;
+  <span class="t">border-radius</span>: <span class="v">7px</span>;
+  <span class="t">padding</span>: <span class="v">9px 12px</span>;
+}
+<span class="p">input:focus</span> {
+  <span class="t">border-color</span>: <span class="s">#4f46e5</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 0 0 3px rgba(79,70,229,.15)</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;">
+            <div class="form-contact">
+              <div class="row2">
+                <div class="field"><label>Prénom</label><input type="text" placeholder="Jean"></div>
+                <div class="field"><label>Nom</label><input type="text" placeholder="Dupont"></div>
+              </div>
+              <div class="field"><label>Email</label><input type="email" placeholder="jean@email.com"></div>
+              <div class="field"><label>Message</label><textarea rows="2" placeholder="Votre message..."></textarea></div>
+              <button class="submit-btn">Envoyer le message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 5 : TABLEAU ========== -->
+  <div class="exemple" id="ex5">
+    <div class="exemple-header">
+      <span class="ex-num">05</span>
+      <span class="ex-title">Tableau de données</span>
+      <div class="ex-tags"><span class="tag">border-collapse</span><span class="tag">nth-child</span><span class="tag">tr:hover</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;table</span> <span class="p">border</span>=<span class="s">"1"</span><span class="t">&gt;</span>
+  <span class="t">&lt;thead&gt;&lt;tr&gt;</span>
+    <span class="t">&lt;th&gt;</span>Nom<span class="t">&lt;/th&gt;</span>
+    <span class="t">&lt;th&gt;</span>Note<span class="t">&lt;/th&gt;</span>
+    <span class="t">&lt;th&gt;</span>Mention<span class="t">&lt;/th&gt;</span>
+  <span class="t">&lt;/tr&gt;&lt;/thead&gt;</span>
+  <span class="t">&lt;tbody&gt;</span>
+    <span class="t">&lt;tr&gt;</span>
+      <span class="t">&lt;td&gt;</span>Alice<span class="t">&lt;/td&gt;</span>
+      <span class="t">&lt;td&gt;</span>16/20<span class="t">&lt;/td&gt;</span>
+      <span class="t">&lt;td&gt;</span>Bien<span class="t">&lt;/td&gt;</span>
+    <span class="t">&lt;/tr&gt;</span>
+    <span class="c">...autres lignes...</span>
+  <span class="t">&lt;/tbody&gt;</span>
+<span class="t">&lt;/table&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <table border="1" style="font-size:12px;border-collapse:collapse;width:100%;">
+            <thead><tr><th style="padding:5px 10px;">Nom</th><th style="padding:5px 10px;">Note</th><th style="padding:5px 10px;">Mention</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:5px 10px;">Alice</td><td style="padding:5px 10px;">16/20</td><td style="padding:5px 10px;">Bien</td></tr>
+              <tr><td style="padding:5px 10px;">Bob</td><td style="padding:5px 10px;">9/20</td><td style="padding:5px 10px;">Insuf.</td></tr>
+              <tr><td style="padding:5px 10px;">Clara</td><td style="padding:5px 10px;">18/20</td><td style="padding:5px 10px;">TB</td></tr>
+              <tr><td style="padding:5px 10px;">David</td><td style="padding:5px 10px;">13/20</td><td style="padding:5px 10px;">Passable</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Tableau stylisé</span></div>
+        <div class="code-zone"><span class="p">table</span>  { <span class="t">border-collapse</span>: <span class="v">collapse</span>; <span class="t">width</span>: <span class="v">100%</span>; }
+<span class="p">thead tr</span> { <span class="t">background</span>: <span class="s">#4f46e5</span>; <span class="t">color</span>: <span class="v">white</span>; }
+<span class="p">th, td</span>  { <span class="t">padding</span>: <span class="v">10px 14px</span>; <span class="t">text-align</span>: <span class="v">left</span>; }
+
+<span class="c">/* Lignes alternées */</span>
+<span class="p">tbody tr:nth-child(even)</span> {
+  <span class="t">background</span>: <span class="s">#f8faff</span>;
+}
+<span class="c">/* Survol */</span>
+<span class="p">tbody tr:hover</span> {
+  <span class="t">background</span>: <span class="s">#e0e7ff</span>;
+}
+<span class="c">/* Badge mention */</span>
+<span class="p">.bien</span>   { <span class="t">background</span>: <span class="s">#dcfce7</span>; <span class="t">color</span>: <span class="s">#166534</span>; }</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <table class="table-styled" style="width:100%;">
+            <thead><tr><th>Nom</th><th>Note</th><th>Mention</th></tr></thead>
+            <tbody>
+              <tr><td>Alice</td><td>16/20</td><td><span class="badge-mention bien">Bien</span></td></tr>
+              <tr><td>Bob</td><td>9/20</td><td><span class="badge-mention insuf">Insuf.</span></td></tr>
+              <tr><td>Clara</td><td>18/20</td><td><span class="badge-mention tb">Très bien</span></td></tr>
+              <tr><td>David</td><td>13/20</td><td><span class="badge-mention passable">Passable</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 6 : CARD ========== -->
+  <div class="exemple" id="ex6">
+    <div class="exemple-header">
+      <span class="ex-num">06</span>
+      <span class="ex-title">Carte produit (card)</span>
+      <div class="ex-tags"><span class="tag">border-radius</span><span class="tag">overflow:hidden</span><span class="tag">box-shadow</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"casque.jpg"</span> <span class="p">alt</span>=<span class="s">"Casque"</span><span class="t">&gt;</span>
+  <span class="t">&lt;h3&gt;</span>Casque Audio<span class="t">&lt;/h3&gt;</span>
+  <span class="t">&lt;p&gt;</span>Son immersif 360°<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;p&gt;</span>25 000 FCFA<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Ajouter au panier<span class="t">&lt;/a&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;">
+            <div style="width:80px;height:50px;background:#ddd;margin-bottom:5px;display:flex;align-items:center;justify-content:center;">🎧</div>
+            <h3 style="font-size:14px;margin-bottom:3px;">Casque Audio</h3>
+            <p style="margin-bottom:2px;">Son immersif 360°</p>
+            <p style="margin-bottom:5px;">25 000 FCFA</p>
+            <a href="#">Ajouter au panier</a>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Card stylisée</span></div>
+        <div class="code-zone"><span class="p">.card</span> {
+  <span class="t">border-radius</span>: <span class="v">12px</span>;
+  <span class="t">border</span>: <span class="v">1px solid #e5e7eb</span>;
+  <span class="t">overflow</span>: <span class="v">hidden</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 2px 8px rgba(0,0,0,.08)</span>;
+}
+<span class="p">.card-img</span> {
+  <span class="t">height</span>: <span class="v">110px</span>;
+  <span class="t">background</span>: <span class="v">linear-gradient(135deg, #667eea, #764ba2)</span>;
+}
+<span class="p">.card-btn</span> {
+  <span class="t">display</span>: <span class="v">block</span>; <span class="t">text-align</span>: <span class="v">center</span>;
+  <span class="t">background</span>: <span class="s">#4f46e5</span>; <span class="t">color</span>: <span class="v">white</span>;
+  <span class="t">border-radius</span>: <span class="v">7px</span>; <span class="t">padding</span>: <span class="v">8px</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="card-produit">
+            <div class="card-img">🎧</div>
+            <div class="card-body">
+              <h3>Casque Audio Pro</h3>
+              <p>Son immersif 360°</p>
+              <span class="card-price">25 000 FCFA</span>
+              <a class="card-btn" href="#">Ajouter au panier</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 7 : HEADER ========== -->
+  <div class="exemple" id="ex7">
+    <div class="exemple-header">
+      <span class="ex-num">07</span>
+      <span class="ex-title">Header de site web</span>
+      <div class="ex-tags"><span class="tag">display:flex</span><span class="tag">justify-content</span><span class="tag">position:sticky</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;header&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>MonSite<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;nav&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Accueil<span class="t">&lt;/a&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Services<span class="t">&lt;/a&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Contact<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;/nav&gt;</span>
+  <span class="t">&lt;button&gt;</span>Connexion<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/header&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;width:100%;">
+            <a href="#" style="font-weight:bold;">MonSite</a>
+            <nav style="margin:4px 0;">
+              <a href="#" style="margin-right:8px;">Accueil</a>
+              <a href="#" style="margin-right:8px;">Services</a>
+              <a href="#">Contact</a>
+            </nav>
+            <button>Connexion</button>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Header stylisé</span></div>
+        <div class="code-zone"><span class="p">header</span> {
+  <span class="t">background</span>: <span class="s">#1a1a2e</span>;
+  <span class="t">display</span>: <span class="v">flex</span>;
+  <span class="t">align-items</span>: <span class="v">center</span>;
+  <span class="t">justify-content</span>: <span class="v">space-between</span>;
+  <span class="t">padding</span>: <span class="v">0 24px</span>;
+  <span class="t">height</span>: <span class="v">60px</span>;
+  <span class="t">position</span>: <span class="v">sticky</span>;
+  <span class="t">top</span>: <span class="v">0</span>;
+}
+<span class="p">header nav a:hover</span> {
+  <span class="t">background</span>: <span class="s">#312e81</span>;
+  <span class="t">border-radius</span>: <span class="v">6px</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;">
+            <div class="header-styled">
+              <a class="header-logo" href="#">MonSite</a>
+              <nav class="header-nav">
+                <a href="#" class="active">Accueil</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+              </nav>
+              <button class="header-cta">Connexion</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 8 : FOOTER ========== -->
+  <div class="exemple" id="ex8">
+    <div class="exemple-header">
+      <span class="ex-num">08</span>
+      <span class="ex-title">Footer de site web</span>
+      <div class="ex-tags"><span class="tag">display:grid</span><span class="tag">grid-template-columns</span><span class="tag">border-top</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;footer&gt;</span>
+  <span class="t">&lt;h3&gt;</span>MonSite<span class="t">&lt;/h3&gt;</span>
+  <span class="t">&lt;p&gt;</span>Description courte.<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;h4&gt;</span>Liens<span class="t">&lt;/h4&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Accueil<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Blog<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;p&gt;</span>© 2025 MonSite<span class="t">&lt;/p&gt;</span>
+<span class="t">&lt;/footer&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:12px;width:100%;">
+            <h3>MonSite</h3>
+            <p>Description courte du site.</p>
+            <h4>Liens</h4>
+            <a href="#" style="display:block;margin:2px 0;">Accueil</a>
+            <a href="#" style="display:block;margin:2px 0;">Blog</a>
+            <a href="#" style="display:block;margin:2px 0;">Contact</a>
+            <p style="margin-top:8px;">© 2025 MonSite</p>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Footer stylisé</span></div>
+        <div class="code-zone"><span class="p">footer</span> {
+  <span class="t">background</span>: <span class="s">#1a1a2e</span>;
+  <span class="t">color</span>: <span class="s">#94a3b8</span>;
+  <span class="t">padding</span>: <span class="v">24px</span>;
+}
+<span class="p">.footer-grid</span> {
+  <span class="t">display</span>: <span class="v">grid</span>;
+  <span class="t">grid-template-columns</span>: <span class="v">2fr 1fr 1fr</span>;
+  <span class="t">gap</span>: <span class="v">20px</span>;
+}
+<span class="p">.footer-bottom</span> {
+  <span class="t">border-top</span>: <span class="v">1px solid #312e81</span>;
+  <span class="t">padding-top</span>: <span class="v">14px</span>;
+  <span class="t">text-align</span>: <span class="v">center</span>;
+}</div>
+        <div class="render-zone" style="padding:10px;background:#f1f5f9;">
+          <div class="render-label">Rendu</div>
+          <div class="footer-styled" style="width:100%;">
+            <div class="footer-grid">
+              <div class="footer-brand">
+                <h3>MonSite</h3>
+                <p>Votre partenaire digital au Cameroun et dans la région CEMAC.</p>
+              </div>
+              <div class="footer-col">
+                <h4>Navigation</h4>
+                <a href="#">Accueil</a>
+                <a href="#">Services</a>
+                <a href="#">Blog</a>
+              </div>
+              <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="#">Email</a>
+                <a href="#">WhatsApp</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+            <div class="footer-bottom">© 2025 MonSite — Tous droits réservés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 9 : LISTE ========== -->
+  <div class="exemple" id="ex9">
+    <div class="exemple-header">
+      <span class="ex-num">09</span>
+      <span class="ex-title">Liste de liens stylisée</span>
+      <div class="ex-tags"><span class="tag">list-style:none</span><span class="tag">::before</span><span class="tag">transition</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;ul&gt;</span>
+  <span class="t">&lt;li&gt;</span>HTML &amp; CSS Fondamentaux<span class="t">&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;</span>JavaScript de base<span class="t">&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;</span>Responsive Design<span class="t">&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;</span>Flexbox &amp; Grid<span class="t">&lt;/li&gt;</span>
+  <span class="t">&lt;li&gt;</span>Animations CSS<span class="t">&lt;/li&gt;</span>
+<span class="t">&lt;/ul&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <ul style="font-size:13px;padding-left:20px;">
+            <li>HTML &amp; CSS Fondamentaux</li>
+            <li>JavaScript de base</li>
+            <li>Responsive Design</li>
+            <li>Flexbox &amp; Grid</li>
+            <li>Animations CSS</li>
+          </ul>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Liste stylisée avec hover</span></div>
+        <div class="code-zone"><span class="p">ul</span> { <span class="t">list-style</span>: <span class="v">none</span>; <span class="t">padding</span>: <span class="v">0</span>; }
+<span class="p">li</span> {
+  <span class="t">padding</span>: <span class="v">10px 14px</span>;
+  <span class="t">border-radius</span>: <span class="v">7px</span>;
+  <span class="t">transition</span>: <span class="v">background 0.15s</span>;
+  <span class="t">cursor</span>: <span class="v">pointer</span>;
+}
+<span class="p">li:hover</span> {
+  <span class="t">background</span>: <span class="s">#f0f4ff</span>;
+  <span class="t">color</span>: <span class="s">#4f46e5</span>;
+}
+<span class="c">/* Flèche avant chaque item */</span>
+<span class="p">li::before</span> {
+  <span class="t">content</span>: <span class="s">"→"</span>;
+  <span class="t">color</span>: <span class="s">#4f46e5</span>;
+  <span class="t">margin-right</span>: <span class="v">8px</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <ul class="liste-styled" style="width:100%;">
+            <li>HTML &amp; CSS Fondamentaux</li>
+            <li>JavaScript de base</li>
+            <li>Responsive Design</li>
+            <li>Flexbox &amp; Grid</li>
+            <li>Animations CSS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 10 : IMAGE + LEGENDE ========== -->
+  <div class="exemple" id="ex10">
+    <div class="exemple-header">
+      <span class="ex-num">10</span>
+      <span class="ex-title">Image avec légende</span>
+      <div class="ex-tags"><span class="tag">figure</span><span class="tag">figcaption</span><span class="tag">overflow:hidden</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;figure&gt;</span>
+  <span class="t">&lt;img</span>
+    <span class="p">src</span>=<span class="s">"paysage.jpg"</span>
+    <span class="p">alt</span>=<span class="s">"Paysage du Cameroun"</span>
+  <span class="t">&gt;</span>
+  <span class="t">&lt;figcaption&gt;</span>
+    Mont Cameroun au lever du soleil
+    <span class="t">&lt;br&gt;</span>
+    Photo : Jean D. — 2024
+  <span class="t">&lt;/figcaption&gt;</span>
+<span class="t">&lt;/figure&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <figure style="font-size:12px;">
+            <div style="width:120px;height:70px;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:28px;">🏔️</div>
+            <figcaption>Mont Cameroun au lever du soleil<br><small>Photo : Jean D. — 2024</small></figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Figure stylisée</span></div>
+        <div class="code-zone"><span class="p">figure</span> {
+  <span class="t">border-radius</span>: <span class="v">10px</span>;
+  <span class="t">overflow</span>: <span class="v">hidden</span>;
+  <span class="t">border</span>: <span class="v">1px solid #e2e8f0</span>;
+  <span class="t">max-width</span>: <span class="v">260px</span>;
+}
+<span class="p">figure img</span> { <span class="t">width</span>: <span class="v">100%</span>; }
+<span class="p">figcaption</span> {
+  <span class="t">padding</span>: <span class="v">10px 14px</span>;
+  <span class="t">background</span>: <span class="v">white</span>;
+  <span class="t">font-size</span>: <span class="v">13px</span>;
+  <span class="t">color</span>: <span class="s">#111827</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="figure-styled">
+            <div class="figure-img">🏔️</div>
+            <div class="figure-caption">
+              <strong>Mont Cameroun au lever du soleil</strong>
+              <span>Photo : Jean D. — 2024</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 11 : LOGIN ========== -->
+  <div class="exemple" id="ex11">
+    <div class="exemple-header">
+      <span class="ex-num">11</span>
+      <span class="ex-title">Formulaire de connexion (login)</span>
+      <div class="ex-tags"><span class="tag">box-shadow</span><span class="tag">text-align:center</span><span class="tag">border-radius</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;h2&gt;</span>Connexion<span class="t">&lt;/h2&gt;</span>
+  <span class="t">&lt;label&gt;</span>Email<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="p">type</span>=<span class="s">"email"</span><span class="t">&gt;</span>
+  <span class="t">&lt;label&gt;</span>Mot de passe<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="p">type</span>=<span class="s">"password"</span><span class="t">&gt;</span>
+  <span class="t">&lt;button&gt;</span>Se connecter<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Mot de passe oublié ?<span class="t">&lt;/a&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;">
+            <h2 style="font-size:16px;margin-bottom:6px;">Connexion</h2>
+            <label>Email</label><br><input type="email" style="margin-bottom:6px;"><br>
+            <label>Mot de passe</label><br><input type="password" style="margin-bottom:6px;"><br>
+            <button style="margin-bottom:5px;">Se connecter</button><br>
+            <a href="#">Mot de passe oublié ?</a>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Carte de login</span></div>
+        <div class="code-zone"><span class="p">.login-card</span> {
+  <span class="t">background</span>: <span class="v">white</span>;
+  <span class="t">border-radius</span>: <span class="v">14px</span>;
+  <span class="t">padding</span>: <span class="v">28px</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 4px 20px rgba(0,0,0,.08)</span>;
+  <span class="t">width</span>: <span class="v">280px</span>;
+}
+<span class="p">h2</span> { <span class="t">text-align</span>: <span class="v">center</span>; }
+<span class="p">input:focus</span> {
+  <span class="t">border-color</span>: <span class="s">#4f46e5</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 0 0 3px rgba(79,70,229,.15)</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="login-card">
+            <div class="logo">🔐</div>
+            <h2>Connexion</h2>
+            <p class="subtitle">Bienvenue sur MonSite</p>
+            <label>Email</label>
+            <input type="email" placeholder="vous@email.com">
+            <label>Mot de passe</label>
+            <input type="password" placeholder="••••••••">
+            <button class="login-btn">Se connecter</button>
+            <div class="forgot">Mot de passe oublié ?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 12 : RECHERCHE ========== -->
+  <div class="exemple" id="ex12">
+    <div class="exemple-header">
+      <span class="ex-num">12</span>
+      <span class="ex-title">Barre de recherche</span>
+      <div class="ex-tags"><span class="tag">display:flex</span><span class="tag">border-radius:50px</span><span class="tag">:focus-within</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;input</span>
+    <span class="p">type</span>=<span class="s">"search"</span>
+    <span class="p">placeholder</span>=<span class="s">"Rechercher..."</span>
+  <span class="t">&gt;</span>
+  <span class="t">&lt;button&gt;</span>Rechercher<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div>
+            <input type="search" placeholder="Rechercher..." style="font-size:13px;">
+            <button style="font-size:13px;">Rechercher</button>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Searchbar stylisée</span></div>
+        <div class="code-zone"><span class="p">.search-bar</span> {
+  <span class="t">display</span>: <span class="v">flex</span>;
+  <span class="t">align-items</span>: <span class="v">center</span>;
+  <span class="t">border</span>: <span class="v">1.5px solid #d1d5db</span>;
+  <span class="t">border-radius</span>: <span class="v">50px</span>; <span class="c">/* pill */</span>
+  <span class="t">padding</span>: <span class="v">4px 6px 4px 16px</span>;
+}
+<span class="p">.search-bar input</span> {
+  <span class="t">border</span>: <span class="v">none</span>; <span class="t">outline</span>: <span class="v">none</span>;
+  <span class="t">flex</span>: <span class="v">1</span>;
+}
+<span class="c">/* Effet quand l'input est actif */</span>
+<span class="p">.search-bar:focus-within</span> {
+  <span class="t">border-color</span>: <span class="s">#4f46e5</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 0 0 3px rgba(79,70,229,.15)</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="search-bar">
+            <input type="search" placeholder="Rechercher un cours...">
+            <button>Chercher</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 13 : BADGES ========== -->
+  <div class="exemple" id="ex13">
+    <div class="exemple-header">
+      <span class="ex-num">13</span>
+      <span class="ex-title">Badges &amp; étiquettes</span>
+      <div class="ex-tags"><span class="tag">border-radius:20px</span><span class="tag">font-size</span><span class="tag">background</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;span&gt;</span>Info<span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;span&gt;</span>Succès<span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;span&gt;</span>Attention<span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;span&gt;</span>Erreur<span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;span&gt;</span>Nouveau<span class="t">&lt;/span&gt;</span>
+
+<span class="c">/* Tous les spans se ressemblent
+   sans CSS → impossible à distinguer */</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:13px;">
+            <span>Info</span>
+            <span>Succès</span>
+            <span>Attention</span>
+            <span>Erreur</span>
+            <span>Nouveau</span>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Badges colorés</span></div>
+        <div class="code-zone"><span class="p">.badge</span> {
+  <span class="t">font-size</span>: <span class="v">12px</span>;
+  <span class="t">font-weight</span>: <span class="v">500</span>;
+  <span class="t">padding</span>: <span class="v">4px 12px</span>;
+  <span class="t">border-radius</span>: <span class="v">20px</span>; <span class="c">/* pill */</span>
+}
+<span class="p">.badge-info</span>    { <span class="t">background</span>: <span class="s">#dbeafe</span>; <span class="t">color</span>: <span class="s">#1e40af</span>; }
+<span class="p">.badge-success</span> { <span class="t">background</span>: <span class="s">#dcfce7</span>; <span class="t">color</span>: <span class="s">#166534</span>; }
+<span class="p">.badge-warning</span> { <span class="t">background</span>: <span class="s">#fef9c3</span>; <span class="t">color</span>: <span class="s">#713f12</span>; }
+<span class="p">.badge-danger</span>  { <span class="t">background</span>: <span class="s">#fee2e2</span>; <span class="t">color</span>: <span class="s">#991b1b</span>; }</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="badges-row">
+            <span class="badge-info">Info</span>
+            <span class="badge-success">Succès</span>
+            <span class="badge-warning">Attention</span>
+            <span class="badge-danger">Erreur</span>
+            <span class="badge-new">NOUVEAU</span>
+            <span class="badge-dot"><span class="dot"></span>En ligne</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 14 : ALERTES ========== -->
+  <div class="exemple" id="ex14">
+    <div class="exemple-header">
+      <span class="ex-num">14</span>
+      <span class="ex-title">Alertes &amp; notifications</span>
+      <div class="ex-tags"><span class="tag">border-left</span><span class="tag">display:flex</span><span class="tag">gap</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  ✅ Profil mis à jour avec succès !
+<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div&gt;</span>
+  ⚠️ Vérifiez votre connexion internet.
+<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div&gt;</span>
+  ❌ Mot de passe incorrect.
+<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div&gt;</span>
+  ℹ️ Mise à jour disponible.
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;width:100%;">
+            <div style="margin-bottom:5px;">✅ Profil mis à jour avec succès !</div>
+            <div style="margin-bottom:5px;">⚠️ Vérifiez votre connexion internet.</div>
+            <div style="margin-bottom:5px;">❌ Mot de passe incorrect.</div>
+            <div>ℹ️ Mise à jour disponible.</div>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Alertes stylisées</span></div>
+        <div class="code-zone"><span class="p">.alerte</span> {
+  <span class="t">display</span>: <span class="v">flex</span>; <span class="t">gap</span>: <span class="v">12px</span>;
+  <span class="t">padding</span>: <span class="v">12px 16px</span>;
+  <span class="t">border-radius</span>: <span class="v">8px</span>;
+  <span class="t">border</span>: <span class="v">1px solid</span>;
+}
+<span class="p">.alerte-success</span> {
+  <span class="t">background</span>: <span class="s">#f0fdf4</span>;
+  <span class="t">border-color</span>: <span class="s">#bbf7d0</span>;
+  <span class="t">color</span>: <span class="s">#166534</span>;
+}
+<span class="p">.alerte-danger</span> {
+  <span class="t">background</span>: <span class="s">#fef2f2</span>;
+  <span class="t">border-color</span>: <span class="s">#fecaca</span>;
+  <span class="t">color</span>: <span class="s">#991b1b</span>;
+}</div>
+        <div class="render-zone" style="width:100%;">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;">
+            <div class="alerte alerte-success"><span class="alerte-icon">✅</span><div class="alerte-body"><strong>Succès !</strong><p>Votre profil a été mis à jour.</p></div></div>
+            <div class="alerte alerte-warning"><span class="alerte-icon">⚠️</span><div class="alerte-body"><strong>Attention</strong><p>Vérifiez votre connexion internet.</p></div></div>
+            <div class="alerte alerte-danger"><span class="alerte-icon">❌</span><div class="alerte-body"><strong>Erreur</strong><p>Mot de passe incorrect.</p></div></div>
+            <div class="alerte alerte-info" style="margin:0;"><span class="alerte-icon">ℹ️</span><div class="alerte-body"><strong>Info</strong><p>Une mise à jour est disponible.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 15 : DROPDOWN ========== -->
+  <div class="exemple" id="ex15">
+    <div class="exemple-header">
+      <span class="ex-num">15</span>
+      <span class="ex-title">Menu déroulant (dropdown)</span>
+      <div class="ex-tags"><span class="tag">position:relative</span><span class="tag">position:absolute</span><span class="tag">display:none → :hover</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;button&gt;</span>Mon compte ▾<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;div&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>👤 Profil<span class="t">&lt;/a&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>⚙️ Paramètres<span class="t">&lt;/a&gt;</span>
+    <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>🚪 Déconnexion<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;">
+            <button>Mon compte ▾</button>
+            <div style="margin-top:4px;">
+              <a href="#" style="display:block;">👤 Profil</a>
+              <a href="#" style="display:block;">⚙️ Paramètres</a>
+              <a href="#" style="display:block;">🚪 Déconnexion</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Dropdown stylisé (survolez)</span></div>
+        <div class="code-zone"><span class="p">.dropdown</span> { <span class="t">position</span>: <span class="v">relative</span>; }
+
+<span class="p">.dropdown-menu</span> {
+  <span class="t">position</span>: <span class="v">absolute</span>;
+  <span class="t">top</span>: <span class="v">calc(100% + 6px)</span>;
+  <span class="t">background</span>: <span class="v">white</span>;
+  <span class="t">border</span>: <span class="v">1px solid #e2e8f0</span>;
+  <span class="t">border-radius</span>: <span class="v">8px</span>;
+  <span class="t">box-shadow</span>: <span class="v">0 8px 24px rgba(0,0,0,.1)</span>;
+  <span class="t">display</span>: <span class="v">none</span>; <span class="c">/* caché par défaut */</span>
+}
+<span class="c">/* Affiché au survol */</span>
+<span class="p">.dropdown:hover .dropdown-menu</span> {
+  <span class="t">display</span>: <span class="v">block</span>;
+}</div>
+        <div class="render-zone" style="min-height:180px;align-items:flex-start;">
+          <div class="render-label">Rendu (survolez le bouton)</div>
+          <div class="dropdown-wrapper">
+            <button class="dropdown-toggle">Mon compte ▾</button>
+            <div class="dropdown-menu">
+              <a href="#">👤 Profil</a>
+              <a href="#">⚙️ Paramètres</a>
+              <hr>
+              <a href="#">🚪 Déconnexion</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 16 : GALERIE ========== -->
+  <div class="exemple" id="ex16">
+    <div class="exemple-header">
+      <span class="ex-num">16</span>
+      <span class="ex-title">Galerie photos (grid)</span>
+      <div class="ex-tags"><span class="tag">display:grid</span><span class="tag">aspect-ratio</span><span class="tag">position:absolute overlay</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo1.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 1"</span><span class="t">&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo2.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 2"</span><span class="t">&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo3.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 3"</span><span class="t">&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo4.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 4"</span><span class="t">&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo5.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 5"</span><span class="t">&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"photo6.jpg"</span> <span class="p">alt</span>=<span class="s">"Photo 6"</span><span class="t">&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu (images en ligne)</div>
+          <div style="font-size:28px;">🖼️🖼️🖼️🖼️🖼️🖼️</div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Galerie en grille (survolez)</span></div>
+        <div class="code-zone"><span class="p">.galerie</span> {
+  <span class="t">display</span>: <span class="v">grid</span>;
+  <span class="t">grid-template-columns</span>: <span class="v">repeat(3, 1fr)</span>;
+  <span class="t">gap</span>: <span class="v">10px</span>;
+}
+<span class="p">.galerie-item</span> {
+  <span class="t">aspect-ratio</span>: <span class="v">1</span>; <span class="c">/* carré */</span>
+  <span class="t">border-radius</span>: <span class="v">8px</span>;
+  <span class="t">overflow</span>: <span class="v">hidden</span>;
+  <span class="t">position</span>: <span class="v">relative</span>;
+}
+<span class="c">/* Overlay au survol */</span>
+<span class="p">.overlay</span> { <span class="t">opacity</span>: <span class="v">0</span>; <span class="t">transition</span>: <span class="v">.3s</span>; }
+<span class="p">.galerie-item:hover .overlay</span> { <span class="t">opacity</span>: <span class="v">1</span>; }</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu (survolez)</div>
+          <div class="galerie" style="width:100%;">
+            <div class="galerie-item"><div class="g-img g1">🌺</div><div class="g-overlay">Voir</div></div>
+            <div class="galerie-item"><div class="g-img g2">🌊</div><div class="g-overlay">Voir</div></div>
+            <div class="galerie-item"><div class="g-img g3">🌿</div><div class="g-overlay">Voir</div></div>
+            <div class="galerie-item"><div class="g-img g4">🌅</div><div class="g-overlay">Voir</div></div>
+            <div class="galerie-item"><div class="g-img g5">🦋</div><div class="g-overlay">Voir</div></div>
+            <div class="galerie-item"><div class="g-img g6">🏔️</div><div class="g-overlay">Voir</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 17 : PROFIL ========== -->
+  <div class="exemple" id="ex17">
+    <div class="exemple-header">
+      <span class="ex-num">17</span>
+      <span class="ex-title">Carte de profil utilisateur</span>
+      <div class="ex-tags"><span class="tag">margin:-30px auto</span><span class="tag">border-radius:50%</span><span class="tag">display:grid</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;img</span> <span class="p">src</span>=<span class="s">"avatar.jpg"</span>
+       <span class="p">alt</span>=<span class="s">"Avatar"</span><span class="t">&gt;</span>
+  <span class="t">&lt;h2&gt;</span>Marie Kamdem<span class="t">&lt;/h2&gt;</span>
+  <span class="t">&lt;p&gt;</span>Développeuse Web<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;p&gt;</span>42 Posts · 1.2k Abonnés<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;a</span> <span class="p">href</span>=<span class="s">"#"</span><span class="t">&gt;</span>Suivre<span class="t">&lt;/a&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;">
+            <div style="width:40px;height:40px;background:#ddd;border-radius:50%;display:inline-block;"></div>
+            <h2 style="font-size:15px;">Marie Kamdem</h2>
+            <p>Développeuse Web</p>
+            <p>42 Posts · 1.2k Abonnés</p>
+            <a href="#">Suivre</a>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Carte profil stylisée</span></div>
+        <div class="code-zone"><span class="p">.profil-cover</span> { <span class="t">height</span>: <span class="v">70px</span>; <span class="t">background</span>: <span class="v">gradient</span>; }
+<span class="p">.profil-avatar</span> {
+  <span class="t">width</span>: <span class="v">60px</span>; <span class="t">height</span>: <span class="v">60px</span>;
+  <span class="t">border-radius</span>: <span class="v">50%</span>;
+  <span class="t">border</span>: <span class="v">3px solid white</span>;
+  <span class="c">/* Remonte sur la cover : */</span>
+  <span class="t">margin-top</span>: <span class="v">-30px</span>;
+  <span class="t">margin</span>: <span class="v">-30px auto 10px</span>;
+}
+<span class="p">.profil-stats</span> {
+  <span class="t">display</span>: <span class="v">grid</span>;
+  <span class="t">grid-template-columns</span>: <span class="v">repeat(3, 1fr)</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="profil-card">
+            <div class="profil-cover"></div>
+            <div class="profil-avatar">MK</div>
+            <div class="profil-name">Marie Kamdem</div>
+            <div class="profil-role">Développeuse Web · Yaoundé</div>
+            <div class="profil-stats">
+              <div class="stat-item"><div class="stat-num">42</div><div class="stat-lbl">Posts</div></div>
+              <div class="stat-item"><div class="stat-num">1.2k</div><div class="stat-lbl">Abonnés</div></div>
+              <div class="stat-item"><div class="stat-num">318</div><div class="stat-lbl">Suivis</div></div>
+            </div>
+            <a class="profil-btn" href="#">+ Suivre</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 18 : PROGRESS BAR ========== -->
+  <div class="exemple" id="ex18">
+    <div class="exemple-header">
+      <span class="ex-num">18</span>
+      <span class="ex-title">Barres de progression</span>
+      <div class="ex-tags"><span class="tag">width:%</span><span class="tag">border-radius:50px</span><span class="tag">background:gradient</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;div&gt;</span>
+  <span class="t">&lt;p&gt;</span>HTML/CSS — 85%<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;progress</span>
+    <span class="p">value</span>=<span class="s">"85"</span> <span class="p">max</span>=<span class="s">"100"</span>
+  <span class="t">&gt;&lt;/progress&gt;</span>
+
+  <span class="t">&lt;p&gt;</span>JavaScript — 65%<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;progress</span>
+    <span class="p">value</span>=<span class="s">"65"</span> <span class="p">max</span>=<span class="s">"100"</span>
+  <span class="t">&gt;&lt;/progress&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="width:100%;font-size:13px;">
+            <p>HTML/CSS — 85%</p>
+            <progress value="85" max="100" style="width:100%;margin-bottom:8px;"></progress>
+            <p>JavaScript — 65%</p>
+            <progress value="65" max="100" style="width:100%;margin-bottom:8px;"></progress>
+            <p>Python — 40%</p>
+            <progress value="40" max="100" style="width:100%;"></progress>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Barres custom</span></div>
+        <div class="code-zone"><span class="p">.progress-track</span> {
+  <span class="t">background</span>: <span class="s">#f1f5f9</span>;
+  <span class="t">border-radius</span>: <span class="v">50px</span>;
+  <span class="t">height</span>: <span class="v">8px</span>;
+  <span class="t">overflow</span>: <span class="v">hidden</span>;
+}
+<span class="p">.progress-fill</span> {
+  <span class="t">height</span>: <span class="v">100%</span>;
+  <span class="t">border-radius</span>: <span class="v">50px</span>;
+  <span class="t">background</span>: <span class="v">linear-gradient(90deg, #4f46e5, #818cf8)</span>;
+  <span class="c">/* width = le pourcentage voulu : */</span>
+  <span class="t">width</span>: <span class="v">85%</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="progress-list" style="width:100%;">
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-label">HTML/CSS</span><span class="progress-val">85%</span></div>
+              <div class="progress-track"><div class="progress-fill fill-blue" style="width:85%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-label">JavaScript</span><span class="progress-val">65%</span></div>
+              <div class="progress-track"><div class="progress-fill fill-green" style="width:65%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-label">Python</span><span class="progress-val">40%</span></div>
+              <div class="progress-track"><div class="progress-fill fill-orange" style="width:40%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 19 : BLOCKQUOTE ========== -->
+  <div class="exemple" id="ex19">
+    <div class="exemple-header">
+      <span class="ex-num">19</span>
+      <span class="ex-title">Citation (blockquote)</span>
+      <div class="ex-tags"><span class="tag">border-left</span><span class="tag">font-style:italic</span><span class="tag">padding</span></div>
+    </div>
+    <div class="split">
+      <div class="half">
+        <div class="half-header"><span class="badge-avant">Sans CSS</span><span class="half-label">HTML brut</span></div>
+        <div class="code-zone"><span class="t">&lt;blockquote&gt;</span>
+  L'éducation est l'arme la plus
+  puissante que vous puissiez
+  utiliser pour changer le monde.
+<span class="t">&lt;/blockquote&gt;</span>
+<span class="t">&lt;p&gt;</span>— Nelson Mandela<span class="t">&lt;/p&gt;</span></div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div style="font-size:13px;width:100%;">
+            <blockquote style="margin:0 0 8px 20px;font-size:13px;">
+              L'éducation est l'arme la plus puissante que vous puissiez utiliser pour changer le monde.
+            </blockquote>
+            <p>— Nelson Mandela</p>
+          </div>
+        </div>
+      </div>
+      <div class="half">
+        <div class="half-header"><span class="badge-apres">Avec CSS</span><span class="half-label">Citation stylisée</span></div>
+        <div class="code-zone"><span class="p">blockquote</span> {
+  <span class="t">border-left</span>: <span class="v">4px solid #4f46e5</span>;
+  <span class="t">padding</span>: <span class="v">14px 20px</span>;
+  <span class="t">background</span>: <span class="s">#f8f7ff</span>;
+  <span class="t">border-radius</span>: <span class="v">0 8px 8px 0</span>;
+  <span class="t">font-style</span>: <span class="v">italic</span>;
+  <span class="t">color</span>: <span class="s">#374151</span>;
+  <span class="t">line-height</span>: <span class="v">1.7</span>;
+}
+<span class="p">.auteur</span> {
+  <span class="t">font-size</span>: <span class="v">12px</span>;
+  <span class="t">color</span>: <span class="s">#6b7280</span>;
+  <span class="t">font-weight</span>: <span class="v">500</span>;
+}</div>
+        <div class="render-zone">
+          <div class="render-label">Rendu</div>
+          <div class="quote-styled" style="width:100%;">
+            <blockquote>L'éducation est l'arme la plus puissante que vous puissiez utiliser pour changer le monde.</blockquote>
+            <div class="quote-author">Nelson Mandela</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXEMPLE 20 : MINI SITE ========== -->
+  <div class="exemple" id="ex20">
+    <div class="exemple-header">
+      <span class="ex-num">20</span>
+      <span class="ex-title">Mini site complet — tout ensemble !</span>
+      <div class="ex-tags"><span class="tag">header</span><span class="tag">hero section</span><span class="tag">cards grid</span><span class="tag">footer</span></div>
+    </div>
+    <div style="padding: 0;">
+      <div style="padding: 10px 16px; border-bottom: 1px solid #e2e8f0; background: #f8f9fa; display:flex; align-items:center; gap:8px;">
+        <span class="badge-apres">Avec CSS</span>
+        <span class="half-label">Tous les concepts combinés en un seul site</span>
+      </div>
+      <div class="code-zone" style="border-radius:0;">&lt;!-- Structure HTML typique d'un site --&gt;
+<span class="t">&lt;header&gt;</span>  <span class="c">← nav + logo + bouton CTA</span>
+<span class="t">&lt;main&gt;</span>
+  <span class="t">&lt;section</span> <span class="p">class</span>=<span class="s">"hero"</span><span class="t">&gt;</span>  <span class="c">← grand titre + sous-titre + boutons</span>
+  <span class="t">&lt;section</span> <span class="p">class</span>=<span class="s">"cards"</span><span class="t">&gt;</span>  <span class="c">← grille de cartes services</span>
+<span class="t">&lt;/main&gt;</span>
+<span class="t">&lt;footer&gt;</span>  <span class="c">← copyright</span>
+
+<span class="c">/* CSS utilisé : flexbox, grid, gradient,
+   hover, border-radius, box-shadow... */</span></div>
+      <div style="padding: 16px; background: #f1f5f9;">
+        <div class="render-label" style="margin-bottom:10px;">Rendu — Mini site fonctionnel</div>
+        <div class="mini-site">
+          <div class="ms-header">
+            <div class="ms-logo">⚡ DevCam</div>
+            <nav class="ms-nav">
+              <a href="#" class="a">Accueil</a>
+              <a href="#">Services</a>
+              <a href="#">Portfolio</a>
+              <a href="#">Contact</a>
+            </nav>
+          </div>
+          <div class="ms-hero">
+            <h1>Apprenez à coder au Cameroun 🇨🇲</h1>
+            <p>Des cours modernes de développement web pour les étudiants de 1ère année</p>
+            <button class="ms-hero-btn">Commencer gratuitement</button>
+            <button class="ms-hero-btn2">Voir le programme</button>
+          </div>
+          <div class="ms-cards">
+            <div class="ms-card">
+              <div class="ms-card-icon">🎨</div>
+              <h3>HTML &amp; CSS</h3>
+              <p>Créez des interfaces web modernes et responsives.</p>
+            </div>
+            <div class="ms-card">
+              <div class="ms-card-icon">⚡</div>
+              <h3>JavaScript</h3>
+              <p>Rendez vos pages interactives et dynamiques.</p>
+            </div>
+            <div class="ms-card">
+              <div class="ms-card-icon">🚀</div>
+              <h3>Projets Réels</h3>
+              <p>Construisez votre portfolio dès la 1ère année.</p>
+            </div>
+          </div>
+          <div class="ms-footer">© 2025 DevCam — Formation Web au Cameroun</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin page-body -->
+</body>
+</html>
