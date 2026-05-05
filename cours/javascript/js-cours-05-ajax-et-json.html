@@ -20,6 +20,7 @@
   input,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--txt)}
   button{border:none;font-weight:700;cursor:pointer}.b1{background:var(--c);color:#000}.b2{background:var(--a);color:#000}.b3{background:var(--b);color:#000}.b4{background:var(--d);color:#000}
   .out{white-space:pre-wrap;font-family:Consolas,monospace;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;min-height:80px}
+  .code-block{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.83rem;line-height:1.6;margin:.55rem 0}
   textarea{width:100%;min-height:85px}
   .series-nav{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
   .series-nav a{text-decoration:none;font-size:.72rem;background:rgba(255,255,255,.04);color:var(--m);border:1px solid var(--border);border-radius:6px;padding:.22rem .55rem;transition:all .2s}
@@ -46,6 +47,11 @@
     <div class="ch">01 — Comprendre AJAX (asynchrone)</div>
     <div class="cb">
       <div class="exp">AJAX permet de récupérer des données <b>sans recharger</b> toute la page. Ici, on simule des étapes de chargement.</div>
+      <div class="code-block">// Principe AJAX (asynchrone)
+// 1) envoyer une requête
+// 2) attendre la réponse
+// 3) mettre à jour une partie de la page
+// sans recharger tout le document</div>
       <div class="row">
         <button class="b1" onclick="simAjax()">Cas 1: simulation asynchrone</button>
       </div>
@@ -57,6 +63,14 @@
     <div class="ch">02 — XMLHttpRequest avec readyState/status</div>
     <div class="cb">
       <div class="exp">Exemple réel de <code>XMLHttpRequest</code> sans dépendre d'un serveur externe : on génère une ressource JSON locale (Blob URL).</div>
+      <div class="code-block">const xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    console.log(xhr.responseText);
+  }
+};
+xhr.open("GET", url, true);
+xhr.send();</div>
       <div class="row">
         <button class="b2" onclick="runXhr()">Cas 2: lancer XMLHttpRequest</button>
       </div>
@@ -68,6 +82,9 @@
     <div class="ch">03 — JSON.parse() et JSON.stringify()</div>
     <div class="cb">
       <div class="exp">JSON est un format texte d'échange de données. On convertit un objet JS en JSON avec <code>JSON.stringify</code>, et l'inverse avec <code>JSON.parse</code>.</div>
+      <div class="code-block">const objet = { nom: "Amina", age: 21 };
+const texteJSON = JSON.stringify(objet);
+const objetJS = JSON.parse(texteJSON);</div>
       <textarea id="json-in">{ "nom":"Amina", "age":21, "filiere":"Informatique" }</textarea>
       <div class="row">
         <button class="b3" onclick="parseJson()">Cas 3: parser JSON</button>
@@ -81,6 +98,14 @@
     <div class="ch">04 — Fonction callback simple</div>
     <div class="cb">
       <div class="exp">Une callback est une fonction passée en paramètre à une autre, puis appelée quand le travail est terminé.</div>
+      <div class="code-block">function charger(url, callback) {
+  // travail asynchrone
+  callback({ url: url, resultat: "OK" });
+}
+
+charger("api/etudiants", function(reponse) {
+  console.log(reponse);
+});</div>
       <div class="row">
         <input id="cb-url" value="api/etudiants">
         <button class="b1" onclick="runCallback()">Tester callback</button>

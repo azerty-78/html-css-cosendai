@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Cours — 00 · Introduction Générale</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+  :root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;--accent:#f0883e;--accent2:#58a6ff;--accent3:#3fb950;--accent4:#bc8cff;--text:#e6edf3;--muted:#8b949e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;line-height:1.65}
+  header{background:linear-gradient(135deg,#1a1f2e,#0d1117);border-bottom:1px solid var(--border);padding:2rem 1.4rem 1.3rem}
+  .badge{display:inline-block;background:var(--accent4);color:#000;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:4px}
+  h1{margin-top:.5rem;font-size:2rem;background:linear-gradient(90deg,var(--accent4),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{color:var(--muted);margin-top:.4rem}
+  .series-nav{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.8rem}
+  .series-nav a{text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:.22rem .55rem;transition:all .2s}
+  .series-nav a:hover{background:var(--accent2);color:#000;border-color:var(--accent2)}
+  main{max-width:980px;margin:0 auto;padding:1.2rem}
+  .card{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem}
+  .ch{background:var(--surface);padding:.85rem 1rem;border-bottom:1px solid var(--border);font-weight:700}
+  .cb{padding:1rem}
+  .exp{background:linear-gradient(135deg,rgba(88,166,255,.08),rgba(88,166,255,.02));border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;padding:.8rem .95rem;margin-bottom:.8rem;color:var(--muted)}
+  .list{margin-left:1.15rem}
+  .list li{margin:.35rem 0}
+  .code{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.75rem .9rem;white-space:pre-wrap;font-family:'JetBrains Mono',monospace;font-size:.82rem;margin:.6rem 0}
+  .table{width:100%;border-collapse:collapse;margin:.6rem 0}
+  .table th,.table td{border-bottom:1px solid var(--border);text-align:left;padding:.5rem .6rem;font-size:.9rem}
+  .table th{color:var(--muted);background:var(--surface2)}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">FICHIER 0 / 5</span>
+  <h1>Introduction générale au JavaScript</h1>
+  <p class="sub">Origine · versions · typage · exécution · HTML/CSS · DOM · JSON · XML · AJAX</p>
+  <nav class="series-nav">
+    <a href="index.html">Accueil série</a>
+    <a href="js-cours-00-introduction-generale.html">00</a>
+    <a href="js-cours-01-bases.html">01</a>
+    <a href="js-cours-02-epressions-et-controle.html">02</a>
+    <a href="js-cours-03-fonctions-objets-tableaux.html">03</a>
+    <a href="js-cours-04-dom-et-evenements.html">04</a>
+    <a href="js-cours-05-ajax-et-json.html">05</a>
+  </nav>
+</header>
+
+<main>
+  <section class="card">
+    <div class="ch">1) C'est quoi JavaScript ?</div>
+    <div class="cb">
+      <div class="exp">JavaScript est un langage de programmation principalement utilisé pour rendre les pages web interactives.</div>
+      <ul class="list">
+        <li>Créé en 1995 par Brendan Eich (Netscape).</li>
+        <li>Standardisé sous le nom ECMAScript (ES) par l'ECMA.</li>
+        <li>Utilisé côté navigateur et aussi côté serveur (Node.js).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">2) Origine et versions importantes</div>
+    <div class="cb">
+      <table class="table">
+        <tr><th>Période</th><th>Évolution</th><th>Pourquoi c'est important</th></tr>
+        <tr><td>1995</td><td>Naissance de JavaScript</td><td>Ajoute la logique dans les pages HTML.</td></tr>
+        <tr><td>1997</td><td>ECMAScript (ES1)</td><td>Standard commun pour tous les navigateurs.</td></tr>
+        <tr><td>2009</td><td>ES5</td><td>Version très adoptée, base de nombreux cours.</td></tr>
+        <tr><td>2015</td><td>ES6 / ES2015</td><td>`let`, `const`, classes, arrow functions, modules.</td></tr>
+        <tr><td>Aujourd'hui</td><td>ESNext (chaque année)</td><td>Le langage continue d'évoluer progressivement.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">3) Quel type de langage ?</div>
+    <div class="cb">
+      <ul class="list">
+        <li><b>Langage à typage dynamique (faible)</b> : le type d'une variable peut changer selon la valeur.</li>
+        <li><b>Multi-paradigme</b> : procédural, orienté objet, fonctionnel.</li>
+        <li><b>Interprété + compilé JIT</b> : le moteur JS lit le code et optimise/compile à la volée.</li>
+      </ul>
+      <div class="code">let x;
+typeof x;     // "undefined"
+x = 12;
+typeof x;     // "number"
+x = "Bonjour";
+typeof x;     // "string"</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">4) JavaScript, HTML et CSS : qui fait quoi ?</div>
+    <div class="cb">
+      <ul class="list">
+        <li><b>HTML</b> : structure de la page (titres, paragraphes, formulaires...).</li>
+        <li><b>CSS</b> : présentation (couleurs, tailles, mise en page, animations).</li>
+        <li><b>JavaScript</b> : comportement (clics, validation, affichage dynamique, appels API).</li>
+      </ul>
+      <div class="code">&lt;h1 id="titre"&gt;Bonjour&lt;/h1&gt;
+
+&lt;script&gt;
+document.getElementById("titre").textContent = "Bonjour JavaScript";
+document.getElementById("titre").style.color = "royalblue";
+&lt;/script&gt;</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">5) Le DOM (Document Object Model)</div>
+    <div class="cb">
+      <div class="exp">Le DOM représente la page HTML sous forme d'arbre d'objets manipulables par JavaScript.</div>
+      <ul class="list">
+        <li>Accéder : `getElementById`, `querySelector`, `querySelectorAll`</li>
+        <li>Modifier : `innerHTML`, `textContent`, `style`, `className`</li>
+        <li>Créer/Supprimer : `createElement`, `appendChild`, `removeChild`</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">6) JSON, XML et échange de données</div>
+    <div class="cb">
+      <ul class="list">
+        <li><b>JSON</b> (JavaScript Object Notation) : format texte léger, très utilisé avec APIs.</li>
+        <li><b>XML</b> : format plus verbeux, historique, encore utilisé dans certains systèmes.</li>
+      </ul>
+      <div class="code">// JSON: texte -> objet
+const txt = '{"nom":"Sara","age":20}';
+const obj = JSON.parse(txt);
+
+// objet -> JSON
+const txt2 = JSON.stringify(obj);</div>
+      <table class="table">
+        <tr><th>Format</th><th>Lisibilité</th><th>Taille</th><th>Usage actuel</th></tr>
+        <tr><td>JSON</td><td>Simple</td><td>Plus légère</td><td>Très fréquent (web APIs)</td></tr>
+        <tr><td>XML</td><td>Plus verbeux</td><td>Plus lourde</td><td>Legacy / systèmes spécifiques</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">7) AJAX et communication serveur</div>
+    <div class="cb">
+      <div class="exp">AJAX permet d'envoyer/recevoir des données sans recharger toute la page.</div>
+      <ul class="list">
+        <li>Ancien objet : `XMLHttpRequest`</li>
+        <li>Approche moderne : `fetch` + `Promise` + `async/await`</li>
+        <li>Souvent utilisé avec JSON</li>
+      </ul>
+      <div class="code">fetch("/api/etudiants")
+  .then(r => r.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">8) Environnement d'exécution</div>
+    <div class="cb">
+      <ul class="list">
+        <li><b>Navigateur</b> : Chrome (V8), Firefox (SpiderMonkey), Safari (JavaScriptCore).</li>
+        <li><b>Node.js</b> : JS côté serveur, scripts, outils, backend.</li>
+        <li>Le code peut être débogué via la console DevTools (F12).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">9) Résumé rapide pour étudiants</div>
+    <div class="cb">
+      <ul class="list">
+        <li>JS rend les pages web interactives.</li>
+        <li>Il est dynamique, flexible, et exécuté par un moteur JS.</li>
+        <li>Il manipule HTML/CSS via le DOM.</li>
+        <li>Il échange des données avec serveur via AJAX/fetch, souvent en JSON.</li>
+        <li>Il fonctionne côté client et côté serveur.</li>
+      </ul>
+      <div class="exp">Conseil pédagogique : commencer par variables/conditions/boucles, puis fonctions/objets, puis DOM/événements, puis AJAX/JSON.</div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

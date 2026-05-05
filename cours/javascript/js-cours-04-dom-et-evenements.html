@@ -20,6 +20,7 @@
   input,select{background:var(--surface2);border:1px solid var(--border);color:var(--txt)}
   button{border:none;font-weight:700;cursor:pointer}.b1{background:var(--c);color:#000}.b2{background:var(--a);color:#000}.b3{background:var(--b);color:#000}.b4{background:var(--d);color:#000}
   .out{white-space:pre-wrap;font-family:Consolas,monospace;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;min-height:70px}
+  .code-block{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.83rem;line-height:1.6;margin:.55rem 0}
   .zone{border:1px dashed var(--border);border-radius:8px;padding:.8rem;margin-top:.6rem}
   ul{margin-left:1rem}
   .series-nav{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
@@ -47,6 +48,13 @@
     <div class="ch">01 — Accéder aux éléments HTML</div>
     <div class="cb">
       <div class="exp">Le DOM transforme la page en objets manipulables. On peut sélectionner des éléments avec <code>getElementById</code>, <code>querySelector</code>, <code>querySelectorAll</code>.</div>
+      <div class="code-block">const titre = document.getElementById("titre-demo");
+const premierPara = document.querySelector("#dom-demo .para");
+const tousLesParas = document.querySelectorAll(".para");
+
+console.log(titre.textContent);
+console.log(premierPara.textContent);
+console.log(tousLesParas.length);</div>
       <div id="dom-demo">
         <h3 id="titre-demo">Titre DOM</h3>
         <p class="para">Paragraphe 1</p>
@@ -65,6 +73,9 @@
     <div class="ch">02 — Modifier le contenu et le style</div>
     <div class="cb">
       <div class="exp">Pour changer une page dynamiquement: <code>innerHTML</code>, <code>textContent</code>, <code>style</code>, <code>className</code>.</div>
+      <div class="code-block">document.getElementById("titre-demo").innerHTML = "Nouveau titre";
+document.getElementById("titre-demo").style.color = "#58a6ff";
+document.getElementById("titre-demo").style.fontSize = "1.9rem";</div>
       <div class="row">
         <input id="new-title" value="Nouveau titre avec JS" style="min-width:220px">
         <button class="b2" onclick="modTitle()">Cas 1: innerHTML sur le titre</button>
@@ -81,6 +92,12 @@
     <div class="ch">03 — Ajouter, insérer, supprimer des éléments</div>
     <div class="cb">
       <div class="exp">On crée des nœuds avec <code>createElement</code>, on les insère avec <code>appendChild</code>/<code>insertBefore</code>, puis on peut les retirer.</div>
+      <div class="code-block">const ul = document.getElementById("list-zone");
+const li = document.createElement("li");
+li.textContent = "Nouvel élément";
+ul.appendChild(li);              // ajoute en fin
+ul.insertBefore(li, refElement); // insère avant ref
+ul.removeChild(ul.lastElementChild);</div>
       <div class="zone">
         <ul id="list-zone">
           <li>Element A</li>
@@ -101,6 +118,13 @@
     <div class="ch">04 — Événements JavaScript</div>
     <div class="cb">
       <div class="exp">Un événement est une action (clic, clavier, survol...). <code>addEventListener</code> est recommandé car il sépare JS et HTML.</div>
+      <div class="code-block">document.getElementById("btn-click").addEventListener("click", function(event) {
+  console.log(event.type, event.target);
+});
+
+document.getElementById("inp-key").addEventListener("keydown", function(event) {
+  console.log(event.key, event.code);
+});</div>
       <div class="row">
         <button id="btn-click" class="b1">Cas 1: click</button>
         <input id="inp-key" placeholder="Cas 2: tapez ici">
