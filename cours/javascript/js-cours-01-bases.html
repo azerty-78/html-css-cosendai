@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Cours — 01 · Les Bases</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #f0883e;
+    --accent2: #58a6ff;
+    --accent3: #3fb950;
+    --accent4: #bc8cff;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --danger: #f85149;
+    --code-bg: #0d1117;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'JS';
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    font-size: 10rem;
+    font-weight: 800;
+    color: rgba(240,136,62,0.06);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .file-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+  }
+  .nav-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.2rem;
+  }
+  .nav-pills a {
+    text-decoration: none;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.78rem;
+    transition: all 0.2s;
+  }
+  .nav-pills a:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 3rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section:hover { border-color: var(--accent); }
+  .section-header {
+    background: var(--surface);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    background: var(--accent);
+    color: #000;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 1.1rem; font-weight: 700; }
+  .section-body { padding: 1.5rem; background: var(--bg); }
+
+  /* ── EXPLAINER ── */
+  .explainer {
+    background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(88,166,255,0.02));
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .explainer strong { color: var(--accent2); }
+  .explainer code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(88,166,255,0.12);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: var(--accent2);
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    white-space: pre;
+    color: #e6edf3;
+  }
+  .code-block .kw { color: #ff7b72; }
+  .code-block .str { color: #a5d6ff; }
+  .code-block .num { color: #79c0ff; }
+  .code-block .fn { color: #d2a8ff; }
+  .code-block .cm { color: #8b949e; font-style: italic; }
+  .code-block .var { color: #ffa657; }
+
+  /* ── DEMO GRID ── */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    text-align: center;
+    justify-content: center;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { background: #e07a30; transform: translateY(-1px); }
+  .btn-blue { background: var(--accent2); color: #000; }
+  .btn-blue:hover { background: #4896e8; transform: translateY(-1px); }
+  .btn-green { background: var(--accent3); color: #000; }
+  .btn-green:hover { background: #34a846; transform: translateY(-1px); }
+  .btn-purple { background: var(--accent4); color: #000; }
+  .btn-purple:hover { background: #a87aee; transform: translateY(-1px); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #e04040; transform: translateY(-1px); }
+  .btn:active { transform: scale(0.97); }
+
+  /* ── INPUT ── */
+  .input-row {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+  input[type="text"], input[type="number"], select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 120px;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    border-color: var(--accent2);
+  }
+  label { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* ── OUTPUT ── */
+  .output {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    min-height: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .output .out-line { display: block; }
+  .output .ok   { color: var(--accent3); }
+  .output .info { color: var(--accent2); }
+  .output .warn { color: var(--accent); }
+  .output .err  { color: var(--danger); }
+  .output .label{ color: var(--text-muted); }
+
+  .output-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  /* ── CONSOLE ── */
+  .console-box {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+  .console-toolbar {
+    background: var(--surface);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .console-toolbar span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .console-log {
+    padding: 0.8rem 1rem;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .console-log .log-entry {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .console-log .log-arrow { color: #3fb950; flex-shrink: 0; }
+  .console-log .log-arrow.err { color: var(--danger); }
+  .console-log .log-value { color: var(--text); }
+  .console-log .log-type { color: var(--text-muted); font-size: 0.74rem; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+  .badge-orange { background: rgba(240,136,62,0.15); color: var(--accent); }
+  .badge-blue   { background: rgba(88,166,255,0.15);  color: var(--accent2); }
+  .badge-green  { background: rgba(63,185,80,0.15);   color: var(--accent3); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--accent4); }
+
+  /* ── TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 1rem 0; }
+  .data-table th {
+    background: var(--surface);
+    color: var(--text-muted);
+    text-align: left;
+    padding: 0.5rem 0.8rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  hr.section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* ── PROGRESS BAR (pour typeof) ── */
+  .type-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-top: 0.8rem;
+  }
+  .type-indicator .type-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 100px;
+  }
+  .type-indicator .type-value {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="file-badge">FICHIER 1 / 5</div>
+  <h1>Les Bases du JavaScript</h1>
+  <p>Variables · Tableaux · Opérateurs · Typage · Console</p>
+  <nav class="nav-pills">
+    <a href="#variables">Variables</a>
+    <a href="#tableaux">Tableaux</a>
+    <a href="#operateurs">Opérateurs</a>
+    <a href="#typage">Typage</a>
+    <a href="#console">Console</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════ SECTION 1 — VARIABLES ═══════════════ -->
+<section class="section" id="variables">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <h2>Les Variables — Déclaration &amp; Règles de nommage</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="explainer">
+      Une <strong>variable</strong> est une boîte qui stocke une valeur. En JavaScript, on déclare une variable avec <code>var</code>, <code>let</code> ou <code>const</code>.
+      Les noms doivent commencer par une lettre, <code>$</code> ou <code>_</code>, sont <strong>sensibles à la casse</strong> (<code>age</code> ≠ <code>Age</code>),
+      et les mots réservés (<code>if</code>, <code>for</code>, <code>function</code>…) sont interdits.
+    </div>
+
+    <div class="code-block"><span class="kw">var</span>   <span class="var">prenom</span> = <span class="str">"Amina"</span>;          <span class="cm">// déclaration classique (portée globale)</span>
+<span class="kw">let</span>   <span class="var">age</span>    = <span class="num">22</span>;              <span class="cm">// portée de bloc (recommandé)</span>
+<span class="kw">const</span> <span class="var">PI</span>     = <span class="num">3.14159</span>;          <span class="cm">// constante — ne peut pas changer</span>
+
+<span class="cm">// Noms valides :</span>
+<span class="kw">let</span> <span class="var">maVariable</span>, <span class="var">_temp</span>, <span class="var">$prix</span>;
+<span class="cm">// Noms invalides :</span>
+<span class="cm">// let 1valeur, let for, let ma-variable ← ERREUR</span></div>
+
+    <!-- Cas 1 -->
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 1 — Déclarer et afficher une variable</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Entrez votre prénom et âge, JavaScript les stocke dans des variables et les affiche.</p>
+    <div class="input-row">
+      <label>Prénom :</label>
+      <input type="text" id="v1-prenom" placeholder="ex: Amina" value="Amina">
+      <label>Âge :</label>
+      <input type="number" id="v1-age" value="22" style="width:80px">
+      <button class="btn btn-primary" onclick="cas1()">▶ Exécuter</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="v1-out">En attente…</div>
+
+    <!-- Cas 2 -->
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 2 — var vs let vs const</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Découvrez la différence entre redéclarer avec <code>var</code> et avec <code>let</code>. Observez l'erreur de <code>const</code>.</p>
+    <div class="demo-grid">
+      <button class="btn btn-blue" onclick="cas2_var()">Tester var</button>
+      <button class="btn btn-green" onclick="cas2_let()">Tester let</button>
+      <button class="btn btn-danger" onclick="cas2_const()">Tester const (erreur)</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="v2-out">Cliquez un bouton…</div>
+
+    <!-- Cas 3 -->
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 3 — Variables de chaîne : guillemets et apostrophes</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Les chaînes acceptent <code>"..."</code>, <code>'...'</code>, et les template literals <code>`...`</code> avec <code>${variable}</code>.</p>
+    <div class="input-row">
+      <input type="text" id="v3-nom" placeholder="Votre nom" value="Chakib">
+      <input type="text" id="v3-ville" placeholder="Votre ville" value="Casablanca">
+      <button class="btn btn-purple" onclick="cas3()">▶ Tester les chaînes</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="v3-out">En attente…</div>
+
+    <!-- Cas 4 -->
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 4 — Portée locale vs globale</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Une variable déclarée avec <code>var</code> à l'intérieur d'une fonction ne se voit PAS à l'extérieur. Testez!</p>
+    <div class="demo-grid">
+      <button class="btn btn-primary" onclick="cas4_global()">Variable globale</button>
+      <button class="btn btn-blue" onclick="cas4_local()">Variable locale (var)</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="v4-out">En attente…</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 2 — TABLEAUX ════════════════ -->
+<section class="section" id="tableaux">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <h2>Les Tableaux — Arrays</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="explainer">
+      Un <strong>tableau</strong> est une liste ordonnée de valeurs. En JS, on l'écrit avec des crochets <code>[ ]</code>.
+      Les indices commencent à <strong>0</strong>. Un tableau peut contenir des nombres, des chaînes, même d'autres tableaux (tableau multidimensionnel).
+      La propriété <code>.length</code> donne la taille du tableau.
+    </div>
+
+    <div class="code-block"><span class="kw">let</span> <span class="var">voitures</span> = [<span class="str">'BMW'</span>, <span class="str">'Ford'</span>, <span class="str">'Toyota'</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">voitures</span>[<span class="num">0</span>]);    <span class="cm">// → 'BMW'</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">voitures</span>.length);  <span class="cm">// → 3</span>
+
+<span class="cm">// Tableau 2D (matrice)</span>
+<span class="kw">let</span> <span class="var">matrice</span> = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>],[<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>],[<span class="num">7</span>,<span class="num">8</span>,<span class="num">9</span>]];
+<span class="fn">alert</span>(<span class="var">matrice</span>[<span class="num">1</span>][<span class="num">2</span>]);             <span class="cm">// → 6</span></div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 1 — Créer et lire un tableau</strong>
+    <div class="input-row">
+      <label>Éléments (séparés par virgule) :</label>
+      <input type="text" id="t1-items" value="Ahmed,Sara,Karim,Nadia" style="min-width:250px">
+      <input type="number" id="t1-idx" value="0" style="width:70px" placeholder="index">
+      <button class="btn btn-primary" onclick="cas_t1()">▶ Lire le tableau</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="t1-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 2 — push, pop, reverse, sort</strong>
+    <div class="input-row">
+      <input type="text" id="t2-new" placeholder="Nouvel élément" value="Hamid">
+    </div>
+    <div class="demo-grid">
+      <button class="btn btn-green" onclick="cas_t2_push()">push (ajouter)</button>
+      <button class="btn btn-danger" onclick="cas_t2_pop()">pop (supprimer)</button>
+      <button class="btn btn-blue" onclick="cas_t2_reverse()">reverse (inverser)</button>
+      <button class="btn btn-purple" onclick="cas_t2_sort()">sort (trier A→Z)</button>
+      <button class="btn btn-primary" onclick="cas_t2_reset()">↺ Réinitialiser</button>
+    </div>
+    <span class="output-label">// ÉTAT DU TABLEAU</span>
+    <div class="output" id="t2-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 3 — Tableau multidimensionnel (Matrice 3×3)</strong>
+    <div class="input-row">
+      <label>Ligne (0-2):</label>
+      <input type="number" id="t3-row" value="1" min="0" max="2" style="width:60px">
+      <label>Colonne (0-2):</label>
+      <input type="number" id="t3-col" value="2" min="0" max="2" style="width:60px">
+      <button class="btn btn-blue" onclick="cas_t3()">▶ Lire matrice[ligne][col]</button>
+    </div>
+    <span class="output-label">// MATRICE + RÉSULTAT</span>
+    <div class="output" id="t3-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 4 — forEach et join</strong>
+    <div class="input-row">
+      <input type="text" id="t4-sep" placeholder="Séparateur" value=" | " style="width:100px">
+      <button class="btn btn-primary" onclick="cas_t4_join()">join()</button>
+      <button class="btn btn-purple" onclick="cas_t4_forEach()">forEach()</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="t4-out">En attente…</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 3 — OPÉRATEURS ══════════════ -->
+<section class="section" id="operateurs">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <h2>Les Opérateurs — Arithmétique, Comparaison, Logique</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="explainer">
+      JavaScript dispose de 4 familles d'opérateurs : <strong>arithmétiques</strong> (+, -, *, /, %, ++, --),
+      <strong>d'affectation</strong> (=, +=, -=…), <strong>de comparaison</strong> (==, ===, !=, &gt;, &lt;…) et
+      <strong>logiques</strong> (&amp;&amp;, ||, !). L'opérateur <strong>===</strong> vérifie AUSSI le type, contrairement à <strong>==</strong>.
+    </div>
+
+    <table class="data-table">
+      <tr><th>Opérateur</th><th>Nom</th><th>Exemple</th><th>Résultat</th></tr>
+      <tr><td>+</td><td>Addition</td><td>5 + 3</td><td>8</td></tr>
+      <tr><td>%</td><td>Modulo (reste)</td><td>10 % 3</td><td>1</td></tr>
+      <tr><td>===</td><td>Égalité stricte</td><td>"5" === 5</td><td>false !</td></tr>
+      <tr><td>==</td><td>Égalité souple</td><td>"5" == 5</td><td>true</td></tr>
+      <tr><td>&amp;&amp;</td><td>ET logique</td><td>true &amp;&amp; false</td><td>false</td></tr>
+      <tr><td>||</td><td>OU logique</td><td>true || false</td><td>true</td></tr>
+    </table>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 1 — Calculatrice arithmétique</strong>
+    <div class="input-row">
+      <input type="number" id="op-a" value="10" style="width:90px">
+      <select id="op-sym">
+        <option value="+">+</option><option value="-">-</option>
+        <option value="*">×</option><option value="/">÷</option>
+        <option value="%">%</option>
+      </select>
+      <input type="number" id="op-b" value="3" style="width:90px">
+      <button class="btn btn-primary" onclick="cas_op1()">=</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="op1-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 2 — == vs === (piège classique!)</strong>
+    <div class="input-row">
+      <input type="text" id="op-c" value="5" style="width:80px" placeholder="Val A">
+      <input type="text" id="op-d" value="5" style="width:80px" placeholder="Val B">
+      <button class="btn btn-blue" onclick="cas_op2()">▶ Comparer</button>
+    </div>
+    <span class="output-label">// RÉSULTAT (observez la différence !)</span>
+    <div class="output" id="op2-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 3 — Opérateurs logiques &amp;&amp;, ||, !</strong>
+    <div class="input-row">
+      <label>A :</label>
+      <select id="op-bool-a">
+        <option value="true">true</option><option value="false">false</option>
+      </select>
+      <label>B :</label>
+      <select id="op-bool-b">
+        <option value="true">true</option><option value="false">false</option>
+      </select>
+      <button class="btn btn-green" onclick="cas_op3()">▶ Tester &&, ||, !</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="op3-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 4 — Concaténation de chaînes avec +</strong>
+    <div class="input-row">
+      <input type="text" id="op-s1" value="Vous avez " style="min-width:150px">
+      <input type="number" id="op-msgs" value="4" style="width:70px">
+      <input type="text" id="op-s2" value=" messages non lus." style="min-width:150px">
+      <button class="btn btn-purple" onclick="cas_op4()">▶ Concaténer</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="op4-out">En attente…</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 4 — TYPAGE ══════════════════ -->
+<section class="section" id="typage">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <h2>Le Typage Dynamique — typeof et conversions</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="explainer">
+      JavaScript est à <strong>typage faible</strong> (dynamique) : le type d'une variable change en fonction de la valeur qu'on lui donne.
+      On utilise <code>typeof</code> pour connaître le type actuel. Les conversions explicites se font avec
+      <code>parseInt()</code>, <code>parseFloat()</code>, <code>String()</code>, <code>Boolean()</code>…
+    </div>
+
+    <div class="code-block"><span class="kw">let</span> <span class="var">x</span>;
+<span class="fn">typeof</span> <span class="var">x</span>;               <span class="cm">// "undefined"</span>
+<span class="var">x</span> = <span class="num">42</span>;
+<span class="fn">typeof</span> <span class="var">x</span>;               <span class="cm">// "number"</span>
+<span class="var">x</span> = <span class="str">"Bonjour"</span>;
+<span class="fn">typeof</span> <span class="var">x</span>;               <span class="cm">// "string"</span>
+<span class="var">x</span> = <span class="kw">true</span>;
+<span class="fn">typeof</span> <span class="var">x</span>;               <span class="cm">// "boolean"</span></div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 1 — Détecteur de type (typeof)</strong>
+    <div class="input-row">
+      <input type="text" id="ty-val" placeholder="Entrez une valeur..." value="42">
+      <button class="btn btn-primary" onclick="cas_ty1()">▶ Quel est le type ?</button>
+    </div>
+    <span class="output-label">// TYPE DÉTECTÉ</span>
+    <div class="type-indicator" id="ty1-indicator" style="display:none">
+      <span class="type-name" id="ty1-name">—</span>
+      <span class="type-value" id="ty1-desc">—</span>
+    </div>
+    <div class="output" id="ty1-out" style="margin-top:0.5rem">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 2 — Conversion explicite</strong>
+    <div class="input-row">
+      <input type="text" id="ty-conv" value="3.14" style="min-width:150px">
+      <button class="btn btn-blue" onclick="cas_ty2('parseInt')">parseInt()</button>
+      <button class="btn btn-green" onclick="cas_ty2('parseFloat')">parseFloat()</button>
+      <button class="btn btn-purple" onclick="cas_ty2('String')">String()</button>
+      <button class="btn btn-orange" style="background:var(--accent);color:#000;padding:0.55rem 1.1rem;border:none;border-radius:8px;font-weight:700;cursor:pointer" onclick="cas_ty2('Boolean')">Boolean()</button>
+    </div>
+    <span class="output-label">// RÉSULTAT DE LA CONVERSION</span>
+    <div class="output" id="ty2-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 3 — Piège de coercition (conversion automatique)</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">JS convertit automatiquement les types parfois… avec des résultats surprenants !</p>
+    <button class="btn btn-danger" onclick="cas_ty3()">▶ Voir les pièges de coercition</button>
+    <span class="output-label">// RÉSULTATS SURPRENANTS</span>
+    <div class="output" id="ty3-out">En attente…</div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 4 — isNaN() et Number()</strong>
+    <div class="input-row">
+      <input type="text" id="ty-num" value="abc" style="min-width:150px">
+      <button class="btn btn-primary" onclick="cas_ty4()">▶ Tester isNaN et Number</button>
+    </div>
+    <span class="output-label">// RÉSULTAT</span>
+    <div class="output" id="ty4-out">En attente…</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 5 — CONSOLE ═════════════════ -->
+<section class="section" id="console">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <h2>La Console — Votre meilleure amie pour déboguer</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="explainer">
+      La <strong>console</strong> (touche <strong>F12</strong> → onglet "Console") est l'outil de débogage numéro 1 en JavaScript.
+      Elle affiche les messages, les erreurs, et vous permet d'inspecter les valeurs pendant l'exécution.
+      <code>console.log()</code> affiche une info, <code>console.warn()</code> affiche un avertissement, <code>console.error()</code> une erreur.
+    </div>
+
+    <div class="code-block"><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Bonjour !"</span>);          <span class="cm">// Message normal (bleu)</span>
+<span class="fn">console</span>.<span class="fn">warn</span>(<span class="str">"Attention !"</span>);        <span class="cm">// Avertissement (orange)</span>
+<span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Erreur !"</span>);       <span class="cm">// Erreur (rouge)</span>
+<span class="fn">console</span>.<span class="fn">table</span>([<span class="str">'a'</span>,<span class="str">'b'</span>,<span class="str">'c'</span>]);  <span class="cm">// Tableau formaté</span></div>
+
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">
+      ℹ️ La console ci-dessous <strong>simule</strong> la vraie console du navigateur. Ouvrez aussi votre F12 pour voir les vrais messages!
+    </p>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 1 — console.log avec différents types</strong>
+    <div class="demo-grid">
+      <button class="btn btn-blue" onclick="cas_con1_log()">console.log()</button>
+      <button class="btn btn-primary" onclick="cas_con1_warn()">console.warn()</button>
+      <button class="btn btn-danger" onclick="cas_con1_error()">console.error()</button>
+      <button class="btn btn-green" onclick="cas_con1_table()">console.table()</button>
+    </div>
+
+    <div class="console-box">
+      <div class="console-toolbar">
+        <span>🖥 Console simulée</span>
+        <button class="btn btn-danger" style="padding:0.2rem 0.7rem;font-size:0.75rem" onclick="clearConsole1()">✕ Clear</button>
+      </div>
+      <div class="console-log" id="con1-log">
+        <div class="log-entry"><span class="log-arrow">›</span><span class="log-value" style="color:var(--text-muted)">Console prête. Cliquez un bouton…</span></div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 2 — Déboguer une variable pas à pas</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Simulons un calcul : la console affiche la valeur des variables à chaque étape.</p>
+    <div class="input-row">
+      <input type="number" id="con-x" value="15" style="width:80px" placeholder="x">
+      <input type="number" id="con-y" value="7" style="width:80px" placeholder="y">
+      <button class="btn btn-primary" onclick="cas_con2()">▶ Simuler débogage</button>
+    </div>
+    <div class="console-box">
+      <div class="console-toolbar">
+        <span>🖥 Console simulée — débogage pas à pas</span>
+        <button class="btn btn-danger" style="padding:0.2rem 0.7rem;font-size:0.75rem" onclick="clearConsole2()">✕ Clear</button>
+      </div>
+      <div class="console-log" id="con2-log">
+        <div class="log-entry"><span class="log-arrow">›</span><span class="log-value" style="color:var(--text-muted)">Console prête…</span></div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 3 — try…catch : gérer les erreurs proprement</strong>
+    <div class="input-row">
+      <input type="text" id="try-val" value="" placeholder="Entrez un nombre (ou laissez vide)">
+      <button class="btn btn-primary" onclick="cas_try()">▶ Valider avec try/catch</button>
+    </div>
+    <div class="console-box">
+      <div class="console-toolbar"><span>🖥 Console</span></div>
+      <div class="console-log" id="try-log">
+        <div class="log-entry"><span class="log-arrow">›</span><span class="log-value" style="color:var(--text-muted)">En attente…</span></div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <strong style="color:var(--accent)">🧪 Cas 4 — Console interactive : tapez votre propre code</strong>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.5rem 0 0.8rem">Tapez une expression JavaScript simple et voyez le résultat (ex: <code>2+2</code>, <code>"JS".length</code>, <code>Math.random()</code>).</p>
+    <div class="input-row">
+      <input type="text" id="repl-input" placeholder="Entrez du JS... ex: 2 + 2" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter') cas_repl()">
+      <button class="btn btn-green" onclick="cas_repl()">▶ Exécuter</button>
+    </div>
+    <div class="console-box">
+      <div class="console-toolbar">
+        <span>🖥 Mini REPL JavaScript</span>
+        <button class="btn btn-danger" style="padding:0.2rem 0.7rem;font-size:0.75rem" onclick="clearREPL()">✕ Clear</button>
+      </div>
+      <div class="console-log" id="repl-log">
+        <div class="log-entry"><span class="log-arrow">›</span><span class="log-value" style="color:var(--text-muted)">Prêt. Tapez une expression…</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// ══════════════════ UTILITAIRES ════════════════════
+function setOut(id, html) { document.getElementById(id).innerHTML = html; }
+function appendLog(id, arrow, cls, msg) {
+  const box = document.getElementById(id);
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `<span class="log-arrow ${cls}">${arrow}</span><span class="log-value">${msg}</span>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+function logInfo(id, msg)  { appendLog(id, '›', '', `<span style="color:var(--accent2)">${msg}</span>`); }
+function logOk(id, msg)    { appendLog(id, '✓', '', `<span style="color:var(--accent3)">${msg}</span>`); }
+function logWarn(id, msg)  { appendLog(id, '⚠', 'err', `<span style="color:var(--accent)">${msg}</span>`); }
+function logErr(id, msg)   { appendLog(id, '✕', 'err', `<span style="color:var(--danger)">${msg}</span>`); }
+function logTable(id, arr) {
+  let h = '<span style="color:var(--accent3)">┌─────────────────────┐</span><br>';
+  arr.forEach((v,i) => h += `<span style="color:var(--accent3)">│</span> [${i}] ${v}<br>`);
+  h += '<span style="color:var(--accent3)">└─────────────────────┘</span>';
+  appendLog(id,'⊞','',h);
+}
+
+// ══════════════════ SECTION 1 — VARIABLES ════════════
+function cas1() {
+  const p = document.getElementById('v1-prenom').value;
+  const a = document.getElementById('v1-age').value;
+  const msg = `<span class="ok">var prenom = "${p}";</span>\n`
+    + `<span class="ok">var age = ${a};</span>\n\n`
+    + `<span class="info">→ Bonjour ${p}, tu as ${a} ans !</span>\n`
+    + `<span class="label">typeof prenom → "${typeof p}"</span>\n`
+    + `<span class="label">typeof age (string) → "${typeof a}" (input renvoie toujours string)</span>\n`
+    + `<span class="label">typeof +age (number) → "${typeof +a}"</span>`;
+  setOut('v1-out', msg);
+  console.log('prenom =', p, '| age =', +a);
+}
+
+function cas2_var() {
+  var x = 10;
+  var x = 20; // redéclaration OK avec var
+  setOut('v2-out',
+    `<span class="warn">var x = 10;</span>\n<span class="warn">var x = 20;  ← redéclaration OK avec var</span>\n<span class="ok">→ x = ${x}  (pas d'erreur, mais dangereux !)</span>`);
+}
+function cas2_let() {
+  let y = 10;
+  try { eval("let y = 20;"); }
+  catch(e) { /* ignore */ }
+  setOut('v2-out',
+    `<span class="ok">let y = 10;</span>\n<span class="err">let y = 20;  ← ERREUR : redéclaration interdite avec let</span>\n<span class="info">→ Utilisez let : plus sûr que var !</span>\n<span class="label">y est resté : ${y}</span>`);
+}
+function cas2_const() {
+  const PI = 3.14;
+  try { eval("PI = 99;"); }
+  catch(e) {
+    setOut('v2-out',
+      `<span class="ok">const PI = 3.14;</span>\n<span class="err">PI = 99;  ← TypeError: Assignment to constant variable</span>\n<span class="info">→ const ne peut jamais être réassigné !</span>`);
+  }
+  setOut('v2-out',
+    `<span class="ok">const PI = 3.14;</span>\n<span class="err">PI = 99;  ← TypeError: Assignment to constant variable</span>\n<span class="info">→ const est immuable. Parfait pour les valeurs fixes.</span>`);
+}
+
+function cas3() {
+  const nom   = document.getElementById('v3-nom').value;
+  const ville = document.getElementById('v3-ville').value;
+  const a = `"${nom}"`;          // guillemets
+  const b = `'${ville}'`;        // apostrophes
+  const c = `\`Bonjour ${nom}, bienvenue à ${ville} !\``;
+  setOut('v3-out',
+    `<span class="label">// Guillemets doubles :</span>\n<span class="ok">let nom = ${a};</span>\n\n`
+    + `<span class="label">// Apostrophes :</span>\n<span class="ok">let ville = ${b};</span>\n\n`
+    + `<span class="label">// Template literal (backticks) — le plus pratique :</span>\n<span class="ok">let msg = ${c};</span>\n\n`
+    + `<span class="info">→ Résultat : Bonjour ${nom}, bienvenue à ${ville} !</span>`);
+}
+
+var portee_globale = "je suis GLOBAL 🌍";
+function cas4_global() {
+  setOut('v4-out',
+    `<span class="label">// Déclaré en dehors de toute fonction :</span>\n`
+    + `<span class="warn">var portee_globale = "je suis GLOBAL 🌍";</span>\n\n`
+    + `<span class="info">→ Accessible partout : "${portee_globale}"</span>`);
+}
+function cas4_local() {
+  var portee_locale = "je suis LOCAL 🏠";
+  const res = portee_locale;
+  setOut('v4-out',
+    `<span class="label">// Déclaré À L'INTÉRIEUR d'une fonction :</span>\n`
+    + `<span class="ok">function exemple() { var portee_locale = "je suis LOCAL 🏠"; }</span>\n\n`
+    + `<span class="info">→ Accessible DANS la fonction : "${res}"</span>\n`
+    + `<span class="err">→ INACCESSIBLE en dehors → typeof portee_locale === "undefined" hors de la fonction !</span>`);
+}
+
+// ══════════════════ SECTION 2 — TABLEAUX ═════════════
+let t2_arr = ['Football','Tennis','Basketball','Natation'];
+function cas_t1() {
+  const raw = document.getElementById('t1-items').value;
+  const idx = parseInt(document.getElementById('t1-idx').value);
+  const arr = raw.split(',').map(s=>s.trim());
+  const val = arr[idx];
+  setOut('t1-out',
+    `<span class="label">let fruits = [${arr.map(a=>`"${a}"`).join(', ')}];</span>\n`
+    + `<span class="info">fruits.length = ${arr.length}</span>\n`
+    + `<span class="ok">fruits[${idx}] = "${val !== undefined ? val : 'undefined (index hors limites !)'}"</span>\n\n`
+    + arr.map((v,i)=>`<span class="label">[${i}] → ${v}</span>`).join('\n'));
+}
+function cas_t2_push() {
+  const v = document.getElementById('t2-new').value;
+  if(v) t2_arr.push(v);
+  setOut('t2-out', `<span class="ok">Après push("${v}") :</span>\n[${t2_arr.map((v,i)=>`${i}:"${v}"`).join(', ')}]\nlength = ${t2_arr.length}`);
+}
+function cas_t2_pop() {
+  const removed = t2_arr.pop();
+  setOut('t2-out', `<span class="warn">Après pop() → supprimé : "${removed}"</span>\n[${t2_arr.join(', ')}]\nlength = ${t2_arr.length}`);
+}
+function cas_t2_reverse() {
+  t2_arr.reverse();
+  setOut('t2-out', `<span class="info">Après reverse() :</span>\n[${t2_arr.join(', ')}]`);
+}
+function cas_t2_sort() {
+  t2_arr.sort();
+  setOut('t2-out', `<span class="ok">Après sort() [A→Z] :</span>\n[${t2_arr.join(', ')}]`);
+}
+function cas_t2_reset() {
+  t2_arr = ['Football','Tennis','Basketball','Natation'];
+  setOut('t2-out', `<span class="label">↺ Tableau réinitialisé :</span>\n[${t2_arr.join(', ')}]`);
+}
+function cas_t3() {
+  const r = parseInt(document.getElementById('t3-row').value);
+  const c = parseInt(document.getElementById('t3-col').value);
+  const mat = [[1,2,3],[4,5,6],[7,8,9]];
+  const v = (r>=0&&r<3&&c>=0&&c<3) ? mat[r][c] : 'Index hors limites !';
+  let visual = '';
+  for(let i=0;i<3;i++){
+    visual += mat[i].map((n,j)=>{
+      const hl = (i===r&&j===c) ? `<span style="background:var(--accent);color:#000;padding:0 4px;border-radius:3px">${n}</span>` : `${n}`;
+      return hl;
+    }).join('  ') + '\n';
+  }
+  setOut('t3-out', `<span class="label">// Matrice 3×3 (élément sélectionné en orange) :</span>\n${visual}\n<span class="ok">matrice[${r}][${c}] = ${v}</span>`);
+}
+function cas_t4_join() {
+  const sep = document.getElementById('t4-sep').value;
+  const arr = ['HTML','CSS','JavaScript','PHP'];
+  setOut('t4-out', `<span class="label">['HTML','CSS','JavaScript','PHP'].join("${sep}") :</span>\n<span class="ok">"${arr.join(sep)}"</span>`);
+}
+function cas_t4_forEach() {
+  const arr = ['HTML','CSS','JavaScript','PHP'];
+  let res = `<span class="label">forEach sur ['HTML','CSS','JavaScript','PHP'] :</span>\n`;
+  arr.forEach((el,i) => { res += `<span class="ok">[${i}] → ${el} (longueur : ${el.length})</span>\n`; });
+  setOut('t4-out', res);
+}
+
+// ══════════════════ SECTION 3 — OPÉRATEURS ════════════
+function cas_op1() {
+  const a = parseFloat(document.getElementById('op-a').value);
+  const b = parseFloat(document.getElementById('op-b').value);
+  const sym = document.getElementById('op-sym').value;
+  let r, label;
+  switch(sym){
+    case '+': r=a+b; label='Addition'; break;
+    case '-': r=a-b; label='Soustraction'; break;
+    case '*': r=a*b; label='Multiplication'; break;
+    case '/': r=b===0?'Erreur: division par zéro':a/b; label='Division'; break;
+    case '%': r=a%b; label='Modulo (reste)'; break;
+  }
+  setOut('op1-out', `<span class="label">// ${label}</span>\n<span class="ok">${a} ${sym} ${b} = ${r}</span>\n\n<span class="label">// Incrémentation : ++a</span>\n<span class="info">a++ = ${a+1}</span>\n<span class="label">// Décrémentation : --a</span>\n<span class="info">a-- = ${a-1}</span>`);
+}
+function cas_op2() {
+  const c = document.getElementById('op-c').value;
+  const d = document.getElementById('op-d').value;
+  const eq  = c == d;
+  const seq = c === d;
+  const tc = typeof c, td = typeof d;
+  setOut('op2-out',
+    `<span class="label">Valeur A : "${c}" (type: ${tc})</span>\n`
+    + `<span class="label">Valeur B : "${d}" (type: ${td})</span>\n\n`
+    + `<span class="${eq?'ok':'err'}">== (égalité souple)  : ${eq}  ← compare SEULEMENT les valeurs</span>\n`
+    + `<span class="${seq?'ok':'err'}">===  (égalité stricte) : ${seq}  ← compare valeur ET type</span>\n\n`
+    + `<span class="info">💡 Conseil : toujours préférer === pour éviter les bugs !</span>`);
+}
+function cas_op3() {
+  const a = document.getElementById('op-bool-a').value === 'true';
+  const b = document.getElementById('op-bool-b').value === 'true';
+  setOut('op3-out',
+    `<span class="label">A = ${a},  B = ${b}</span>\n\n`
+    + `<span class="${a&&b?'ok':'err'}">A && B (ET) : ${a&&b}  → les DEUX doivent être true</span>\n`
+    + `<span class="${a||b?'ok':'err'}">A || B (OU) : ${a||b}  → AU MOINS UN doit être true</span>\n`
+    + `<span class="info">!A (NON A)  : ${!a}  → inverse de A</span>\n`
+    + `<span class="info">!B (NON B)  : ${!b}  → inverse de B</span>`);
+}
+function cas_op4() {
+  const s1 = document.getElementById('op-s1').value;
+  const n  = document.getElementById('op-msgs').value;
+  const s2 = document.getElementById('op-s2').value;
+  setOut('op4-out',
+    `<span class="label">// Concaténation avec +</span>\n`
+    + `<span class="ok">"${s1}" + ${n} + "${s2}"</span>\n`
+    + `<span class="info">→ "${s1 + n + s2}"</span>\n\n`
+    + `<span class="label">// Avec template literal (recommandé) :</span>\n`
+    + `<span class="ok">\`${s1}\${n}${s2}\`</span>\n`
+    + `<span class="info">→ "${s1}${n}${s2}"</span>`);
+}
+
+// ══════════════════ SECTION 4 — TYPAGE ═══════════════
+function cas_ty1() {
+  const raw = document.getElementById('ty-val').value;
+  let val = raw;
+  if(!isNaN(raw) && raw!=='') val = +raw;
+  if(raw==='true') val=true; if(raw==='false') val=false;
+  if(raw==='null') val=null; if(raw===''||raw==='undefined') val=undefined;
+  const t = typeof val;
+  const colors = {number:'var(--accent2)',string:'var(--accent3)',boolean:'var(--accent4)',undefined:'var(--danger)',object:'var(--accent)'};
+  const descs  = {number:'Un nombre entier ou décimal',string:'Une chaîne de caractères',boolean:'Vrai (true) ou Faux (false)',undefined:'Variable non définie',object:'Objet ou null'};
+  document.getElementById('ty1-indicator').style.display='flex';
+  document.getElementById('ty1-name').textContent = t;
+  document.getElementById('ty1-name').style.color = colors[t]||'var(--text)';
+  document.getElementById('ty1-desc').textContent = descs[t]||'Type inconnu';
+  setOut('ty1-out',
+    `<span class="label">typeof ${raw} → "${t}"</span>\n`
+    + `<span class="ok">Valeur interprétée : ${String(val)}</span>\n`
+    + `<span class="info">💡 Essayez : 42, "bonjour", true, false, null, undefined</span>`);
+}
+function cas_ty2(fn) {
+  const raw = document.getElementById('ty-conv').value;
+  let r, expl;
+  if(fn==='parseInt')   { r=parseInt(raw);   expl=`parseInt("${raw}") = ${r} → extrait la partie entière`; }
+  if(fn==='parseFloat') { r=parseFloat(raw); expl=`parseFloat("${raw}") = ${r} → garde les décimales`; }
+  if(fn==='String')     { r=String(raw);     expl=`String("${raw}") = "${r}" (type: ${typeof r})`; }
+  if(fn==='Boolean')    { r=Boolean(raw);    expl=`Boolean("${raw}") = ${r} → "" et 0 → false, tout le reste → true`; }
+  setOut('ty2-out', `<span class="label">// Conversion avec ${fn}()</span>\n<span class="ok">${expl}</span>\n<span class="info">typeof résultat : "${typeof r}"</span>`);
+}
+function cas_ty3() {
+  setOut('ty3-out',
+    `<span class="warn">// Additions surprenantes :</span>\n`
+    + `<span class="info">"5" + 3    = ${"5"+3}   ← concaténation (3 devient string !)</span>\n`
+    + `<span class="info">"5" - 3    = ${"5"-3}   ← soustraction OK (string → number)</span>\n`
+    + `<span class="info">true + 1   = ${true+1}   ← true vaut 1</span>\n`
+    + `<span class="info">false + 1  = ${false+1}   ← false vaut 0</span>\n`
+    + `<span class="info">[] + []    = "${[]+[]}"    ← deux arrays → chaîne vide !</span>\n`
+    + `<span class="warn">→ Utilisez === et parseInt/parseFloat pour éviter ces pièges !</span>`);
+}
+function cas_ty4() {
+  const v = document.getElementById('ty-num').value;
+  const nan = isNaN(v);
+  const n = Number(v);
+  setOut('ty4-out',
+    `<span class="label">Valeur testée : "${v}"</span>\n`
+    + `<span class="${nan?'err':'ok'}">isNaN("${v}") = ${nan}  → ${nan?"ce n'est PAS un nombre":"c'est un nombre valide"}</span>\n`
+    + `<span class="info">Number("${v}") = ${n}  (type: ${typeof n})</span>\n`
+    + `<span class="label">💡 Testez : "42", "3.14", "abc", "", " "</span>`);
+}
+
+// ══════════════════ SECTION 5 — CONSOLE ══════════════
+function clearConsole1() { document.getElementById('con1-log').innerHTML=''; }
+function clearConsole2() { document.getElementById('con2-log').innerHTML=''; }
+function clearREPL()     { document.getElementById('repl-log').innerHTML=''; }
+
+function cas_con1_log() {
+  const arr = [1,2,3];
+  console.log('console.log() — message normal', {x:10, y:20});
+  logInfo('con1-log', 'console.log("Bonjour JavaScript !")  — message normal');
+  logInfo('con1-log', `console.log({x:10, y:20})  → Object { x: 10, y: 20 }`);
+}
+function cas_con1_warn() {
+  console.warn('Ceci est un avertissement !');
+  logWarn('con1-log', '⚠ console.warn("Ceci est un avertissement !") — texte orange dans la vraie console');
+}
+function cas_con1_error() {
+  console.error('Ceci est une erreur !');
+  logErr('con1-log', '✕ console.error("Ceci est une erreur !") — texte rouge dans la vraie console');
+}
+function cas_con1_table() {
+  const data = ['Ahmed','Sara','Karim'];
+  console.table(data);
+  logTable('con1-log', data);
+}
+function cas_con2() {
+  const x = parseFloat(document.getElementById('con-x').value);
+  const y = parseFloat(document.getElementById('con-y').value);
+  clearConsole2();
+  logInfo('con2-log', `console.log("x =", ${x})  → x = ${x}`);
+  logInfo('con2-log', `console.log("y =", ${y})  → y = ${y}`);
+  const sum = x+y;
+  logOk('con2-log', `let somme = x + y;  console.log(somme) → ${sum}`);
+  const prod = x*y;
+  logOk('con2-log', `let produit = x * y;  console.log(produit) → ${prod}`);
+  const diff = x-y;
+  logWarn('con2-log', `let diff = x - y;  console.log(diff) → ${diff}`);
+  if(y===0) logErr('con2-log', `⚠ Division par 0 détectée ! console.error("Diviseur = 0 !")`);
+  else logOk('con2-log', `let division = x / y;  → ${x/y}`);
+  console.log({x,y,somme:sum,produit:prod,diff,division:y?x/y:'N/A'});
+}
+function cas_try() {
+  const v = document.getElementById('try-val').value;
+  const logId = 'try-log';
+  document.getElementById(logId).innerHTML='';
+  logInfo(logId, `try {`);
+  logInfo(logId, `  // On vérifie la valeur : "${v}"`);
+  try {
+    if(v==='') throw new Error("La valeur est vide !");
+    if(isNaN(v)) throw new Error(`"${v}" n'est pas un nombre !`);
+    const n = parseFloat(v);
+    if(n<0) throw new Error("Le nombre doit être positif !");
+    if(n>100) throw new Error("Le nombre doit être ≤ 100 !");
+    logOk(logId, `  ✓ Valeur valide : ${n}`);
+  } catch(e) {
+    logErr(logId, `} catch(err) { console.error("${e.message}") }`);
+  } finally {
+    logWarn(logId, `} finally { // S'exécute toujours, erreur ou pas }`);
+  }
+}
+function cas_repl() {
+  const code = document.getElementById('repl-input').value.trim();
+  if(!code) return;
+  appendLog('repl-log','›','',`<span style="color:var(--text-muted)">&gt; ${code}</span>`);
+  try {
+    const r = eval(code);
+    const t = typeof r;
+    const disp = JSON.stringify(r) ?? String(r);
+    appendLog('repl-log','←','',`<span style="color:var(--accent3)">${disp}</span> <span style="color:var(--text-muted);font-size:0.74rem">(${t})</span>`);
+    console.log('REPL result:', r);
+  } catch(e) {
+    appendLog('repl-log','✕','err',`<span style="color:var(--danger)">${e.message}</span>`);
+  }
+  document.getElementById('repl-input').value='';
+}
+</script>
+</body>
+</html>
