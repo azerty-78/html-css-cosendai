@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Cours — 03 · Fonctions, Objets, Tableaux</title>
+<style>
+  :root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;--accent:#f0883e;--accent2:#58a6ff;--accent3:#3fb950;--accent4:#bc8cff;--text:#e6edf3;--muted:#8b949e;--danger:#f85149}
+  *{box-sizing:border-box;margin:0;padding:0} body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.6}
+  header{padding:1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(120deg,#1b2130,#0d1117)}
+  .badge{display:inline-block;background:var(--accent3);color:#000;padding:.2rem .55rem;border-radius:4px;font-size:.75rem;font-weight:700}
+  h1{margin-top:.5rem;font-size:1.7rem} p.sub{color:var(--muted);font-size:.95rem}
+  main{max-width:980px;margin:0 auto;padding:1.2rem}
+  .section{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.3rem}
+  .sh{background:var(--surface);padding:.9rem 1rem;border-bottom:1px solid var(--border);font-weight:700}
+  .sb{padding:1rem}
+  .exp{background:#131a23;border-left:3px solid var(--accent2);padding:.7rem .9rem;border-radius:0 8px 8px 0;color:var(--muted);font-size:.92rem;margin-bottom:.8rem}
+  .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+  input,select{background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:.45rem .65rem;border-radius:8px}
+  button{border:none;border-radius:8px;padding:.5rem .95rem;font-weight:700;cursor:pointer}
+  .b1{background:var(--accent);color:#000}.b2{background:var(--accent2);color:#000}.b3{background:var(--accent3);color:#000}.b4{background:var(--accent4);color:#000}
+  .out{margin-top:.45rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre-wrap;font-family:Consolas,monospace;min-height:65px}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">FICHIER 3 / 5</span>
+  <h1>Fonctions, Objets et Tableaux avancés</h1>
+  <p class="sub">Fonctions paramétrées · return · arguments · objets · this · prototype · méthodes de tableaux</p>
+</header>
+
+<main>
+  <section class="section">
+    <div class="sh">01 — Fonctions JavaScript</div>
+    <div class="sb">
+      <div class="exp">Une fonction permet de <b>réutiliser</b> du code. Elle peut recevoir des paramètres et renvoyer un résultat avec <code>return</code>.</div>
+      <div class="row">
+        <input id="f-a" type="number" value="4"><input id="f-b" type="number" value="7">
+        <button class="b1" onclick="cas_f1()">Cas 1: addition(a,b)</button>
+      </div>
+      <div class="row">
+        <input id="f-nom" value="Sara"><input id="f-note" type="number" value="15">
+        <button class="b2" onclick="cas_f2()">Cas 2: fonction avec valeur par défaut</button>
+      </div>
+      <div class="row">
+        <input id="f-list" value="Chat,Chien,Perroquet,Hamster">
+        <button class="b3" onclick="cas_f3()">Cas 3: arguments (nombre variable)</button>
+      </div>
+      <div class="out" id="out-f">En attente…</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sh">02 — Objets et mot-clé this</div>
+    <div class="sb">
+      <div class="exp">Un objet regroupe des propriétés (données) et des méthodes (fonctions). Dans une méthode, <code>this</code> pointe vers l'objet courant.</div>
+      <div class="row">
+        <input id="o-prenom" value="Ahmed"><input id="o-user" value="ahmed25"><input id="o-pass" value="test123">
+        <button class="b1" onclick="cas_o1()">Cas 1: créer un objet utilisateur</button>
+      </div>
+      <div class="row">
+        <button class="b2" onclick="cas_o2()">Cas 2: ajouter une propriété/méthode après création</button>
+        <button class="b4" onclick="cas_o3()">Cas 3: prototype partagé</button>
+      </div>
+      <div class="out" id="out-o">En attente…</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sh">03 — Tableaux avancés</div>
+    <div class="sb">
+      <div class="exp">On utilise souvent <code>map</code>, <code>filter</code>, <code>reduce</code> pour transformer des tableaux rapidement et lisiblement.</div>
+      <div class="row">
+        <input id="t-nums" value="3,10,25,6,40,11" style="min-width:260px">
+        <button class="b1" onclick="cas_t1()">Cas 1: filter (&gt; seuil)</button>
+        <input id="t-seuil" type="number" value="10" style="width:80px">
+      </div>
+      <div class="row">
+        <button class="b2" onclick="cas_t2()">Cas 2: map (carré)</button>
+        <button class="b3" onclick="cas_t3()">Cas 3: reduce (somme + moyenne)</button>
+      </div>
+      <div class="out" id="out-t">En attente…</div>
+    </div>
+  </section>
+</main>
+
+<script>
+function out(id, txt){ document.getElementById(id).textContent = txt; }
+function nums(){ return document.getElementById("t-nums").value.split(",").map(s => Number(s.trim())).filter(n => !Number.isNaN(n)); }
+
+function addition(a,b){ return a+b; }
+function bulletin(nom, note=10){ return nom + " a la note " + note + "/20"; }
+function afficherElements(){ return Array.from(arguments).join(" | "); }
+
+function cas_f1(){
+  var a = Number(document.getElementById("f-a").value);
+  var b = Number(document.getElementById("f-b").value);
+  out("out-f", "function addition(a,b){ return a+b; }\naddition(" + a + "," + b + ") = " + addition(a,b));
+}
+function cas_f2(){
+  var nom = document.getElementById("f-nom").value.trim() || "Etudiant";
+  var note = Number(document.getElementById("f-note").value);
+  out("out-f", "function bulletin(nom, note=10){...}\n" + bulletin(nom, note));
+}
+function cas_f3(){
+  var list = document.getElementById("f-list").value.split(",").map(x => x.trim()).filter(Boolean);
+  out("out-f", "afficherElements.arguments.length = " + list.length + "\n" + afficherElements.apply(null, list));
+}
+
+function Utilisateur(prenom, nomutilisateur, motdepasse){
+  this.prenom = prenom;
+  this.nomutilisateur = nomutilisateur;
+  this.motdepasse = motdepasse;
+  this.afficher = function(){ return "Prenom: " + this.prenom + " | User: " + this.nomutilisateur; };
+}
+var courant = null;
+function cas_o1(){
+  courant = new Utilisateur(
+    document.getElementById("o-prenom").value,
+    document.getElementById("o-user").value,
+    document.getElementById("o-pass").value
+  );
+  out("out-o", "Objet créé avec new Utilisateur(...)\n" + courant.afficher());
+}
+function cas_o2(){
+  if(!courant){ cas_o1(); }
+  courant.role = "etudiant";
+  courant.saluer = function(){ return "Bonjour " + this.prenom + ", role: " + this.role; };
+  out("out-o", "Ajout dynamique:\n- courant.role = \"etudiant\"\n- courant.saluer = function(){...}\n" + courant.saluer());
+}
+function cas_o3(){
+  Utilisateur.prototype.ecole = "FSTS";
+  Utilisateur.prototype.info = function(){ return this.prenom + " (" + this.nomutilisateur + ") - " + this.ecole; };
+  var u1 = new Utilisateur("Sara","sara01","x");
+  var u2 = new Utilisateur("Karim","karim02","y");
+  out("out-o", "Prototype partagé ajouté:\nUtilisateur.prototype.ecole = \"FSTS\"\n" + u1.info() + "\n" + u2.info());
+}
+
+function cas_t1(){
+  var arr = nums();
+  var seuil = Number(document.getElementById("t-seuil").value);
+  var filtres = arr.filter(function(n){ return n > seuil; });
+  out("out-t", "arr = [" + arr.join(", ") + "]\nfilter(n > " + seuil + ") => [" + filtres.join(", ") + "]");
+}
+function cas_t2(){
+  var arr = nums();
+  var carres = arr.map(function(n){ return n*n; });
+  out("out-t", "map(n => n*n)\n[" + arr.join(", ") + "]\n=> [" + carres.join(", ") + "]");
+}
+function cas_t3(){
+  var arr = nums();
+  if(!arr.length){ out("out-t", "Aucune valeur valide."); return; }
+  var somme = arr.reduce(function(acc, n){ return acc + n; }, 0);
+  var moyenne = (somme / arr.length).toFixed(2);
+  out("out-t", "reduce((acc,n)=>acc+n,0)\nSomme = " + somme + "\nMoyenne = " + moyenne);
+}
+</script>
+</body>
+</html>

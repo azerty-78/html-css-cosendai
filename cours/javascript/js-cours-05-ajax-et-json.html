@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Cours — 05 · AJAX et JSON</title>
+<style>
+  :root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;--a:#58a6ff;--b:#3fb950;--c:#f0883e;--d:#bc8cff;--txt:#e6edf3;--m:#8b949e;--err:#f85149}
+  *{box-sizing:border-box;margin:0;padding:0} body{font-family:Arial,sans-serif;background:var(--bg);color:var(--txt)}
+  header{padding:1.4rem;border-bottom:1px solid var(--border);background:linear-gradient(130deg,#1f2032,#0d1117)}
+  .badge{display:inline-block;background:var(--a);color:#000;padding:.2rem .55rem;border-radius:4px;font-weight:700;font-size:.75rem}
+  h1{margin-top:.5rem;font-size:1.7rem}.sub{color:var(--m);font-size:.95rem}
+  main{max-width:980px;margin:0 auto;padding:1.2rem}
+  .card{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem}
+  .ch{background:var(--surface);padding:.8rem 1rem;border-bottom:1px solid var(--border);font-weight:700}
+  .cb{padding:1rem}
+  .exp{color:var(--m);background:#131a23;border-left:3px solid var(--a);padding:.7rem .9rem;border-radius:0 8px 8px 0;margin-bottom:.8rem}
+  .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+  input,textarea,button{border-radius:8px;padding:.45rem .65rem}
+  input,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--txt)}
+  button{border:none;font-weight:700;cursor:pointer}.b1{background:var(--c);color:#000}.b2{background:var(--a);color:#000}.b3{background:var(--b);color:#000}.b4{background:var(--d);color:#000}
+  .out{white-space:pre-wrap;font-family:Consolas,monospace;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;min-height:80px}
+  textarea{width:100%;min-height:85px}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">FICHIER 5 / 5</span>
+  <h1>AJAX, XMLHttpRequest et JSON</h1>
+  <p class="sub">readyState · status · responseText · JSON.parse · JSON.stringify · callback simple</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="ch">01 — Comprendre AJAX (asynchrone)</div>
+    <div class="cb">
+      <div class="exp">AJAX permet de récupérer des données <b>sans recharger</b> toute la page. Ici, on simule des étapes de chargement.</div>
+      <div class="row">
+        <button class="b1" onclick="simAjax()">Cas 1: simulation asynchrone</button>
+      </div>
+      <div class="out" id="out-a1">En attente…</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">02 — XMLHttpRequest avec readyState/status</div>
+    <div class="cb">
+      <div class="exp">Exemple réel de <code>XMLHttpRequest</code> sans dépendre d'un serveur externe : on génère une ressource JSON locale (Blob URL).</div>
+      <div class="row">
+        <button class="b2" onclick="runXhr()">Cas 2: lancer XMLHttpRequest</button>
+      </div>
+      <div class="out" id="out-xhr">En attente…</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">03 — JSON.parse() et JSON.stringify()</div>
+    <div class="cb">
+      <div class="exp">JSON est un format texte d'échange de données. On convertit un objet JS en JSON avec <code>JSON.stringify</code>, et l'inverse avec <code>JSON.parse</code>.</div>
+      <textarea id="json-in">{ "nom":"Amina", "age":21, "filiere":"Informatique" }</textarea>
+      <div class="row">
+        <button class="b3" onclick="parseJson()">Cas 3: parser JSON</button>
+        <button class="b4" onclick="stringifyJson()">Cas 4: stringifier objet</button>
+      </div>
+      <div class="out" id="out-json">En attente…</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">04 — Fonction callback simple</div>
+    <div class="cb">
+      <div class="exp">Une callback est une fonction passée en paramètre à une autre, puis appelée quand le travail est terminé.</div>
+      <div class="row">
+        <input id="cb-url" value="api/etudiants">
+        <button class="b1" onclick="runCallback()">Tester callback</button>
+      </div>
+      <div class="out" id="out-cb">En attente…</div>
+    </div>
+  </section>
+</main>
+
+<script>
+function out(id, txt){ document.getElementById(id).textContent = txt; }
+
+function simAjax(){
+  out("out-a1", "Début requête AJAX...\nreadyState: 1 (connexion établie)");
+  setTimeout(function(){
+    out("out-a1", "Début requête AJAX...\nreadyState: 1\nreadyState: 2 (requête reçue)");
+    setTimeout(function(){
+      out("out-a1", "Début requête AJAX...\nreadyState: 1\nreadyState: 2\nreadyState: 3 (traitement en cours)");
+      setTimeout(function(){
+        out("out-a1", "Début requête AJAX...\nreadyState: 1\nreadyState: 2\nreadyState: 3\nreadyState: 4 (terminé)\nstatus: 200 OK\nPage mise à jour sans rechargement.");
+      }, 500);
+    }, 500);
+  }, 500);
+}
+
+function runXhr(){
+  var payload = { cours: "JavaScript", niveau: "S2", chapitre: "AJAX", etudiants: 42 };
+  var blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+  var xhr = new XMLHttpRequest();
+  var logs = [];
+
+  xhr.onreadystatechange = function(){
+    logs.push("readyState=" + xhr.readyState + " | status=" + xhr.status);
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        logs.push("responseText: " + xhr.responseText);
+      } else {
+        logs.push("Erreur HTTP.");
+      }
+      out("out-xhr", logs.join("\n"));
+      URL.revokeObjectURL(url);
+    } else {
+      out("out-xhr", logs.join("\n"));
+    }
+  };
+
+  xhr.open("GET", url, true);
+  xhr.send();
+}
+
+function parseJson(){
+  var txt = document.getElementById("json-in").value;
+  try{
+    var obj = JSON.parse(txt);
+    var msg = "JSON valide.\n";
+    Object.keys(obj).forEach(function(k){ msg += k + " => " + JSON.stringify(obj[k]) + "\n"; });
+    out("out-json", msg);
+  }catch(e){
+    out("out-json", "JSON invalide: " + e.message + "\nVérifie les guillemets doubles et les virgules.");
+  }
+}
+
+function stringifyJson(){
+  var etudiant = { prenom: "Karim", age: 22, modules: ["JS", "DOM", "AJAX"], actif: true };
+  var json = JSON.stringify(etudiant, null, 2);
+  out("out-json", "Objet JS:\n" + String(etudiant) + "\n\nJSON.stringify(...):\n" + json);
+}
+
+function charger(url, callback){
+  setTimeout(function(){
+    var data = { url: url, resultat: "OK", timestamp: new Date().toISOString() };
+    callback(data);
+  }, 700);
+}
+function runCallback(){
+  var url = document.getElementById("cb-url").value || "api/demo";
+  out("out-cb", "chargement en cours pour: " + url + " ...");
+  charger(url, function(rep){
+    out("out-cb", "Callback appelée après chargement.\nurl = " + rep.url + "\nresultat = " + rep.resultat + "\ntimestamp = " + rep.timestamp);
+  });
+}
+</script>
+</body>
+</html>
