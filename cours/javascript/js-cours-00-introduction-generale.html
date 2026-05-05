@@ -24,6 +24,7 @@
   .list{margin-left:1.15rem}
   .list li{margin:.35rem 0}
   .code{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.75rem .9rem;white-space:pre-wrap;font-family:'JetBrains Mono',monospace;font-size:.82rem;margin:.6rem 0}
+  .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.fn-c{color:#d2a8ff}.cm{color:#8b949e;font-style:italic}.var-c{color:#ffa657}
   .table{width:100%;border-collapse:collapse;margin:.6rem 0}
   .table th,.table td{border-bottom:1px solid var(--border);text-align:left;padding:.5rem .6rem;font-size:.9rem}
   .table th{color:var(--muted);background:var(--surface2)}
@@ -75,17 +76,22 @@
   <section class="card">
     <div class="ch">3) Quel type de langage ?</div>
     <div class="cb">
+      <div class="exp">JavaScript est un langage <b>dynamique, interprété, multi-paradigme</b>, exécuté par un moteur (V8, SpiderMonkey, JavaScriptCore).</div>
       <ul class="list">
         <li><b>Langage à typage dynamique (faible)</b> : le type d'une variable peut changer selon la valeur.</li>
         <li><b>Multi-paradigme</b> : procédural, orienté objet, fonctionnel.</li>
         <li><b>Interprété + compilé JIT</b> : le moteur JS lit le code et optimise/compile à la volée.</li>
+        <li><b>Single-thread + event loop</b> : un seul thread principal pour le code JS, avec file d'attente des événements.</li>
       </ul>
-      <div class="code">let x;
-typeof x;     // "undefined"
-x = 12;
-typeof x;     // "number"
-x = "Bonjour";
-typeof x;     // "string"</div>
+      <div class="code"><span class="kw">let</span> <span class="var-c">x</span>;
+<span class="kw">typeof</span> <span class="var-c">x</span>;     <span class="cm">// "undefined"</span>
+<span class="var-c">x</span> = <span class="num">12</span>;
+<span class="kw">typeof</span> <span class="var-c">x</span>;     <span class="cm">// "number"</span>
+<span class="var-c">x</span> = <span class="str">"Bonjour"</span>;
+<span class="kw">typeof</span> <span class="var-c">x</span>;     <span class="cm">// "string"</span></div>
+      <div class="exp"><b>Compilateur : à quoi il sert ?</b> Un compilateur traduit du code source en une forme exécutable ou optimisée.
+      En JavaScript moderne, le moteur utilise une compilation JIT (Just-In-Time) : il compile au moment de l'exécution les parties "chaudes" du code pour accélérer les performances.
+      À côté de ça, des outils comme Babel/TypeScript peuvent aussi "compiler/transpiler" le code avant exécution pour compatibilité ou sécurité de typage.</div>
     </div>
   </section>
 
@@ -109,49 +115,82 @@ document.getElementById("titre").style.color = "royalblue";
   <section class="card">
     <div class="ch">5) Le DOM (Document Object Model)</div>
     <div class="cb">
-      <div class="exp">Le DOM représente la page HTML sous forme d'arbre d'objets manipulables par JavaScript.</div>
+      <div class="exp">Le DOM représente la page HTML sous forme d'arbre d'objets manipulables par JavaScript. Chaque balise devient un nœud avec des propriétés, des méthodes et des événements.</div>
       <ul class="list">
         <li>Accéder : `getElementById`, `querySelector`, `querySelectorAll`</li>
         <li>Modifier : `innerHTML`, `textContent`, `style`, `className`</li>
         <li>Créer/Supprimer : `createElement`, `appendChild`, `removeChild`</li>
+        <li>Naviguer : `parentNode`, `children`, `firstElementChild`, `nextElementSibling`</li>
+        <li>Réagir : `addEventListener` (click, input, submit, keydown...)</li>
       </ul>
+      <div class="code"><span class="kw">const</span> <span class="var-c">titre</span> = <span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"titre"</span>);
+<span class="var-c">titre</span>.<span class="var-c">textContent</span> = <span class="str">"Titre modifié"</span>;
+<span class="var-c">titre</span>.<span class="var-c">style</span>.<span class="var-c">color</span> = <span class="str">"royalblue"</span>;
+
+<span class="kw">const</span> <span class="var-c">p</span> = <span class="var-c">document</span>.<span class="fn-c">createElement</span>(<span class="str">"p"</span>);
+<span class="var-c">p</span>.<span class="var-c">textContent</span> = <span class="str">"Nouveau paragraphe"</span>;
+<span class="var-c">document</span>.<span class="var-c">body</span>.<span class="fn-c">appendChild</span>(<span class="var-c">p</span>);</div>
+      <div class="exp">Bonnes pratiques DOM : limiter les modifications répétées, regrouper les mises à jour, éviter d'utiliser `innerHTML` avec du contenu non fiable (risque XSS).</div>
     </div>
   </section>
 
   <section class="card">
     <div class="ch">6) JSON, XML et échange de données</div>
     <div class="cb">
+      <div class="exp">JSON et XML sont des formats d'échange. JavaScript manipule très naturellement JSON car sa structure ressemble aux objets JS.</div>
       <ul class="list">
         <li><b>JSON</b> (JavaScript Object Notation) : format texte léger, très utilisé avec APIs.</li>
         <li><b>XML</b> : format plus verbeux, historique, encore utilisé dans certains systèmes.</li>
+        <li>JSON impose des <b>guillemets doubles</b> pour les clés/chaînes, sinon `JSON.parse` échoue.</li>
+        <li>XML est basé sur des balises imbriquées, avec schéma possible (XSD) dans certains contextes métier.</li>
       </ul>
-      <div class="code">// JSON: texte -> objet
-const txt = '{"nom":"Sara","age":20}';
-const obj = JSON.parse(txt);
+      <div class="code"><span class="cm">// JSON: texte -> objet</span>
+<span class="kw">const</span> <span class="var-c">txt</span> = <span class="str">'{"nom":"Sara","age":20}'</span>;
+<span class="kw">const</span> <span class="var-c">obj</span> = <span class="fn-c">JSON</span>.<span class="fn-c">parse</span>(<span class="var-c">txt</span>);
 
-// objet -> JSON
-const txt2 = JSON.stringify(obj);</div>
+<span class="cm">// objet -> JSON</span>
+<span class="kw">const</span> <span class="var-c">txt2</span> = <span class="fn-c">JSON</span>.<span class="fn-c">stringify</span>(<span class="var-c">obj</span>);
+
+<span class="cm">// formatage lisible</span>
+<span class="kw">const</span> <span class="var-c">pretty</span> = <span class="fn-c">JSON</span>.<span class="fn-c">stringify</span>(<span class="var-c">obj</span>, <span class="kw">null</span>, <span class="num">2</span>);</div>
       <table class="table">
         <tr><th>Format</th><th>Lisibilité</th><th>Taille</th><th>Usage actuel</th></tr>
         <tr><td>JSON</td><td>Simple</td><td>Plus légère</td><td>Très fréquent (web APIs)</td></tr>
         <tr><td>XML</td><td>Plus verbeux</td><td>Plus lourde</td><td>Legacy / systèmes spécifiques</td></tr>
       </table>
+      <div class="exp">Quand choisir ? JSON pour la majorité des APIs web modernes. XML quand l'écosystème l'impose (anciens SI, flux métier spécifiques, SOAP).</div>
     </div>
   </section>
 
   <section class="card">
     <div class="ch">7) AJAX et communication serveur</div>
     <div class="cb">
-      <div class="exp">AJAX permet d'envoyer/recevoir des données sans recharger toute la page.</div>
+      <div class="exp">AJAX (Asynchronous JavaScript and XML) permet d'envoyer/recevoir des données sans recharger toute la page. Aujourd'hui, on utilise surtout JSON et `fetch`.</div>
       <ul class="list">
         <li>Ancien objet : `XMLHttpRequest`</li>
         <li>Approche moderne : `fetch` + `Promise` + `async/await`</li>
+        <li>Cycle classique : requête → réponse → mise à jour du DOM</li>
         <li>Souvent utilisé avec JSON</li>
+        <li>Gestion importante : erreurs réseau, timeout, code HTTP (`200`, `404`, `500`...)</li>
       </ul>
-      <div class="code">fetch("/api/etudiants")
-  .then(r => r.json())
-  .then(data => console.log(data))
-  .catch(err => console.error(err));</div>
+      <div class="code"><span class="fn-c">fetch</span>(<span class="str">"/api/etudiants"</span>)
+  .<span class="fn-c">then</span>(<span class="var-c">r</span> => {
+    <span class="kw">if</span> (!<span class="var-c">r</span>.<span class="var-c">ok</span>) <span class="kw">throw new</span> <span class="fn-c">Error</span>(<span class="str">"HTTP "</span> + <span class="var-c">r</span>.<span class="var-c">status</span>);
+    <span class="kw">return</span> <span class="var-c">r</span>.<span class="fn-c">json</span>();
+  })
+  .<span class="fn-c">then</span>(<span class="var-c">data</span> => <span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">data</span>))
+  .<span class="fn-c">catch</span>(<span class="var-c">err</span> => <span class="fn-c">console</span>.<span class="fn-c">error</span>(<span class="var-c">err</span>));</div>
+      <div class="code"><span class="cm">// Même logique avec async/await</span>
+<span class="kw">async function</span> <span class="fn-c">chargerEtudiants</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> <span class="var-c">r</span> = <span class="kw">await</span> <span class="fn-c">fetch</span>(<span class="str">"/api/etudiants"</span>);
+    <span class="kw">if</span> (!<span class="var-c">r</span>.<span class="var-c">ok</span>) <span class="kw">throw new</span> <span class="fn-c">Error</span>(<span class="str">"Erreur HTTP"</span>);
+    <span class="kw">const</span> <span class="var-c">data</span> = <span class="kw">await</span> <span class="var-c">r</span>.<span class="fn-c">json</span>();
+    <span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">data</span>);
+  } <span class="kw">catch</span> (<span class="var-c">e</span>) {
+    <span class="fn-c">console</span>.<span class="fn-c">error</span>(<span class="var-c">e</span>.<span class="var-c">message</span>);
+  }
+}</div>
     </div>
   </section>
 
@@ -167,16 +206,67 @@ const txt2 = JSON.stringify(obj);</div>
   </section>
 
   <section class="card">
-    <div class="ch">9) Résumé rapide pour étudiants</div>
+    <div class="ch">9) Comment coder en JavaScript et l'intégrer en HTML</div>
+    <div class="cb">
+      <div class="exp">JavaScript peut être écrit directement dans une page HTML ou dans un fichier externe. En pratique professionnelle, on préfère les fichiers externes pour garder un code propre et maintenable.</div>
+      <ul class="list">
+        <li><b>Inline (peu recommandé)</b> : JS directement dans un attribut HTML, utile pour de très petits tests.</li>
+        <li><b>Script interne</b> : bloc `<script>` dans la page, souvent en bas du `<body>`.</li>
+        <li><b>Script externe (recommandé)</b> : fichier `.js` séparé, importé avec `src`.</li>
+        <li>Le navigateur lit le HTML, puis exécute le JS au moment de rencontrer `<script>` (d'où l'intérêt de `defer`).</li>
+      </ul>
+      <div class="code"><span class="cm">// 1) Script interne (dans le HTML)</span>
+&lt;script&gt;
+  <span class="kw">const</span> <span class="var-c">titre</span> = <span class="var-c">document</span>.<span class="fn-c">querySelector</span>(<span class="str">"h1"</span>);
+  <span class="var-c">titre</span>.<span class="var-c">textContent</span> = <span class="str">"Bonjour JS"</span>;
+&lt;/script&gt;
+
+<span class="cm">// 2) Script externe (recommandé)</span>
+&lt;script <span class="var-c">src</span>=<span class="str">"app.js"</span> <span class="var-c">defer</span>&gt;&lt;/script&gt;</div>
+      <div class="exp"><b>Bon réflexe :</b> placer le script avec `defer` dans le `<head>` ou en bas du `<body>` pour éviter de bloquer le rendu HTML et garantir que le DOM est disponible.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">10) Debouches, usages professionnels et evolution</div>
+    <div class="cb">
+      <div class="exp">JavaScript est l'un des langages les plus demandés. Il sert aujourd'hui dans presque toutes les couches d'une application moderne.</div>
+      <ul class="list">
+        <li><b>Frontend web</b> : interfaces interactives, SPAs, dashboards, animations.</li>
+        <li><b>Backend</b> : APIs et serveurs avec Node.js (Express, NestJS, Fastify...).</li>
+        <li><b>Mobile</b> : React Native, Ionic (applications multiplateformes).</li>
+        <li><b>Desktop</b> : Electron (apps bureau cross-platform).</li>
+        <li><b>Full-stack</b> : même langage côté client et serveur (gain de productivité équipe).</li>
+      </ul>
+      <div class="exp"><b>Comment les frameworks utilisent JS ?</b> Ils organisent le code, structurent les composants, optimisent le rendu UI, gèrent l'état et le routage, et facilitent les tests/maintenances.</div>
+      <table class="table">
+        <tr><th>Framework/Bibliothèque</th><th>Usage principal</th><th>Idée clé</th></tr>
+        <tr><td>React</td><td>Frontend</td><td>UI en composants + état</td></tr>
+        <tr><td>Vue</td><td>Frontend</td><td>Progressif, simple à adopter</td></tr>
+        <tr><td>Angular</td><td>Frontend enterprise</td><td>Framework complet</td></tr>
+        <tr><td>Next.js / Nuxt</td><td>Web moderne</td><td>SSR, routing, performances SEO</td></tr>
+        <tr><td>Node.js + Express/Nest</td><td>Backend</td><td>APIs REST, auth, services</td></tr>
+      </table>
+      <ul class="list">
+        <li><b>Évolution carrière</b> : intégrateur -> frontend -> full-stack -> lead/dev architect.</li>
+        <li><b>Compétence complémentaire clé</b> : TypeScript (typage statique), tests, architecture, sécurité web.</li>
+        <li><b>Tendance actuelle</b> : forte demande sur frameworks modernes + tooling (Vite, bundlers, CI/CD).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">11) Résumé</div>
     <div class="cb">
       <ul class="list">
         <li>JS rend les pages web interactives.</li>
-        <li>Il est dynamique, flexible, et exécuté par un moteur JS.</li>
-        <li>Il manipule HTML/CSS via le DOM.</li>
-        <li>Il échange des données avec serveur via AJAX/fetch, souvent en JSON.</li>
-        <li>Il fonctionne côté client et côté serveur.</li>
+        <li>C'est un langage dynamique, multi-paradigme, exécuté par un moteur avec optimisation JIT.</li>
+        <li>Le compilateur (ou transpileur) sert à traduire/optimiser le code pour l'exécution et la compatibilité.</li>
+        <li>Il manipule HTML/CSS via le DOM pour créer des interfaces dynamiques.</li>
+        <li>Il échange des données avec le serveur via AJAX/fetch, majoritairement en JSON.</li>
+        <li>Il fonctionne côté client (navigateur) et côté serveur (Node.js).</li>
       </ul>
-      <div class="exp">Conseil pédagogique : commencer par variables/conditions/boucles, puis fonctions/objets, puis DOM/événements, puis AJAX/JSON.</div>
+      <div class="exp">Ordre conseillé pour ce parcours : bases → contrôle du flux → fonctions/objets → DOM/événements → AJAX/JSON.</div>
     </div>
   </section>
 </main>
