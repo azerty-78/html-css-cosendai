@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Série JavaScript — Accueil</title>
+<style>
+  :root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;--a:#58a6ff;--b:#3fb950;--c:#f0883e;--d:#bc8cff;--txt:#e6edf3;--m:#8b949e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:var(--bg);color:var(--txt)}
+  main{max-width:920px;margin:0 auto;padding:1.4rem}
+  .hero{border:1px solid var(--border);border-radius:12px;padding:1.2rem;background:linear-gradient(130deg,#1f2032,#0d1117)}
+  h1{font-size:1.9rem;margin-bottom:.4rem}
+  p{color:var(--m)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:1rem}
+  a.card{display:block;text-decoration:none;background:var(--surface);color:var(--txt);border:1px solid var(--border);border-radius:10px;padding:.9rem;transition:.2s}
+  a.card:hover{transform:translateY(-2px);border-color:var(--a)}
+  .tag{display:inline-block;padding:.2rem .5rem;border-radius:6px;font-size:.72rem;font-weight:700;color:#000;margin-bottom:.45rem}
+  .t1{background:var(--c)} .t2{background:var(--a)} .t3{background:var(--b)} .t4{background:var(--d)} .t5{background:#79c0ff}
+  .small{font-size:.88rem;color:var(--m)}
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Série JavaScript — 5 fichiers de cours</h1>
+    <p>Parcours progressif avec explications simples et cas pratiques interactifs pour tes étudiants.</p>
+  </section>
+
+  <section class="grid">
+    <a class="card" href="js-cours-01-bases.html">
+      <span class="tag t1">FICHIER 1</span>
+      <h3>Les bases</h3>
+      <p class="small">Variables, tableaux, opérateurs, typage, console.</p>
+    </a>
+    <a class="card" href="js-cours-02-epressions-et-controle.html">
+      <span class="tag t2">FICHIER 2</span>
+      <h3>Expressions et contrôle du flux</h3>
+      <p class="small">if/else, switch, ternaire, boucles, try/catch.</p>
+    </a>
+    <a class="card" href="js-cours-03-fonctions-objets-tableaux.html">
+      <span class="tag t3">FICHIER 3</span>
+      <h3>Fonctions, objets, tableaux</h3>
+      <p class="small">return, arguments, this, prototype, map/filter/reduce.</p>
+    </a>
+    <a class="card" href="js-cours-04-dom-et-evenements.html">
+      <span class="tag t4">FICHIER 4</span>
+      <h3>DOM et événements</h3>
+      <p class="small">Sélection, modification, insertion/suppression, propagation.</p>
+    </a>
+    <a class="card" href="js-cours-05-ajax-et-json.html">
+      <span class="tag t5">FICHIER 5</span>
+      <h3>AJAX et JSON</h3>
+      <p class="small">XMLHttpRequest, readyState/status, parse/stringify, callback.</p>
+    </a>
+  </section>
+</main>
+</body>
+</html>
