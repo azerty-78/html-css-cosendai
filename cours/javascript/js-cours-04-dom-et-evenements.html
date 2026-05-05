@@ -21,6 +21,7 @@
   button{border:none;font-weight:700;cursor:pointer}.b1{background:var(--c);color:#000}.b2{background:var(--a);color:#000}.b3{background:var(--b);color:#000}.b4{background:var(--d);color:#000}
   .out{white-space:pre-wrap;font-family:Consolas,monospace;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;min-height:70px}
   .code-block{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.83rem;line-height:1.6;margin:.55rem 0}
+  .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.fn-c{color:#d2a8ff}.cm{color:#8b949e;font-style:italic}.var-c{color:#ffa657}
   .zone{border:1px dashed var(--border);border-radius:8px;padding:.8rem;margin-top:.6rem}
   ul{margin-left:1rem}
   .series-nav{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
@@ -48,13 +49,13 @@
     <div class="ch">01 — Accéder aux éléments HTML</div>
     <div class="cb">
       <div class="exp">Le DOM transforme la page en objets manipulables. On peut sélectionner des éléments avec <code>getElementById</code>, <code>querySelector</code>, <code>querySelectorAll</code>.</div>
-      <div class="code-block">const titre = document.getElementById("titre-demo");
-const premierPara = document.querySelector("#dom-demo .para");
-const tousLesParas = document.querySelectorAll(".para");
+      <div class="code-block"><span class="kw">const</span> <span class="var-c">titre</span> = <span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"titre-demo"</span>);
+<span class="kw">const</span> <span class="var-c">premierPara</span> = <span class="var-c">document</span>.<span class="fn-c">querySelector</span>(<span class="str">"#dom-demo .para"</span>);
+<span class="kw">const</span> <span class="var-c">tousLesParas</span> = <span class="var-c">document</span>.<span class="fn-c">querySelectorAll</span>(<span class="str">".para"</span>);
 
-console.log(titre.textContent);
-console.log(premierPara.textContent);
-console.log(tousLesParas.length);</div>
+<span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">titre</span>.<span class="var-c">textContent</span>);
+<span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">premierPara</span>.<span class="var-c">textContent</span>);
+<span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">tousLesParas</span>.<span class="var-c">length</span>);</div>
       <div id="dom-demo">
         <h3 id="titre-demo">Titre DOM</h3>
         <p class="para">Paragraphe 1</p>
@@ -73,9 +74,9 @@ console.log(tousLesParas.length);</div>
     <div class="ch">02 — Modifier le contenu et le style</div>
     <div class="cb">
       <div class="exp">Pour changer une page dynamiquement: <code>innerHTML</code>, <code>textContent</code>, <code>style</code>, <code>className</code>.</div>
-      <div class="code-block">document.getElementById("titre-demo").innerHTML = "Nouveau titre";
-document.getElementById("titre-demo").style.color = "#58a6ff";
-document.getElementById("titre-demo").style.fontSize = "1.9rem";</div>
+      <div class="code-block"><span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"titre-demo"</span>).<span class="var-c">innerHTML</span> = <span class="str">"Nouveau titre"</span>;
+<span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"titre-demo"</span>).<span class="var-c">style</span>.<span class="var-c">color</span> = <span class="str">"#58a6ff"</span>;
+<span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"titre-demo"</span>).<span class="var-c">style</span>.<span class="var-c">fontSize</span> = <span class="str">"1.9rem"</span>;</div>
       <div class="row">
         <input id="new-title" value="Nouveau titre avec JS" style="min-width:220px">
         <button class="b2" onclick="modTitle()">Cas 1: innerHTML sur le titre</button>
@@ -92,12 +93,12 @@ document.getElementById("titre-demo").style.fontSize = "1.9rem";</div>
     <div class="ch">03 — Ajouter, insérer, supprimer des éléments</div>
     <div class="cb">
       <div class="exp">On crée des nœuds avec <code>createElement</code>, on les insère avec <code>appendChild</code>/<code>insertBefore</code>, puis on peut les retirer.</div>
-      <div class="code-block">const ul = document.getElementById("list-zone");
-const li = document.createElement("li");
-li.textContent = "Nouvel élément";
-ul.appendChild(li);              // ajoute en fin
-ul.insertBefore(li, refElement); // insère avant ref
-ul.removeChild(ul.lastElementChild);</div>
+      <div class="code-block"><span class="kw">const</span> <span class="var-c">ul</span> = <span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"list-zone"</span>);
+<span class="kw">const</span> <span class="var-c">li</span> = <span class="var-c">document</span>.<span class="fn-c">createElement</span>(<span class="str">"li"</span>);
+<span class="var-c">li</span>.<span class="var-c">textContent</span> = <span class="str">"Nouvel élément"</span>;
+<span class="var-c">ul</span>.<span class="fn-c">appendChild</span>(<span class="var-c">li</span>);              <span class="cm">// ajoute en fin</span>
+<span class="var-c">ul</span>.<span class="fn-c">insertBefore</span>(<span class="var-c">li</span>, <span class="var-c">refElement</span>); <span class="cm">// insère avant ref</span>
+<span class="var-c">ul</span>.<span class="fn-c">removeChild</span>(<span class="var-c">ul</span>.<span class="var-c">lastElementChild</span>);</div>
       <div class="zone">
         <ul id="list-zone">
           <li>Element A</li>
@@ -118,12 +119,12 @@ ul.removeChild(ul.lastElementChild);</div>
     <div class="ch">04 — Événements JavaScript</div>
     <div class="cb">
       <div class="exp">Un événement est une action (clic, clavier, survol...). <code>addEventListener</code> est recommandé car il sépare JS et HTML.</div>
-      <div class="code-block">document.getElementById("btn-click").addEventListener("click", function(event) {
-  console.log(event.type, event.target);
+      <div class="code-block"><span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"btn-click"</span>).<span class="fn-c">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>(<span class="var-c">event</span>) {
+  <span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">event</span>.<span class="var-c">type</span>, <span class="var-c">event</span>.<span class="var-c">target</span>);
 });
 
-document.getElementById("inp-key").addEventListener("keydown", function(event) {
-  console.log(event.key, event.code);
+<span class="var-c">document</span>.<span class="fn-c">getElementById</span>(<span class="str">"inp-key"</span>).<span class="fn-c">addEventListener</span>(<span class="str">"keydown"</span>, <span class="kw">function</span>(<span class="var-c">event</span>) {
+  <span class="fn-c">console</span>.<span class="fn-c">log</span>(<span class="var-c">event</span>.<span class="var-c">key</span>, <span class="var-c">event</span>.<span class="var-c">code</span>);
 });</div>
       <div class="row">
         <button id="btn-click" class="b1">Cas 1: click</button>

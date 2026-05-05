@@ -21,6 +21,7 @@
   .b1{background:var(--accent);color:#000}.b2{background:var(--accent2);color:#000}.b3{background:var(--accent3);color:#000}.b4{background:var(--accent4);color:#000}
   .out{margin-top:.45rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre-wrap;font-family:Consolas,monospace;min-height:65px}
   .code-block{background:#010409;border:1px solid var(--border);border-radius:8px;padding:.8rem;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.83rem;line-height:1.6;margin:.55rem 0}
+  .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.fn-c{color:#d2a8ff}.cm{color:#8b949e;font-style:italic}.var-c{color:#ffa657}
   .series-nav{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
   .series-nav a{text-decoration:none;font-size:.72rem;background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:.22rem .55rem;transition:all .2s}
   .series-nav a:hover{background:var(--accent2);color:#000;border-color:var(--accent2)}
@@ -46,16 +47,16 @@
     <div class="sh">01 — Fonctions JavaScript</div>
     <div class="sb">
       <div class="exp">Une fonction permet de <b>réutiliser</b> du code. Elle peut recevoir des paramètres et renvoyer un résultat avec <code>return</code>.</div>
-      <div class="code-block">function addition(a, b) {
-  return a + b;
+      <div class="code-block"><span class="kw">function</span> <span class="fn-c">addition</span>(<span class="var-c">a</span>, <span class="var-c">b</span>) {
+  <span class="kw">return</span> <span class="var-c">a</span> + <span class="var-c">b</span>;
 }
 
-function bulletin(nom, note = 10) {
-  return nom + " a la note " + note + "/20";
+<span class="kw">function</span> <span class="fn-c">bulletin</span>(<span class="var-c">nom</span>, <span class="var-c">note</span> = <span class="num">10</span>) {
+  <span class="kw">return</span> <span class="var-c">nom</span> + <span class="str">" a la note "</span> + <span class="var-c">note</span> + <span class="str">"/20"</span>;
 }
 
-function afficherElements() {
-  return Array.from(arguments).join(" | ");
+<span class="kw">function</span> <span class="fn-c">afficherElements</span>() {
+  <span class="kw">return</span> <span class="fn-c">Array</span>.<span class="fn-c">from</span>(<span class="var-c">arguments</span>).<span class="fn-c">join</span>(<span class="str">" | "</span>);
 }</div>
       <div class="row">
         <input id="f-a" type="number" value="4"><input id="f-b" type="number" value="7">
@@ -77,18 +78,18 @@ function afficherElements() {
     <div class="sh">02 — Objets et mot-clé this</div>
     <div class="sb">
       <div class="exp">Un objet regroupe des propriétés (données) et des méthodes (fonctions). Dans une méthode, <code>this</code> pointe vers l'objet courant.</div>
-      <div class="code-block">function Utilisateur(prenom, nomutilisateur, motdepasse) {
-  this.prenom = prenom;
-  this.nomutilisateur = nomutilisateur;
-  this.motdepasse = motdepasse;
-  this.afficher = function() {
-    return "Prenom: " + this.prenom + " | User: " + this.nomutilisateur;
+      <div class="code-block"><span class="kw">function</span> <span class="fn-c">Utilisateur</span>(<span class="var-c">prenom</span>, <span class="var-c">nomutilisateur</span>, <span class="var-c">motdepasse</span>) {
+  <span class="kw">this</span>.<span class="var-c">prenom</span> = <span class="var-c">prenom</span>;
+  <span class="kw">this</span>.<span class="var-c">nomutilisateur</span> = <span class="var-c">nomutilisateur</span>;
+  <span class="kw">this</span>.<span class="var-c">motdepasse</span> = <span class="var-c">motdepasse</span>;
+  <span class="kw">this</span>.<span class="var-c">afficher</span> = <span class="kw">function</span>() {
+    <span class="kw">return</span> <span class="str">"Prenom: "</span> + <span class="kw">this</span>.<span class="var-c">prenom</span> + <span class="str">" | User: "</span> + <span class="kw">this</span>.<span class="var-c">nomutilisateur</span>;
   };
 }
 
-Utilisateur.prototype.ecole = "FSTS";
-Utilisateur.prototype.info = function() {
-  return this.prenom + " (" + this.nomutilisateur + ") - " + this.ecole;
+<span class="var-c">Utilisateur</span>.<span class="var-c">prototype</span>.<span class="var-c">ecole</span> = <span class="str">"FSTS"</span>;
+<span class="var-c">Utilisateur</span>.<span class="var-c">prototype</span>.<span class="var-c">info</span> = <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="kw">this</span>.<span class="var-c">prenom</span> + <span class="str">" ("</span> + <span class="kw">this</span>.<span class="var-c">nomutilisateur</span> + <span class="str">") - "</span> + <span class="kw">this</span>.<span class="var-c">ecole</span>;
 };</div>
       <div class="row">
         <input id="o-prenom" value="Ahmed"><input id="o-user" value="ahmed25"><input id="o-pass" value="test123">
@@ -106,12 +107,12 @@ Utilisateur.prototype.info = function() {
     <div class="sh">03 — Tableaux avancés</div>
     <div class="sb">
       <div class="exp">On utilise souvent <code>map</code>, <code>filter</code>, <code>reduce</code> pour transformer des tableaux rapidement et lisiblement.</div>
-      <div class="code-block">const arr = [3, 10, 25, 6, 40, 11];
+      <div class="code-block"><span class="kw">const</span> <span class="var-c">arr</span> = [<span class="num">3</span>, <span class="num">10</span>, <span class="num">25</span>, <span class="num">6</span>, <span class="num">40</span>, <span class="num">11</span>];
 
-const filtres = arr.filter(n => n > 10);
-const carres = arr.map(n => n * n);
-const somme = arr.reduce((acc, n) => acc + n, 0);
-const moyenne = somme / arr.length;</div>
+<span class="kw">const</span> <span class="var-c">filtres</span> = <span class="var-c">arr</span>.<span class="fn-c">filter</span>(<span class="var-c">n</span> => <span class="var-c">n</span> > <span class="num">10</span>);
+<span class="kw">const</span> <span class="var-c">carres</span> = <span class="var-c">arr</span>.<span class="fn-c">map</span>(<span class="var-c">n</span> => <span class="var-c">n</span> * <span class="var-c">n</span>);
+<span class="kw">const</span> <span class="var-c">somme</span> = <span class="var-c">arr</span>.<span class="fn-c">reduce</span>((<span class="var-c">acc</span>, <span class="var-c">n</span>) => <span class="var-c">acc</span> + <span class="var-c">n</span>, <span class="num">0</span>);
+<span class="kw">const</span> <span class="var-c">moyenne</span> = <span class="var-c">somme</span> / <span class="var-c">arr</span>.<span class="var-c">length</span>;</div>
       <div class="row">
         <input id="t-nums" value="3,10,25,6,40,11" style="min-width:260px">
         <button class="b1" onclick="cas_t1()">Cas 1: filter (&gt; seuil)</button>
