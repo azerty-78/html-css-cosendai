@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS — DOM & Écriture dans la page</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1e2535;
+  --surface3: #252d3d;
+  --border: #2d3748;
+  --accent: #22d3ee;   /* cyan */
+  --accent2: #a78bfa;  /* violet */
+  --accent3: #34d399;  /* emerald */
+  --accent4: #fb923c;  /* orange */
+  --accent5: #f472b6;  /* pink */
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --danger: #f87171;
+  --warning: #fbbf24;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(160deg, #0d1424 0%, #0a0e1a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 2rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(34,211,238,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+.file-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; font-weight: 700;
+  padding: .2rem .7rem; border-radius: 4px;
+  margin-bottom: .8rem;
+}
+header h1 {
+  font-size: 2.2rem; font-weight: 800; line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent5));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  position: relative; z-index: 1;
+}
+header .subtitle {
+  color: var(--text-muted); margin-top: .5rem; font-size: .95rem; position: relative; z-index: 1;
+}
+
+/* ── LAYOUT ── */
+main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+/* ── DOM EXPLAINER BLOC ── */
+.dom-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.dom-hero::before {
+  content: 'DOM';
+  position: absolute; right: -1rem; top: 50%; transform: translateY(-50%);
+  font-size: 8rem; font-weight: 800;
+  color: rgba(34,211,238,0.04);
+  pointer-events: none; font-family: 'Syne', sans-serif;
+}
+.dom-hero h2 {
+  font-size: 1.4rem; font-weight: 800; color: var(--accent);
+  margin-bottom: 1rem; display: flex; align-items: center; gap: .6rem;
+}
+.dom-hero p { color: var(--text-muted); font-size: .95rem; margin-bottom: .8rem; line-height: 1.8; }
+.dom-hero strong { color: var(--accent2); }
+.dom-hero code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(34,211,238,.1); color: var(--accent);
+  padding: .1rem .4rem; border-radius: 4px; font-size: .82rem;
+}
+
+/* ── DOM TREE VISUAL ── */
+.dom-tree {
+  background: #050810;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem;
+  line-height: 2;
+  margin-top: 1.2rem;
+  overflow-x: auto;
+}
+.dn { display: block; }
+.dn-doc   { color: #64748b; }
+.dn-html  { color: var(--accent4); }
+.dn-head  { color: var(--accent2); }
+.dn-body  { color: var(--accent3); }
+.dn-elem  { color: var(--accent); }
+.dn-attr  { color: var(--accent5); }
+.dn-text  { color: var(--warning); }
+.dn-line  { color: #2d3748; }
+.indent1  { padding-left: 1.5rem; }
+.indent2  { padding-left: 3rem; }
+.indent3  { padding-left: 4.5rem; }
+.indent4  { padding-left: 6rem; }
+
+/* ── SECTION CARDS ── */
+.section-title {
+  font-size: 1.05rem; font-weight: 800; color: var(--text);
+  margin-bottom: 1.5rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .6rem;
+}
+.section-title .pill {
+  background: var(--accent2); color: #000;
+  font-size: .7rem; padding: .2rem .6rem;
+  border-radius: 999px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+
+/* ── EXAMPLE CARD ── */
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+@media(max-width:600px){ .ex-grid{ grid-template-columns:1fr; } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .25s, transform .2s;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+.card-header {
+  background: var(--surface2);
+  padding: .7rem 1rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.card-fn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem; font-weight: 700;
+  color: var(--accent);
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; color: var(--text-muted);
+  background: var(--surface3); padding: .15rem .5rem; border-radius: 4px;
+}
+.card-body { padding: 1rem; }
+
+.card-desc {
+  font-size: .85rem; color: var(--text-muted);
+  margin-bottom: .8rem; line-height: 1.6;
+}
+.card-desc strong { color: var(--text); }
+.card-desc code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(34,211,238,.08); color: var(--accent);
+  padding: .1rem .35rem; border-radius: 3px; font-size: .8rem;
+}
+
+/* ── CODE SNIPPET ── */
+.snippet {
+  background: #050810;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .7rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem; line-height: 1.7;
+  white-space: pre; overflow-x: auto;
+  margin-bottom: .8rem;
+}
+.kw  { color: #ff7b72; }
+.str { color: #a5d6ff; }
+.fn  { color: #d2a8ff; }
+.pr  { color: var(--accent); }
+.cm  { color: #6e7681; font-style: italic; }
+.nm  { color: #79c0ff; }
+.el  { color: var(--accent3); }
+
+/* ── INPUT / BTN ── */
+.ctrl { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: .6rem; }
+input[type="text"], input[type="number"], select, textarea {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); padding: .4rem .7rem;
+  border-radius: 7px; font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem; outline: none; transition: border-color .2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 60px; }
+
+.btn {
+  padding: .4rem .9rem; border-radius: 7px; border: none;
+  cursor: pointer; font-family: 'Syne', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  transition: all .2s; white-space: nowrap;
+}
+.btn:active { transform: scale(.96); }
+.bc { background: var(--accent);  color: #000; }
+.bc:hover { filter: brightness(1.15); }
+.bv { background: var(--accent2); color: #000; }
+.bv:hover { filter: brightness(1.15); }
+.bg { background: var(--accent3); color: #000; }
+.bg:hover { filter: brightness(1.15); }
+.bo { background: var(--accent4); color: #000; }
+.bo:hover { filter: brightness(1.15); }
+.bp { background: var(--accent5); color: #000; }
+.bp:hover { filter: brightness(1.15); }
+.bd { background: var(--danger); color: #fff; }
+.bd:hover { filter: brightness(1.15); }
+
+/* ── OUTPUT / PREVIEW ── */
+.out-label { font-size: .68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: .08em; margin-bottom: .3rem; display: block; }
+
+.preview {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: .6rem .8rem;
+  font-family: Arial, sans-serif;
+  font-size: .88rem;
+  color: #1a1a1a;
+  min-height: 40px;
+  line-height: 1.5;
+}
+
+.result {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: .6rem .8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem;
+  min-height: 36px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ok { color: var(--accent3); }
+.info { color: var(--accent); }
+.warn { color: var(--warning); }
+.err { color: var(--danger); }
+.muted { color: var(--text-muted); }
+
+/* ── LIVE HTML ZONE ── */
+#live-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  min-height: 60px;
+  margin-top: .5rem;
+  background: #fff;
+  color: #111;
+  font-family: Arial, sans-serif;
+  transition: border-color .3s;
+}
+#live-zone:empty::before {
+  content: 'La zone de rendu apparaîtra ici…';
+  color: #aaa; font-style: italic; font-size: .85rem;
+}
+
+/* ── SEPARATOR ── */
+.sep { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="file-badge">RÉFÉRENCE COMPLÈTE — DOM &amp; ÉCRITURE JS</div>
+  <h1>Le DOM &amp; Écrire dans la page avec JavaScript</h1>
+  <p class="subtitle">20 méthodes et propriétés expliquées · exemples interactifs · exécution en direct</p>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════
+     BLOC 0 — QU'EST-CE QUE LE DOM ?
+══════════════════════════════════════════════════════ -->
+<div class="dom-hero">
+  <h2>🌳 Qu'est-ce que le DOM ?</h2>
+
+  <p>Quand un navigateur charge une page HTML, il ne lit pas juste du texte : il
+  <strong>construit un arbre d'objets</strong> en mémoire qui représente chaque balise, chaque attribut,
+  chaque morceau de texte. Cet arbre s'appelle le <strong>DOM — Document Object Model</strong>.</p>
+
+  <p>Le DOM est la <strong>passerelle entre votre HTML et JavaScript</strong>.
+  Sans le DOM, JS ne pourrait pas toucher à votre page.
+  Avec le DOM, JS peut <strong>lire, modifier, ajouter ou supprimer</strong> n'importe quel élément en temps réel,
+  sans recharger la page.</p>
+
+  <p>
+  Imaginez votre HTML comme un <strong>plan architectural</strong> et le DOM comme le
+  <strong>bâtiment réel construit</strong> d'après ce plan. JavaScript est l'électricien qui peut
+  modifier les circuits du bâtiment à la volée.
+  </p>
+
+  <p>
+  L'objet <code>document</code> est le point d'entrée : il représente toute la page.
+  <code>document.body</code> est le corps, <code>document.head</code> est l'en-tête, etc.
+  Chaque élément HTML devient un <strong>nœud (node)</strong> dans cet arbre.
+  </p>
+
+  <div class="dom-tree">
+<span class="dn dn-doc">📄 document                          ← racine absolue</span>
+<span class="dn dn-html indent1">└─ &lt;<span class="dn-html">html</span>&gt;                         ← nœud élément</span>
+<span class="dn dn-head indent2">├─ &lt;<span class="dn-head">head</span>&gt;</span>
+<span class="dn dn-elem indent3">│   └─ &lt;<span class="dn-elem">title</span>&gt;</span>
+<span class="dn dn-text indent4">│       └─ "Ma Page"              ← nœud texte</span>
+<span class="dn dn-body indent2">└─ &lt;<span class="dn-body">body</span>&gt;</span>
+<span class="dn dn-elem indent3">    ├─ &lt;<span class="dn-elem">h1</span> <span class="dn-attr">id="titre"</span>&gt;           ← attribut = propriété du nœud</span>
+<span class="dn dn-text indent4">    │   └─ "Bonjour !"</span>
+<span class="dn dn-elem indent3">    ├─ &lt;<span class="dn-elem">p</span> <span class="dn-attr">class="para"</span>&gt;</span>
+<span class="dn dn-text indent4">    │   └─ "Un paragraphe…"</span>
+<span class="dn dn-elem indent3">    └─ &lt;<span class="dn-elem">div</span> <span class="dn-attr">id="zone"</span>&gt;</span>
+<span class="dn dn-elem indent4">        └─ &lt;<span class="dn-elem">button</span>&gt; "Cliquer" &lt;/<span class="dn-elem">button</span>&gt;</span>
+  </div>
+
+  <p style="margin-top:1rem">
+  <strong>3 types de nœuds importants :</strong><br>
+  🔷 <strong>Nœud élément</strong> → chaque balise HTML (<code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>…)<br>
+  🔶 <strong>Nœud texte</strong> → le contenu textuel à l'intérieur des balises<br>
+  🔸 <strong>Nœud attribut</strong> → <code>id</code>, <code>class</code>, <code>href</code>… (accessibles via <code>.getAttribute()</code>)
+  </p>
+</div>
+
+<!-- Zone live partagée pour certains exemples -->
+<div style="margin-bottom:2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem">
+  <div class="section-title">🖥️ Zone de rendu HTML live <span class="pill">partagée</span></div>
+  <p style="font-size:.84rem;color:var(--text-muted);margin-bottom:.8rem">
+    Certains exemples ci-dessous écrivent directement dans cette zone. Regardez-la évoluer !
+  </p>
+  <div id="live-zone"></div>
+  <div style="margin-top:.6rem;display:flex;gap:.5rem">
+    <button class="btn bd" onclick="document.getElementById('live-zone').innerHTML='';document.getElementById('live-zone').textContent=''">🗑 Vider la zone</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION A — ÉCRIRE / INJECTER DU CONTENU
+══════════════════════════════════════════════════════ -->
+<div class="section-title">
+  📝 A — Écrire et injecter du contenu
+  <span class="pill">Exemples 01 → 08</span>
+</div>
+<div class="ex-grid">
+
+  <!-- 01 document.write() -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">document.write()</span>
+      <span class="card-num">01</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Écrit du texte ou du HTML <strong>directement dans la page</strong> pendant son chargement.
+        ⚠ Si appelé APRÈS le chargement, il <strong>efface toute la page</strong> ! Rarement utilisé en production.
+      </p>
+      <div class="snippet"><span class="cm">// Pendant le chargement :</span>
+<span class="fn">document</span>.<span class="fn">write</span>(<span class="str">"Bonjour tout le monde !"</span>);
+<span class="fn">document</span>.<span class="fn">write</span>(<span class="str">"&lt;h2&gt;Un titre en HTML&lt;/h2&gt;"</span>);</div>
+      <div class="ctrl">
+        <input type="text" id="dw-text" value="Bonjour depuis document.write !" style="flex:1">
+        <button class="btn bc" onclick="ex01()">▶ Tester</button>
+      </div>
+      <span class="out-label">// RÉSULTAT (dans la zone live)</span>
+      <div class="result" id="r01"><span class="muted">Cliquez ▶ pour écrire dans la zone live…</span></div>
+    </div>
+  </div>
+
+  <!-- 02 innerHTML -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.innerHTML = "..."</span>
+      <span class="card-num">02</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Lit ou <strong>remplace le contenu HTML complet</strong> d'un élément (balises incluses).
+        C'est la méthode la plus utilisée pour modifier du contenu dynamiquement.
+      </p>
+      <div class="snippet"><span class="kw">let</span> el = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"zone"</span>);
+el.<span class="pr">innerHTML</span> = <span class="str">"&lt;b&gt;Texte &lt;em&gt;enrichi&lt;/em&gt;&lt;/b&gt;"</span>;
+<span class="cm">// += pour ajouter sans effacer :</span>
+el.<span class="pr">innerHTML</span> += <span class="str">"&lt;br&gt;Ligne ajoutée"</span>;</div>
+      <div class="ctrl">
+        <input type="text" id="ih-text" value="&lt;strong&gt;Contenu &lt;em&gt;enrichi&lt;/em&gt;&lt;/strong&gt; 🎉" style="flex:1">
+        <button class="btn bv" onclick="ex02_set()">= Remplacer</button>
+        <button class="btn bg" onclick="ex02_add()">+= Ajouter</button>
+      </div>
+      <span class="out-label">// APERÇU RENDU</span>
+      <div class="preview" id="r02">En attente…</div>
+    </div>
+  </div>
+
+  <!-- 03 textContent -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.textContent = "..."</span>
+      <span class="card-num">03</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Lit ou modifie <strong>seulement le texte</strong>, sans interpréter le HTML.
+        Les balises HTML sont affichées comme du texte brut — plus sûr contre les injections XSS.
+      </p>
+      <div class="snippet"><span class="kw">let</span> el = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"titre"</span>);
+el.<span class="pr">textContent</span> = <span class="str">"Nouveau titre !"</span>;
+<span class="cm">// Les balises HTML sont affichées telles quelles :</span>
+el.<span class="pr">textContent</span> = <span class="str">"&lt;b&gt;pas rendu&lt;/b&gt;"</span>; <span class="cm">// affiche le texte</span></div>
+      <div class="ctrl">
+        <input type="text" id="tc-text" value="Texte &lt;b&gt;avec balises&lt;/b&gt; non interprétées" style="flex:1">
+        <button class="btn bc" onclick="ex03()">▶ Appliquer</button>
+      </div>
+      <span class="out-label">// textContent vs innerHTML</span>
+      <div class="result" id="r03"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 04 innerText -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.innerText = "..."</span>
+      <span class="card-num">04</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Similaire à <code>textContent</code> mais tient compte du <strong>style CSS</strong> (éléments cachés ignorés).
+        Respecte les sauts de ligne visuels. Légèrement plus lent que textContent.
+      </p>
+      <div class="snippet"><span class="kw">let</span> el = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"para"</span>);
+el.<span class="pr">innerText</span> = <span class="str">"Ligne 1\nLigne 2"</span>;
+<span class="cm">// \n crée un vrai retour à la ligne visible</span>
+<span class="fn">console</span>.<span class="fn">log</span>(el.<span class="pr">innerText</span>); <span class="cm">// lecture aussi possible</span></div>
+      <div class="ctrl">
+        <input type="text" id="it-text" value="Ligne 1\nLigne 2\nLigne 3" style="flex:1">
+        <button class="btn bv" onclick="ex04()">▶ Appliquer innerText</button>
+      </div>
+      <span class="out-label">// APERÇU</span>
+      <div class="preview" id="r04" style="white-space:pre-line">En attente…</div>
+    </div>
+  </div>
+
+  <!-- 05 createElement + appendChild -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">createElement() + appendChild()</span>
+      <span class="card-num">05</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        <strong>Crée un nouvel élément HTML</strong> puis l'insère comme dernier enfant d'un parent.
+        C'est la façon "propre" de construire des éléments dynamiquement.
+      </p>
+      <div class="snippet"><span class="kw">let</span> li = <span class="fn">document</span>.<span class="fn">createElement</span>(<span class="str">"li"</span>);
+li.<span class="pr">textContent</span> = <span class="str">"Nouveau item"</span>;
+li.<span class="pr">style</span>.<span class="pr">color</span> = <span class="str">"green"</span>;
+<span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"liste"</span>).<span class="fn">appendChild</span>(li);</div>
+      <div class="ctrl">
+        <input type="text" id="ce-text" value="Nouvel élément" style="flex:1">
+        <select id="ce-tag">
+          <option>li</option><option>p</option><option>h3</option><option>span</option>
+        </select>
+        <button class="btn bg" onclick="ex05()">▶ Créer &amp; Ajouter</button>
+        <button class="btn bd" onclick="document.getElementById('r05').innerHTML='<ul id=\'r05ul\'></ul>'">🗑 Vider</button>
+      </div>
+      <span class="out-label">// ÉLÉMENTS CRÉÉS</span>
+      <div class="preview" id="r05"><ul id="r05ul"></ul></div>
+    </div>
+  </div>
+
+  <!-- 06 insertBefore -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">insertBefore()</span>
+      <span class="card-num">06</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Insère un élément <strong>juste avant</strong> un nœud de référence existant.
+        Syntaxe : <code>parent.insertBefore(nouveauNoeud, noeudDeReference)</code>.
+      </p>
+      <div class="snippet"><span class="kw">let</span> newEl = <span class="fn">document</span>.<span class="fn">createElement</span>(<span class="str">"p"</span>);
+newEl.<span class="pr">textContent</span> = <span class="str">"Inséré AVANT"</span>;
+<span class="kw">let</span> ref = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"reference"</span>);
+ref.<span class="pr">parentNode</span>.<span class="fn">insertBefore</span>(newEl, ref);</div>
+      <div class="ctrl">
+        <input type="text" id="ib-text" value="⬆ Inséré avant le 2ème item" style="flex:1">
+        <button class="btn bv" onclick="ex06()">▶ insertBefore</button>
+        <button class="btn bd" onclick="initIB()">↺ Reset</button>
+      </div>
+      <span class="out-label">// LISTE</span>
+      <div class="preview" id="r06"></div>
+    </div>
+  </div>
+
+  <!-- 07 insertAdjacentHTML -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">insertAdjacentHTML()</span>
+      <span class="card-num">07</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Insère du HTML à une <strong>position précise</strong> par rapport à un élément :
+        <code>beforebegin</code>, <code>afterbegin</code>, <code>beforeend</code>, <code>afterend</code>.
+      </p>
+      <div class="snippet">el.<span class="fn">insertAdjacentHTML</span>(<span class="str">'beforebegin'</span>, <span class="str">'&lt;p&gt;Avant&lt;/p&gt;'</span>);
+el.<span class="fn">insertAdjacentHTML</span>(<span class="str">'afterbegin'</span>,  <span class="str">'&lt;p&gt;Début&lt;/p&gt;'</span>);
+el.<span class="fn">insertAdjacentHTML</span>(<span class="str">'beforeend'</span>,   <span class="str">'&lt;p&gt;Fin&lt;/p&gt;'</span>);
+el.<span class="fn">insertAdjacentHTML</span>(<span class="str">'afterend'</span>,    <span class="str">'&lt;p&gt;Après&lt;/p&gt;'</span>);</div>
+      <div class="ctrl">
+        <input type="text" id="iah-text" value="🟡 Texte inséré" style="flex:1">
+        <select id="iah-pos">
+          <option value="beforebegin">beforebegin</option>
+          <option value="afterbegin">afterbegin</option>
+          <option value="beforeend" selected>beforeend</option>
+          <option value="afterend">afterend</option>
+        </select>
+        <button class="btn bo" onclick="ex07()">▶ Insérer</button>
+        <button class="btn bd" onclick="initIAH()">↺</button>
+      </div>
+      <span class="out-label">// RÉSULTAT</span>
+      <div id="r07-wrap" class="preview"></div>
+    </div>
+  </div>
+
+  <!-- 08 createTextNode -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">createTextNode()</span>
+      <span class="card-num">08</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Crée un <strong>nœud texte pur</strong> (sans balise). Plus sûr que innerHTML car les caractères spéciaux ne sont jamais interprétés comme HTML.
+      </p>
+      <div class="snippet"><span class="kw">let</span> p = <span class="fn">document</span>.<span class="fn">createElement</span>(<span class="str">"p"</span>);
+<span class="kw">let</span> txt = <span class="fn">document</span>.<span class="fn">createTextNode</span>(<span class="str">"Texte sûr &lt;script&gt;"</span>);
+p.<span class="fn">appendChild</span>(txt); <span class="cm">// &lt;script&gt; non exécuté !</span></div>
+      <div class="ctrl">
+        <input type="text" id="ctn-text" value="Texte sûr avec &lt;script&gt;alert()&lt;/script&gt;" style="flex:1">
+        <button class="btn bc" onclick="ex08()">▶ createTextNode</button>
+      </div>
+      <span class="out-label">// Le HTML dangereux est neutralisé</span>
+      <div class="preview" id="r08">En attente…</div>
+    </div>
+  </div>
+
+</div><!-- /ex-grid A -->
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION B — ACCÉDER AUX ÉLÉMENTS
+══════════════════════════════════════════════════════ -->
+<hr class="sep">
+<div class="section-title">
+  🔍 B — Accéder aux éléments du DOM
+  <span class="pill">Exemples 09 → 14</span>
+</div>
+<div class="ex-grid">
+
+  <!-- 09 getElementById -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">getElementById()</span>
+      <span class="card-num">09</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Retourne <strong>l'élément unique</strong> ayant l'<code>id</code> donné, ou <code>null</code> si non trouvé.
+        C'est la méthode la plus rapide pour accéder à un élément spécifique.
+      </p>
+      <div class="snippet"><span class="kw">let</span> el = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"monId"</span>);
+<span class="kw">if</span> (el !== <span class="kw">null</span>) {
+  el.<span class="pr">innerHTML</span> = <span class="str">"Trouvé et modifié !"</span>;
+}</div>
+      <div style="background:#fff;border-radius:7px;padding:.6rem;margin-bottom:.6rem;font-family:Arial;font-size:.85rem;color:#111">
+        <h4 id="demo-h4" style="color:#1a56db">Je suis l'élément #demo-h4</h4>
+        <p id="demo-p1" style="color:#374151">Je suis #demo-p1</p>
+      </div>
+      <div class="ctrl">
+        <select id="gbi-id">
+          <option value="demo-h4">#demo-h4 (h4)</option>
+          <option value="demo-p1">#demo-p1 (p)</option>
+        </select>
+        <input type="text" id="gbi-text" value="Modifié par getElementById !" style="flex:1">
+        <button class="btn bc" onclick="ex09()">▶ Modifier</button>
+      </div>
+      <span class="out-label">// LOG</span>
+      <div class="result" id="r09"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 10 getElementsByClassName -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">getElementsByClassName()</span>
+      <span class="card-num">10</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Retourne une <strong>HTMLCollection</strong> (tableau-like) de tous les éléments ayant une classe donnée.
+        Attention : ce n'est pas un vrai Array — utilisez <code>Array.from()</code> pour les méthodes d'Array.
+      </p>
+      <div class="snippet"><span class="kw">let</span> items = <span class="fn">document</span>.<span class="fn">getElementsByClassName</span>(<span class="str">"item"</span>);
+<span class="fn">Array</span>.<span class="fn">from</span>(items).<span class="fn">forEach</span>(el => {
+  el.<span class="pr">style</span>.<span class="pr">color</span> = <span class="str">"blue"</span>;
+});</div>
+      <div style="background:#fff;border-radius:7px;padding:.6rem;margin-bottom:.6rem;font-family:Arial;font-size:.84rem;color:#111">
+        <p class="etudiant">👤 Ahmed — Informatique</p>
+        <p class="etudiant">👤 Sara — Mathématiques</p>
+        <p class="etudiant">👤 Karim — Physique</p>
+        <p class="autre">✋ Je n'ai PAS la classe "etudiant"</p>
+      </div>
+      <div class="ctrl">
+        <select id="gcn-color">
+          <option value="blue">Bleu</option><option value="red">Rouge</option>
+          <option value="green">Vert</option><option value="purple">Violet</option>
+        </select>
+        <button class="btn bv" onclick="ex10()">▶ Colorier .etudiant</button>
+        <button class="btn bd" onclick="Array.from(document.querySelectorAll('.etudiant')).forEach(e=>e.style.color='')">↺</button>
+      </div>
+      <span class="out-label">// LOG</span>
+      <div class="result" id="r10"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 11 getElementsByTagName -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">getElementsByTagName()</span>
+      <span class="card-num">11</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Retourne tous les éléments d'un <strong>type de balise</strong> donné.
+        Utile pour cibler tous les <code>&lt;p&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;img&gt;</code>… de la page ou d'une zone.
+      </p>
+      <div class="snippet"><span class="kw">let</span> paras = <span class="fn">document</span>.<span class="fn">getElementsByTagName</span>(<span class="str">"p"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Nombre de &lt;p&gt; :"</span>, paras.<span class="pr">length</span>);
+paras[<span class="nm">0</span>].<span class="pr">style</span>.<span class="pr">background</span> = <span class="str">"yellow"</span>;</div>
+      <div class="ctrl">
+        <input type="text" id="gtn-tag" value="p" style="width:70px" placeholder="tag">
+        <button class="btn bg" onclick="ex11()">▶ Compter sur la page</button>
+      </div>
+      <span class="out-label">// RÉSULTAT</span>
+      <div class="result" id="r11"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 12 querySelector -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">querySelector()</span>
+      <span class="card-num">12</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Retourne le <strong>premier élément</strong> correspondant à un sélecteur CSS.
+        Très puissant : accepte n'importe quel sélecteur CSS (<code>#id</code>, <code>.classe</code>, <code>div &gt; p</code>…).
+      </p>
+      <div class="snippet"><span class="fn">document</span>.<span class="fn">querySelector</span>(<span class="str">"p"</span>);           <span class="cm">// 1er &lt;p&gt;</span>
+<span class="fn">document</span>.<span class="fn">querySelector</span>(<span class="str">"#monId"</span>);     <span class="cm">// par id</span>
+<span class="fn">document</span>.<span class="fn">querySelector</span>(<span class="str">".maClasse"</span>);  <span class="cm">// par classe</span>
+<span class="fn">document</span>.<span class="fn">querySelector</span>(<span class="str">"div &gt; p.info"</span>); <span class="cm">// CSS avancé</span></div>
+      <div class="ctrl">
+        <input type="text" id="qs-sel" value=".etudiant" style="flex:1" placeholder="sélecteur CSS">
+        <button class="btn bo" onclick="ex12()">▶ querySelector</button>
+      </div>
+      <span class="out-label">// RÉSULTAT (1er trouvé)</span>
+      <div class="result" id="r12"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 13 querySelectorAll -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">querySelectorAll()</span>
+      <span class="card-num">13</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Retourne une <strong>NodeList</strong> de TOUS les éléments correspondant au sélecteur CSS.
+        Contrairement à HTMLCollection, NodeList supporte <code>.forEach()</code> directement.
+      </p>
+      <div class="snippet"><span class="kw">let</span> tous = <span class="fn">document</span>.<span class="fn">querySelectorAll</span>(<span class="str">"p.info"</span>);
+tous.<span class="fn">forEach</span>(el => {
+  el.<span class="pr">style</span>.<span class="pr">border</span> = <span class="str">"1px solid cyan"</span>;
+  <span class="fn">console</span>.<span class="fn">log</span>(el.<span class="pr">textContent</span>);
+});</div>
+      <div class="ctrl">
+        <input type="text" id="qsa-sel" value=".etudiant" style="flex:1">
+        <button class="btn bp" onclick="ex13()">▶ querySelectorAll</button>
+      </div>
+      <span class="out-label">// TOUS LES RÉSULTATS</span>
+      <div class="result" id="r13"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 14 parentNode / children / nextSibling -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">parentNode · children · nextElementSibling</span>
+      <span class="card-num">14</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        <strong>Navigation dans l'arbre DOM</strong> : remonter vers le parent, accéder aux enfants ou aux frères/sœurs d'un nœud.
+      </p>
+      <div class="snippet">el.<span class="pr">parentNode</span>          <span class="cm">// nœud parent</span>
+el.<span class="pr">children</span>           <span class="cm">// enfants éléments</span>
+el.<span class="pr">firstElementChild</span>  <span class="cm">// 1er enfant</span>
+el.<span class="pr">lastElementChild</span>   <span class="cm">// dernier enfant</span>
+el.<span class="pr">nextElementSibling</span> <span class="cm">// frère suivant</span>
+el.<span class="pr">previousElementSibling</span> <span class="cm">// frère préc.</span></div>
+      <div class="ctrl">
+        <button class="btn bc" onclick="ex14('parent')">parentNode</button>
+        <button class="btn bv" onclick="ex14('children')">children</button>
+        <button class="btn bg" onclick="ex14('next')">nextSibling</button>
+      </div>
+      <span class="out-label">// NAVIGATION DOM</span>
+      <div class="result" id="r14"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+</div><!-- /ex-grid B -->
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION C — MODIFIER ATTRIBUTS & STYLES
+══════════════════════════════════════════════════════ -->
+<hr class="sep">
+<div class="section-title">
+  🎨 C — Modifier attributs, styles et classes
+  <span class="pill">Exemples 15 → 20</span>
+</div>
+<div class="ex-grid">
+
+  <!-- 15 setAttribute / getAttribute -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">setAttribute() / getAttribute()</span>
+      <span class="card-num">15</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        <strong>Lit ou définit n'importe quel attribut HTML</strong> : <code>src</code>, <code>href</code>, <code>alt</code>, <code>data-*</code>…
+        <code>removeAttribute()</code> supprime un attribut.
+      </p>
+      <div class="snippet">el.<span class="fn">setAttribute</span>(<span class="str">"href"</span>, <span class="str">"https://google.com"</span>);
+<span class="kw">let</span> v = el.<span class="fn">getAttribute</span>(<span class="str">"href"</span>); <span class="cm">// lire</span>
+el.<span class="fn">removeAttribute</span>(<span class="str">"disabled"</span>);  <span class="cm">// supprimer</span></div>
+      <div style="background:#fff;border-radius:7px;padding:.6rem;margin-bottom:.6rem;font-family:Arial;font-size:.85rem">
+        <a id="demo-link" href="https://example.com" style="color:#1a56db">Lien de démo (example.com)</a>
+      </div>
+      <div class="ctrl">
+        <input type="text" id="sa-val" value="https://www.google.com" style="flex:1">
+        <button class="btn bc" onclick="ex15_set()">setAttribute href</button>
+        <button class="btn bv" onclick="ex15_get()">getAttribute href</button>
+      </div>
+      <span class="out-label">// RÉSULTAT</span>
+      <div class="result" id="r15"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 16 style.property -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.style.property = "valeur"</span>
+      <span class="card-num">16</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Modifie le <strong>style CSS inline</strong> d'un élément.
+        Les propriétés CSS multi-mots s'écrivent en camelCase : <code>background-color</code> → <code>backgroundColor</code>.
+      </p>
+      <div class="snippet">el.<span class="pr">style</span>.<span class="pr">color</span>           = <span class="str">"red"</span>;
+el.<span class="pr">style</span>.<span class="pr">backgroundColor</span> = <span class="str">"#f0f0f0"</span>;
+el.<span class="pr">style</span>.<span class="pr">fontSize</span>        = <span class="str">"24px"</span>;
+el.<span class="pr">style</span>.<span class="pr">display</span>         = <span class="str">"none"</span>; <span class="cm">// cacher</span></div>
+      <div class="ctrl">
+        <label style="color:var(--text-muted);font-size:.8rem">Couleur :</label>
+        <input type="color" id="st-color" value="#3b82f6" style="width:50px;height:32px;border-radius:6px;border:none;cursor:pointer;padding:0">
+        <label style="color:var(--text-muted);font-size:.8rem">Taille :</label>
+        <input type="range" id="st-size" min="12" max="48" value="20" style="width:80px" oninput="ex16()">
+        <button class="btn bc" onclick="ex16()">▶ Appliquer</button>
+      </div>
+      <span class="out-label">// APERÇU</span>
+      <div class="preview">
+        <p id="style-demo">Je suis stylé par JavaScript !</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 17 classList -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.classList — add, remove, toggle, contains</span>
+      <span class="card-num">17</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        <strong>Gère les classes CSS</strong> d'un élément sans écraser les autres.
+        <code>toggle()</code> ajoute si absente, supprime si présente — parfait pour les boutons on/off.
+      </p>
+      <div class="snippet">el.<span class="pr">classList</span>.<span class="fn">add</span>(<span class="str">"actif"</span>);
+el.<span class="pr">classList</span>.<span class="fn">remove</span>(<span class="str">"actif"</span>);
+el.<span class="pr">classList</span>.<span class="fn">toggle</span>(<span class="str">"actif"</span>);   <span class="cm">// bascule</span>
+el.<span class="pr">classList</span>.<span class="fn">contains</span>(<span class="str">"actif"</span>); <span class="cm">// → true/false</span>
+el.<span class="pr">classList</span>.<span class="fn">replace</span>(<span class="str">"A"</span>,<span class="str">"B"</span>);  <span class="cm">// remplace</span></div>
+      <style>
+        .cl-box{padding:.6rem 1rem;border-radius:7px;border:2px solid #e5e7eb;font-family:Arial;font-size:.88rem;background:#fff;color:#111;transition:all .3s;margin-bottom:.6rem}
+        .cl-box.actif{background:#dbeafe;border-color:#3b82f6;color:#1e3a8a;font-weight:700}
+        .cl-box.surligne{background:#fef9c3;border-color:#eab308}
+        .cl-box.rouge{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+      </style>
+      <div class="cl-box" id="cl-demo">Je suis la boîte démo (classes actuelles : aucune)</div>
+      <div class="ctrl">
+        <button class="btn bc" onclick="ex17('add','actif')">add actif</button>
+        <button class="btn bd" onclick="ex17('remove','actif')">remove actif</button>
+        <button class="btn bv" onclick="ex17('toggle','surligne')">toggle surligne</button>
+        <button class="btn bo" onclick="ex17('toggle','rouge')">toggle rouge</button>
+      </div>
+      <span class="out-label">// CLASSES ACTUELLES</span>
+      <div class="result" id="r17"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 18 removeChild / replaceChild -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">removeChild() / replaceChild()</span>
+      <span class="card-num">18</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        <strong>Supprime</strong> un nœud enfant ou le <strong>remplace</strong> par un nouveau.
+        Il faut toujours passer par le parent pour supprimer un enfant.
+      </p>
+      <div class="snippet"><span class="cm">// Supprimer :</span>
+<span class="kw">let</span> parent = el.<span class="pr">parentNode</span>;
+parent.<span class="fn">removeChild</span>(el);
+
+<span class="cm">// Ou plus moderne :</span>
+el.<span class="fn">remove</span>(); <span class="cm">// ES2015+</span>
+
+<span class="cm">// Remplacer :</span>
+<span class="kw">let</span> nouveau = <span class="fn">document</span>.<span class="fn">createElement</span>(<span class="str">"h3"</span>);
+parent.<span class="fn">replaceChild</span>(nouveau, ancien);</div>
+      <div style="background:#fff;border-radius:7px;padding:.6rem;margin-bottom:.6rem" id="r18-container">
+        <p id="rc-p1" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item A (cliquez Supprimer)</p>
+        <p id="rc-p2" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item B (cliquez Remplacer)</p>
+        <p id="rc-p3" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item C</p>
+      </div>
+      <div class="ctrl">
+        <button class="btn bd" onclick="ex18_remove()">removeChild (A)</button>
+        <button class="btn bv" onclick="ex18_replace()">replaceChild (B)</button>
+        <button class="btn bc" onclick="initR18()">↺ Reset</button>
+      </div>
+      <span class="out-label">// LOG</span>
+      <div class="result" id="r18"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 19 dataset -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">.dataset — attributs data-*</span>
+      <span class="card-num">19</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Accède aux <strong>attributs personnalisés</strong> <code>data-*</code> d'un élément.
+        Parfait pour stocker des infos dans le HTML sans attributs non-standard.
+        <code>data-user-id</code> → <code>dataset.userId</code> (camelCase automatique).
+      </p>
+      <div class="snippet"><span class="cm">&lt;!-- HTML --&gt;</span>
+<span class="el">&lt;div</span> <span class="pr">data-id</span>=<span class="str">"42"</span> <span class="pr">data-user-name</span>=<span class="str">"Ahmed"</span><span class="el">&gt;&lt;/div&gt;</span>
+
+<span class="cm">// JavaScript :</span>
+<span class="kw">let</span> id   = el.<span class="pr">dataset</span>.<span class="pr">id</span>;       <span class="cm">// "42"</span>
+<span class="kw">let</span> name = el.<span class="pr">dataset</span>.<span class="pr">userName</span>; <span class="cm">// "Ahmed"</span>
+el.<span class="pr">dataset</span>.<span class="pr">score</span> = <span class="nm">100</span>;        <span class="cm">// écrire</span></div>
+      <div style="background:#fff;border-radius:7px;padding:.6rem;margin-bottom:.6rem;font-family:Arial">
+        <div id="ds-el" data-id="42" data-user-name="Ahmed" data-role="etudiant" style="padding:.3rem;font-size:.84rem;color:#111">
+          &lt;div data-id="42" data-user-name="Ahmed" data-role="etudiant"&gt;
+        </div>
+      </div>
+      <div class="ctrl">
+        <button class="btn bc" onclick="ex19_read()">▶ Lire dataset</button>
+        <input type="text" id="ds-key" placeholder="clé" value="score" style="width:80px">
+        <input type="text" id="ds-val2" placeholder="valeur" value="100" style="width:80px">
+        <button class="btn bg" onclick="ex19_write()">Écrire</button>
+      </div>
+      <span class="out-label">// DATASET</span>
+      <div class="result" id="r19"><span class="muted">En attente…</span></div>
+    </div>
+  </div>
+
+  <!-- 20 document.write → LIVE BUILDER -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-fn">🏗 Constructeur de page live — tout en un</span>
+      <span class="card-num">20</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Combinez toutes les techniques apprises pour <strong>construire dynamiquement</strong> une section HTML complète.
+        Tapez le contenu, choisissez le tag et le style, et regardez la zone live se construire !
+      </p>
+      <div class="snippet"><span class="cm">// Recette complète :</span>
+<span class="kw">let</span> el = <span class="fn">document</span>.<span class="fn">createElement</span>(<span class="str">"h2"</span>);
+el.<span class="pr">textContent</span> = <span class="str">"Mon titre"</span>;
+el.<span class="fn">setAttribute</span>(<span class="str">"id"</span>, <span class="str">"montitre"</span>);
+el.<span class="pr">classList</span>.<span class="fn">add</span>(<span class="str">"actif"</span>);
+el.<span class="pr">style</span>.<span class="pr">color</span> = <span class="str">"#3b82f6"</span>;
+zone.<span class="fn">appendChild</span>(el);</div>
+      <div class="ctrl">
+        <input type="text" id="lb-text" placeholder="Contenu…" value="Mon élément dynamique" style="flex:1">
+        <select id="lb-tag">
+          <option>h2</option><option>h3</option><option>p</option>
+          <option>li</option><option>blockquote</option>
+        </select>
+        <input type="color" id="lb-color" value="#22d3ee" style="width:40px;height:32px;border:none;border-radius:5px;cursor:pointer;padding:0">
+      </div>
+      <div class="ctrl">
+        <button class="btn bc" onclick="ex20_append()">appendChild ↓</button>
+        <button class="btn bv" onclick="ex20_prepend()">prepend ↑</button>
+        <button class="btn bd" onclick="document.getElementById('live-zone').innerHTML=''">🗑 Vider zone</button>
+      </div>
+      <span class="out-label">// → VOIR LA ZONE DE RENDU LIVE EN HAUT DE PAGE</span>
+      <div class="result" id="r20"><span class="muted">Les éléments sont créés dans la zone live ci-dessus.</span></div>
+    </div>
+  </div>
+
+</div><!-- /ex-grid C -->
+
+<!-- RÉCAP TABLE -->
+<hr class="sep">
+<div class="section-title">📋 Récapitulatif des 20 méthodes</div>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:.78rem">
+  <thead>
+    <tr style="background:var(--surface2);border-bottom:1px solid var(--border)">
+      <th style="padding:.6rem .8rem;text-align:left;color:var(--text-muted)">#</th>
+      <th style="padding:.6rem .8rem;text-align:left;color:var(--text-muted)">Méthode / Propriété</th>
+      <th style="padding:.6rem .8rem;text-align:left;color:var(--text-muted)">Rôle</th>
+      <th style="padding:.6rem .8rem;text-align:left;color:var(--text-muted)">Retourne</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">01</td><td style="padding:.5rem .8rem;color:var(--accent)">document.write()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Écrire pendant le chargement</td><td style="padding:.5rem .8rem;color:var(--text-muted)">void</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">02</td><td style="padding:.5rem .8rem;color:var(--accent)">.innerHTML</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Lire/écrire HTML complet (balises interprétées)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">string</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">03</td><td style="padding:.5rem .8rem;color:var(--accent)">.textContent</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Lire/écrire texte pur (balises ignorées)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">string</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">04</td><td style="padding:.5rem .8rem;color:var(--accent)">.innerText</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Texte visible (respect CSS, \n → saut de ligne)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">string</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">05</td><td style="padding:.5rem .8rem;color:var(--accent)">createElement() + appendChild()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Créer un élément et l'ajouter en fin</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">06</td><td style="padding:.5rem .8rem;color:var(--accent)">insertBefore()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Insérer avant un nœud de référence</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">07</td><td style="padding:.5rem .8rem;color:var(--accent)">insertAdjacentHTML()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Insérer HTML à position précise (4 options)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">void</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">08</td><td style="padding:.5rem .8rem;color:var(--accent)">createTextNode()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Créer un nœud texte pur (sécurisé XSS)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">TextNode</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">09</td><td style="padding:.5rem .8rem;color:var(--accent2)">getElementById()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Trouver 1 élément par son id</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element | null</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">10</td><td style="padding:.5rem .8rem;color:var(--accent2)">getElementsByClassName()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Tous les éléments d'une classe</td><td style="padding:.5rem .8rem;color:var(--text-muted)">HTMLCollection</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">11</td><td style="padding:.5rem .8rem;color:var(--accent2)">getElementsByTagName()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Tous les éléments d'un tag</td><td style="padding:.5rem .8rem;color:var(--text-muted)">HTMLCollection</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">12</td><td style="padding:.5rem .8rem;color:var(--accent2)">querySelector()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Premier élément matchant un sélecteur CSS</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element | null</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">13</td><td style="padding:.5rem .8rem;color:var(--accent2)">querySelectorAll()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Tous les éléments matchant un sélecteur CSS</td><td style="padding:.5rem .8rem;color:var(--text-muted)">NodeList</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">14</td><td style="padding:.5rem .8rem;color:var(--accent2)">parentNode · children · nextElementSibling</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Naviguer dans l'arbre DOM</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">15</td><td style="padding:.5rem .8rem;color:var(--accent3)">setAttribute() / getAttribute()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Lire/écrire n'importe quel attribut HTML</td><td style="padding:.5rem .8rem;color:var(--text-muted)">string</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">16</td><td style="padding:.5rem .8rem;color:var(--accent3)">.style.property</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Modifier le style CSS inline</td><td style="padding:.5rem .8rem;color:var(--text-muted)">string</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">17</td><td style="padding:.5rem .8rem;color:var(--accent3)">.classList.add/remove/toggle/contains</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Gérer les classes CSS</td><td style="padding:.5rem .8rem;color:var(--text-muted)">DOMTokenList</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">18</td><td style="padding:.5rem .8rem;color:var(--accent3)">removeChild() / replaceChild() / .remove()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Supprimer ou remplacer un nœud</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Element</td></tr>
+    <tr style="border-bottom:1px solid rgba(45,55,72,.5)"><td style="padding:.5rem .8rem;color:var(--text-muted)">19</td><td style="padding:.5rem .8rem;color:var(--accent3)">.dataset</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Accéder aux attributs data-*</td><td style="padding:.5rem .8rem;color:var(--text-muted)">DOMStringMap</td></tr>
+    <tr><td style="padding:.5rem .8rem;color:var(--text-muted)">20</td><td style="padding:.5rem .8rem;color:var(--accent3)">prepend() / append()</td><td style="padding:.5rem .8rem;color:var(--text-muted)">Ajouter au début / à la fin (ES2015+)</td><td style="padding:.5rem .8rem;color:var(--text-muted)">void</td></tr>
+  </tbody>
+</table>
+</div>
+
+</main>
+
+<script>
+// ══════════ 01 document.write ══════════
+function ex01() {
+  const t = document.getElementById('dw-text').value;
+  const zone = document.getElementById('live-zone');
+  zone.innerHTML += `<p style="color:#1a56db;font-family:Arial;font-size:.88rem">✍ <em>document.write simulé</em> : ${t}</p>`;
+  document.getElementById('r01').innerHTML =
+    `<span class="ok">→ Écrit dans la zone live : "${t}"</span>\n<span class="warn">⚠ En vrai, document.write() après chargement EFFACE toute la page !</span>`;
+}
+
+// ══════════ 02 innerHTML ══════════
+function ex02_set() {
+  const t = document.getElementById('ih-text').value;
+  document.getElementById('r02').innerHTML = t;
+}
+function ex02_add() {
+  const t = document.getElementById('ih-text').value;
+  document.getElementById('r02').innerHTML += '<br>' + t;
+}
+
+// ══════════ 03 textContent ══════════
+function ex03() {
+  const t = document.getElementById('tc-text').value;
+  const r03 = document.getElementById('r03');
+  // Montrer la différence
+  const div1 = document.createElement('div');
+  div1.textContent = t;
+  r03.innerHTML =
+    `<span class="info">textContent (les balises sont DU TEXTE brut) :</span>\n` +
+    `<span class="ok">${div1.textContent}</span>\n\n` +
+    `<span class="info">innerHTML (les balises sont INTERPRÉTÉES) :</span>\n` +
+    `<span class="warn">${t}</span>`;
+}
+
+// ══════════ 04 innerText ══════════
+function ex04() {
+  const t = document.getElementById('it-text').value.replace(/\\n/g, '\n');
+  document.getElementById('r04').innerText = t;
+}
+
+// ══════════ 05 createElement + appendChild ══════════
+function ex05() {
+  const t = document.getElementById('ce-text').value;
+  const tag = document.getElementById('ce-tag').value;
+  const el = document.createElement(tag);
+  el.textContent = t;
+  el.style.color = '#1a56db';
+  el.style.marginBottom = '4px';
+  const parent = document.getElementById('r05ul') || document.getElementById('r05');
+  parent.appendChild(el);
+}
+
+// ══════════ 06 insertBefore ══════════
+function initIB() {
+  document.getElementById('r06').innerHTML =
+    '<ul id="ib-list" style="padding-left:1.2rem;font-family:Arial;font-size:.84rem;color:#111">' +
+    '<li id="ib-item1">Item 1</li>' +
+    '<li id="ib-item2" style="color:#dc2626;font-weight:bold">← Item 2 (référence)</li>' +
+    '<li id="ib-item3">Item 3</li>' +
+    '</ul>';
+}
+initIB();
+function ex06() {
+  const t = document.getElementById('ib-text').value;
+  const newEl = document.createElement('li');
+  newEl.textContent = t;
+  newEl.style.color = 'green';
+  newEl.style.fontWeight = 'bold';
+  const ref = document.getElementById('ib-item2');
+  if (ref) ref.parentNode.insertBefore(newEl, ref);
+}
+
+// ══════════ 07 insertAdjacentHTML ══════════
+function initIAH() {
+  document.getElementById('r07-wrap').innerHTML =
+    '<div id="iah-target" style="background:#dbeafe;border:2px solid #3b82f6;padding:.4rem .7rem;border-radius:6px;font-family:Arial;font-size:.84rem;color:#1e3a8a;margin:.4rem 0">🎯 Élément cible (le HTML sera inséré autour de moi)</div>';
+}
+initIAH();
+function ex07() {
+  const t = document.getElementById('iah-text').value;
+  const pos = document.getElementById('iah-pos').value;
+  const target = document.getElementById('iah-target');
+  if (!target) return;
+  const posColors = { beforebegin:'#fef9c3', afterbegin:'#dcfce7', beforeend:'#ede9fe', afterend:'#fee2e2' };
+  target.insertAdjacentHTML(pos,
+    `<span style="background:${posColors[pos]};color:#111;padding:.2rem .5rem;border-radius:4px;font-family:Arial;font-size:.82rem;display:block;margin:.2rem 0">[${pos}] ${t}</span>`
+  );
+}
+
+// ══════════ 08 createTextNode ══════════
+function ex08() {
+  const t = document.getElementById('ctn-text').value;
+  const p = document.createElement('p');
+  const txt = document.createTextNode(t);
+  p.appendChild(txt);
+  p.style.fontFamily = 'Arial';
+  p.style.fontSize = '.88rem';
+  p.style.color = '#111';
+  document.getElementById('r08').innerHTML = '';
+  document.getElementById('r08').appendChild(p);
+}
+
+// ══════════ 09 getElementById ══════════
+function ex09() {
+  const id = document.getElementById('gbi-id').value;
+  const txt = document.getElementById('gbi-text').value;
+  const el = document.getElementById(id);
+  if (el) {
+    const prev = el.textContent;
+    el.textContent = txt;
+    document.getElementById('r09').innerHTML =
+      `<span class="ok">getElementById("${id}") → trouvé !</span>\n` +
+      `<span class="muted">Avant : "${prev}"</span>\n` +
+      `<span class="info">Après : "${txt}"</span>`;
+  } else {
+    document.getElementById('r09').innerHTML = `<span class="err">getElementById("${id}") → null (non trouvé)</span>`;
+  }
+}
+
+// ══════════ 10 getElementsByClassName ══════════
+function ex10() {
+  const color = document.getElementById('gcn-color').value;
+  const items = document.getElementsByClassName('etudiant');
+  Array.from(items).forEach(el => { el.style.color = color; });
+  document.getElementById('r10').innerHTML =
+    `<span class="ok">getElementsByClassName("etudiant") → ${items.length} éléments trouvés</span>\n` +
+    `<span class="info">Couleur appliquée : ${color}</span>\n` +
+    `<span class="muted">Retourne : HTMLCollection (pas un vrai Array)\nAstuce : Array.from(collection).forEach(...)</span>`;
+}
+
+// ══════════ 11 getElementsByTagName ══════════
+function ex11() {
+  const tag = document.getElementById('gtn-tag').value.toLowerCase();
+  const items = document.getElementsByTagName(tag);
+  document.getElementById('r11').innerHTML =
+    `<span class="ok">getElementsByTagName("${tag}") sur cette page :</span>\n` +
+    `<span class="info">→ ${items.length} élément(s) &lt;${tag}&gt; trouvé(s)</span>\n` +
+    `<span class="muted">Premier texte : "${items[0] ? (items[0].textContent.slice(0,60) + '…') : 'aucun'}"</span>`;
+}
+
+// ══════════ 12 querySelector ══════════
+function ex12() {
+  const sel = document.getElementById('qs-sel').value;
+  try {
+    const el = document.querySelector(sel);
+    document.getElementById('r12').innerHTML = el
+      ? `<span class="ok">querySelector("${sel}") → trouvé !</span>\n<span class="info">Tag : &lt;${el.tagName.toLowerCase()}&gt;\nTexte : "${el.textContent.slice(0,80)}"</span>`
+      : `<span class="warn">querySelector("${sel}") → null (aucun élément)</span>`;
+  } catch(e) {
+    document.getElementById('r12').innerHTML = `<span class="err">Sélecteur invalide : ${e.message}</span>`;
+  }
+}
+
+// ══════════ 13 querySelectorAll ══════════
+function ex13() {
+  const sel = document.getElementById('qsa-sel').value;
+  try {
+    const all = document.querySelectorAll(sel);
+    let out = `<span class="ok">querySelectorAll("${sel}") → ${all.length} élément(s)</span>\n`;
+    all.forEach((el, i) => {
+      out += `<span class="info">[${i}] &lt;${el.tagName.toLowerCase()}&gt; : "${el.textContent.slice(0,50)}"</span>\n`;
+    });
+    document.getElementById('r13').innerHTML = out || `<span class="warn">Aucun résultat.</span>`;
+  } catch(e) {
+    document.getElementById('r13').innerHTML = `<span class="err">Sélecteur invalide : ${e.message}</span>`;
+  }
+}
+
+// ══════════ 14 Navigation DOM ══════════
+function ex14(mode) {
+  const el = document.querySelector('.card'); // première card
+  let out = '';
+  if (mode === 'parent') {
+    out = `<span class="ok">el.parentNode :</span>\n<span class="info">Tag : &lt;${el.parentNode.tagName.toLowerCase()}&gt;\nClasse : "${el.parentNode.className.slice(0,50)}"</span>`;
+  } else if (mode === 'children') {
+    const kids = el.children;
+    out = `<span class="ok">el.children → ${kids.length} enfant(s) directs :</span>\n`;
+    Array.from(kids).forEach((k,i) => { out += `<span class="info">[${i}] &lt;${k.tagName.toLowerCase()}&gt;</span>\n`; });
+  } else {
+    const sib = el.nextElementSibling;
+    out = sib
+      ? `<span class="ok">el.nextElementSibling :</span>\n<span class="info">&lt;${sib.tagName.toLowerCase()}&gt; classe="${sib.className.slice(0,40)}"</span>`
+      : `<span class="warn">Pas de frère suivant.</span>`;
+  }
+  document.getElementById('r14').innerHTML = out;
+}
+
+// ══════════ 15 setAttribute / getAttribute ══════════
+function ex15_set() {
+  const v = document.getElementById('sa-val').value;
+  const link = document.getElementById('demo-link');
+  link.setAttribute('href', v);
+  link.textContent = `Lien → ${v}`;
+  document.getElementById('r15').innerHTML =
+    `<span class="ok">setAttribute("href", "${v}") → appliqué !</span>\n<span class="muted">Cliquez le lien ci-dessus pour tester.</span>`;
+}
+function ex15_get() {
+  const link = document.getElementById('demo-link');
+  const v = link.getAttribute('href');
+  document.getElementById('r15').innerHTML =
+    `<span class="info">getAttribute("href") → "${v}"</span>\n` +
+    `<span class="muted">Autres attributs : id="${link.getAttribute('id')}"</span>`;
+}
+
+// ══════════ 16 style.property ══════════
+function ex16() {
+  const color = document.getElementById('st-color').value;
+  const size = document.getElementById('st-size').value;
+  const el = document.getElementById('style-demo');
+  el.style.color = color;
+  el.style.fontSize = size + 'px';
+  el.style.fontWeight = '700';
+  el.style.transition = 'all .3s';
+}
+
+// ══════════ 17 classList ══════════
+function ex17(method, cls) {
+  const el = document.getElementById('cl-demo');
+  el.classList[method](cls);
+  const classes = Array.from(el.classList);
+  document.getElementById('r17').innerHTML =
+    `<span class="ok">classList.${method}("${cls}") exécuté !</span>\n` +
+    `<span class="info">Classes actuelles : [${classes.map(c => '"'+c+'"').join(', ')}]</span>\n` +
+    `<span class="muted">contains("actif") → ${el.classList.contains('actif')}</span>`;
+  el.textContent = `Je suis la boîte (classes : ${classes.join(', ') || 'aucune'})`;
+}
+
+// ══════════ 18 removeChild / replaceChild ══════════
+function initR18() {
+  document.getElementById('r18-container').innerHTML =
+    '<p id="rc-p1" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item A (cliquez Supprimer)</p>' +
+    '<p id="rc-p2" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item B (cliquez Remplacer)</p>' +
+    '<p id="rc-p3" style="color:#111;font-family:Arial;font-size:.84rem;padding:.2rem">📌 Item C</p>';
+  document.getElementById('r18').innerHTML = '<span class="muted">Réinitialisé.</span>';
+}
+function ex18_remove() {
+  const el = document.getElementById('rc-p1');
+  if (el) {
+    el.parentNode.removeChild(el);
+    document.getElementById('r18').innerHTML = `<span class="ok">removeChild(Item A) → supprimé !</span>\n<span class="muted">el.remove() fait la même chose en ES2015+</span>`;
+  } else {
+    document.getElementById('r18').innerHTML = `<span class="warn">Item A déjà supprimé. Cliquez ↺ Reset.</span>`;
+  }
+}
+function ex18_replace() {
+  const ancien = document.getElementById('rc-p2');
+  if (ancien) {
+    const nouveau = document.createElement('p');
+    nouveau.style.cssText = 'color:green;font-family:Arial;font-size:.84rem;padding:.2rem;font-weight:bold';
+    nouveau.textContent = '✅ Item B REMPLACÉ par un nouveau nœud !';
+    ancien.parentNode.replaceChild(nouveau, ancien);
+    document.getElementById('r18').innerHTML = `<span class="ok">replaceChild(nouveau, ancien) → remplacé !</span>`;
+  } else {
+    document.getElementById('r18').innerHTML = `<span class="warn">Item B déjà remplacé. Cliquez ↺ Reset.</span>`;
+  }
+}
+
+// ══════════ 19 dataset ══════════
+function ex19_read() {
+  const el = document.getElementById('ds-el');
+  const ds = el.dataset;
+  let out = `<span class="ok">el.dataset :</span>\n`;
+  for (let k in ds) { out += `<span class="info">  dataset.${k} → "${ds[k]}"</span>\n`; }
+  document.getElementById('r19').innerHTML = out;
+}
+function ex19_write() {
+  const el = document.getElementById('ds-el');
+  const k = document.getElementById('ds-key').value;
+  const v = document.getElementById('ds-val2').value;
+  el.dataset[k] = v;
+  document.getElementById('r19').innerHTML =
+    `<span class="ok">el.dataset.${k} = "${v}" → écrit !</span>\n` +
+    `<span class="muted">Dans le HTML : data-${k.replace(/([A-Z])/g,'-$1').toLowerCase()}="${v}"</span>`;
+  ex19_read();
+}
+
+// ══════════ 20 Constructeur live ══════════
+function ex20_append() {
+  const t = document.getElementById('lb-text').value;
+  const tag = document.getElementById('lb-tag').value;
+  const color = document.getElementById('lb-color').value;
+  const el = document.createElement(tag);
+  el.textContent = t;
+  el.style.color = color;
+  el.style.margin = '.3rem 0';
+  el.style.fontFamily = 'Arial';
+  document.getElementById('live-zone').append(el);
+  document.getElementById('r20').innerHTML =
+    `<span class="ok">append(&lt;${tag}&gt;"${t}") → ajouté en FIN de zone</span>`;
+}
+function ex20_prepend() {
+  const t = document.getElementById('lb-text').value;
+  const tag = document.getElementById('lb-tag').value;
+  const color = document.getElementById('lb-color').value;
+  const el = document.createElement(tag);
+  el.textContent = t;
+  el.style.color = color;
+  el.style.margin = '.3rem 0';
+  el.style.fontFamily = 'Arial';
+  document.getElementById('live-zone').prepend(el);
+  document.getElementById('r20').innerHTML =
+    `<span class="ok">prepend(&lt;${tag}&gt;"${t}") → ajouté en DÉBUT de zone</span>`;
+}
+</script>
+</body>
+</html>
