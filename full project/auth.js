@@ -1,5 +1,21 @@
 let users = [];
 
+const tabs = document.querySelectorAll(".tab-btn");
+const panels = document.querySelectorAll(".auth-panel");
+
+tabs.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    tabs.forEach((b) => b.classList.remove("active"));
+    panels.forEach((p) => p.classList.remove("active"));
+
+    btn.classList.add("active");
+    const target = document.getElementById("panel-" + btn.dataset.tab);
+    if (target) {
+      target.classList.add("active");
+    }
+  });
+});
+
 function setMessage(id, text, type) {
   const box = document.getElementById(id);
   if (!text) {
@@ -49,6 +65,52 @@ document.getElementById("btnSignIn").addEventListener("click", () => {
   }
 
   setMessage("msgSignIn", `Connexion réussie. Bienvenue ${user.fullName}.`, "success");
+});
+
+document.getElementById("btnSignUp").addEventListener("click", () => {
+  const fullName = document.getElementById("signupName").value.trim();
+  const email = normalize(document.getElementById("signupEmail").value);
+  const password = document.getElementById("signupPassword").value;
+
+  if (!fullName || !email || !password) {
+    setMessage("msgSignUp", "Tous les champs sont obligatoires.", "error");
+    return;
+  }
+
+  if (password.length < 4) {
+    setMessage("msgSignUp", "Le mot de passe doit avoir au moins 4 caractères.", "error");
+    return;
+  }
+
+  const exists = users.some((u) => normalize(u.email) === email);
+  if (exists) {
+    setMessage("msgSignUp", "Cet email existe déjà.", "error");
+    return;
+  }
+
+  users.push({
+    id: users.length + 1,
+    fullName,
+    email,
+    password
+  });
+  setMessage("msgSignUp", `Compte créé pour ${fullName}. Vous pouvez vous connecter.`, "success");
+});
+
+document.getElementById("btnForgot").addEventListener("click", () => {
+  const email = normalize(document.getElementById("forgotEmail").value);
+  if (!email) {
+    setMessage("msgForgot", "Merci de saisir un email.", "error");
+    return;
+  }
+
+  const user = users.find((u) => normalize(u.email) === email);
+  if (!user) {
+    setMessage("msgForgot", "Aucun compte trouvé avec cet email.", "error");
+    return;
+  }
+
+  setMessage("msgForgot", `Demande envoyée. Mot de passe actuel (démo): ${user.password}`, "success");
 });
 
 loadUsers();

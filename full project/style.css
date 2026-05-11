@@ -248,6 +248,37 @@ a {
   padding: 0 1rem;
 }
 
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.tab-btn.active {
+  background: #e8f0ff;
+  color: var(--primary-dark);
+  border-color: #bfd3ff;
+}
+
+.auth-panel {
+  display: none;
+}
+
+.auth-panel.active {
+  display: block;
+}
+
 .form-row {
   display: grid;
   gap: 0.35rem;
