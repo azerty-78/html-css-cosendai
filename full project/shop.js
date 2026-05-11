@@ -24,8 +24,9 @@ function renderProducts(products) {
     const card = document.createElement("article");
     card.className = "section-card";
     card.innerHTML = `
+      <img class="product-image" src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
-      <p>Catégorie : ${product.category}</p>
+      <p class="product-meta">Catégorie : ${product.category}</p>
       <p><strong>${formatPrice(product.price)}</strong></p>
       <button class="btn btn-primary" data-id="${product.id}">Ajouter au panier</button>
     `;
@@ -80,13 +81,36 @@ function renderCart() {
     row.innerHTML = `
       <td>${item.name}</td>
       <td>${formatPrice(item.price)}</td>
-      <td>${item.qty}</td>
+      <td>
+        <div class="qty-actions">
+          <button class="qty-btn" data-action="decrease" data-id="${item.id}" type="button">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" data-action="increase" data-id="${item.id}" type="button">+</button>
+        </div>
+      </td>
       <td>${formatPrice(subTotal)}</td>
+      <td><button class="remove-btn" data-action="remove" data-id="${item.id}" type="button">Supprimer</button></td>
     `;
     cartBody.appendChild(row);
   });
 
   cartTotal.textContent = `Total : ${total} MAD`;
+}
+
+function updateCartItem(productId, action) {
+  const item = cart.find((c) => c.id === productId);
+  if (!item) return;
+
+  if (action === "increase") item.qty += 1;
+  if (action === "decrease") item.qty -= 1;
+
+  cart = cart.filter((c) => c.qty > 0);
+  renderCart();
+}
+
+function removeCartItem(productId) {
+  cart = cart.filter((c) => c.id !== productId);
+  renderCart();
 }
 
 async function loadProducts() {
@@ -120,6 +144,23 @@ categoryFilter.addEventListener("change", () => {
 clearCartBtn.addEventListener("click", () => {
   cart = [];
   renderCart();
+});
+
+cartBody.addEventListener("click", (event) => {
+  const btn = event.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.dataset.action;
+  const id = Number(btn.dataset.id);
+  if (!id) return;
+
+  if (action === "increase" || action === "decrease") {
+    updateCartItem(id, action);
+  }
+
+  if (action === "remove") {
+    removeCartItem(id);
+  }
 });
 
 loadProducts();
