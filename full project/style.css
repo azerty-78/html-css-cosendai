@@ -1,0 +1,287 @@
+/* ===== Base ===== */
+:root {
+  --bg: #f4f7fb;
+  --text: #1f2937;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --surface: #ffffff;
+  --border: #dbe3ef;
+  --muted: #6b7280;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ===== Header / nav ===== */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+/* ===== Common blocks ===== */
+.hero,
+.section-card,
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.hero {
+  margin-top: 1.2rem;
+}
+
+.hero h1 {
+  margin-bottom: 0.6rem;
+}
+
+.hero p {
+  color: var(--muted);
+}
+
+.hero-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.section-block {
+  margin-top: 1rem;
+}
+
+.section-block h2 {
+  margin-bottom: 0.6rem;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.section-card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.section-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: #e8f0ff;
+  color: var(--primary-dark);
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-light {
+  background: #eef2ff;
+  color: var(--primary-dark);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.feature-list {
+  margin-left: 1rem;
+}
+
+.feature-list li {
+  margin-bottom: 0.35rem;
+}
+
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.simple-table th,
+.simple-table td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 0.45rem;
+}
+
+.simple-table th {
+  color: var(--muted);
+  background: #f8fbff;
+}
+
+.contact-form textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.muted-text {
+  color: var(--muted);
+}
+
+.footer {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem 1rem 0.7rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.footer-title {
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.footer-links {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.footer-links a:hover {
+  color: var(--primary-dark);
+}
+
+.footer-copy {
+  border-top: 1px solid var(--border);
+  margin-top: 0.7rem;
+  padding: 0.75rem 1rem 1rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* ===== Auth page ===== */
+.auth-wrapper {
+  max-width: 700px;
+  margin: 1.2rem auto 0;
+  padding: 0 1rem;
+}
+
+.form-row {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.95rem;
+}
+
+.msg {
+  margin-top: 0.7rem;
+  font-size: 0.92rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+}
+
+.msg.success {
+  background: #ecfdf3;
+  color: var(--success);
+  border: 1px solid #b7efcd;
+}
+
+.msg.error {
+  background: #fef2f2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+

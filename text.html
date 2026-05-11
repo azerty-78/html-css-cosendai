@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="app.js"></script>
+    <!-- <script src="app.js"></script> -->
 </head>
 <body>
 
-    <h1></h1>
+    <h1 id="titre">Titre de ma page</h1>
+
+    <button id="btn-click">Cliquez moi !</button>
+
     <script>
-        const titre = document.querySelector("h1");
-        titre.textContent = "Bonjour JavaScript";
+
+        //interaction avec css
+        document.getElementById("titre").style.color = "#53e6ff";
+
+        document.getElementById("btn-click").addEventListener("click", function(event) {
+            console.log(event.type, event.target);
+            let i =0;
+            do{
+                alert("Merci pour tout..."+ i);
+                i++
+            }while(i<= 5);
+            
+        });
+                    
     </script>
 </body>
 </html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentification - Mini Plateforme</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index1.html">WebSkills Hub</a>
+      <nav class="nav-links">
+        <a href="index1.html">Accueil</a>
+        <a href="index1.html#programmes">Programmes</a>
+        <a href="index1.html#planning">Planning</a>
+        <a href="index2.html">Authentification</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-wrapper">
+    <section class="auth-card">
+      <h1 style="margin-bottom:0.5rem;">Espace Authentification</h1>
+      <p class="muted-text" style="margin-bottom:0.9rem;">Connecte-toi, crée un compte, ou réinitialise ton mot de passe.</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="signin">Sign in</button>
+        <button class="tab-btn" data-tab="signup">Sign up</button>
+        <button class="tab-btn" data-tab="forgot">Forgot password</button>
+      </div>
+
+      <!-- Sign in -->
+      <section class="auth-panel active" id="panel-signin">
+        <div class="form-row">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" placeholder="exemple@mail.com">
+        </div>
+        <div class="form-row">
+          <label for="loginPassword">Mot de passe</label>
+          <input id="loginPassword" type="password" placeholder="mot de passe">
+        </div>
+        <button class="btn btn-primary" id="btnSignIn">Se connecter</button>
+        <div id="msgSignIn"></div>
+      </section>
+
+      <!-- Sign up -->
+      <section class="auth-panel" id="panel-signup">
+        <div class="form-row">
+          <label for="signupName">Nom complet</label>
+          <input id="signupName" type="text" placeholder="Votre nom">
+        </div>
+        <div class="form-row">
+          <label for="signupEmail">Email</label>
+          <input id="signupEmail" type="email" placeholder="exemple@mail.com">
+        </div>
+        <div class="form-row">
+          <label for="signupPassword">Mot de passe</label>
+          <input id="signupPassword" type="password" placeholder="minimum 4 caractères">
+        </div>
+        <button class="btn btn-primary" id="btnSignUp">Créer un compte</button>
+        <div id="msgSignUp"></div>
+      </section>
+
+      <!-- Forgot -->
+      <section class="auth-panel" id="panel-forgot">
+        <div class="form-row">
+          <label for="forgotEmail">Email du compte</label>
+          <input id="forgotEmail" type="email" placeholder="exemple@mail.com">
+        </div>
+        <button class="btn btn-primary" id="btnForgot">Réinitialiser</button>
+        <div id="msgForgot"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-title">WebSkills Hub</p>
+        <p>Espace membre et accès aux contenus.</p>
+      </div>
+      <div>
+        <p class="footer-title">Navigation</p>
+        <div class="footer-links">
+          <a href="index1.html">Accueil</a>
+          <a href="index1.html#programmes">Programmes</a>
+          <a href="index1.html#contact">Contact</a>
+          <a href="index2.html">Connexion</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Technique</p>
+        <p>Données locales : <code>users.json</code></p>
+      </div>
+    </div>
+    <div class="container footer-copy">
+      &copy; 2026 WebSkills Hub. Tous droits réservés.
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+</body>
+</html>
