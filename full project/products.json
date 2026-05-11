@@ -4,42 +4,42 @@
       "id": 1,
       "name": "Clavier Gamer K20",
       "category": "Informatique",
-      "price": 299,
+      "price": 2990,
       "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=70"
     },
     {
       "id": 2,
       "name": "Souris Sans Fil M8",
       "category": "Informatique",
-      "price": 149,
+      "price": 1490,
       "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=70"
     },
     {
       "id": 3,
       "name": "Casque Audio Hifi X2",
       "category": "Audio",
-      "price": 399,
+      "price": 3990,
       "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=70"
     },
     {
       "id": 4,
       "name": "Montre Connectée FitPro",
       "category": "Accessoires",
-      "price": 599,
+      "price": 5990,
       "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=70"
     },
     {
       "id": 5,
       "name": "Sac à Dos Urbain",
       "category": "Mode",
-      "price": 219,
+      "price": 2190,
       "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=70"
     },
     {
       "id": 6,
       "name": "Lampe Bureau LED",
       "category": "Maison",
-      "price": 179,
+      "price": 1790,
       "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=70"
     }
   ]
