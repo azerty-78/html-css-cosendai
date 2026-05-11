@@ -77,6 +77,22 @@ a {
   background: #e9f1ff;
 }
 
+.cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 0.25rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 0.35rem;
+}
+
 /* ===== Common blocks ===== */
 .hero,
 .section-card,

@@ -12,6 +12,7 @@ const productsGrid = document.getElementById("productsGrid");
 const categoryFilter = document.getElementById("categoryFilter");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
+const cartCount = document.getElementById("cartCount");
 const cartBody = document.getElementById("cartBody");
 const cartTotal = document.getElementById("cartTotal");
 const cartEmpty = document.getElementById("cartEmpty");
@@ -20,6 +21,15 @@ const clearCartBtn = document.getElementById("clearCartBtn");
 // Formate le prix avec l'unité XAF
 function formatPrice(price) {
   return `${price} XAF`;
+}
+
+function updateCartCount() {
+  if (!cartCount) return;
+  let qty = 0;
+  for (let i = 0; i < cart.length; i += 1) {
+    qty += cart[i].qty;
+  }
+  cartCount.textContent = String(qty);
 }
 
 // Sauvegarde le panier dans le navigateur
@@ -167,6 +177,7 @@ function renderCart() {
   if (!cart.length) {
     cartEmpty.style.display = "block";
     cartTotal.textContent = "Total : 0 XAF";
+    updateCartCount();
     saveCart();
     return;
   }
@@ -195,6 +206,7 @@ function renderCart() {
   }
 
   cartTotal.textContent = `Total : ${calculateCartTotal()} XAF`;
+  updateCartCount();
   saveCart();
 }
 
