@@ -37,11 +37,25 @@
     <section id="catalogue" class="section-block">
       <h2>Catalogue produits</h2>
       <div class="panel">
-        <div class="form-row" style="max-width: 280px;">
-          <label for="categoryFilter">Filtrer par catégorie</label>
-          <select id="categoryFilter">
-            <option value="all">Toutes les catégories</option>
-          </select>
+        <div class="filters-row">
+          <div class="form-row">
+            <label for="searchInput">Rechercher un produit</label>
+            <input id="searchInput" type="text" placeholder="Ex: Clavier, Montre...">
+          </div>
+          <div class="form-row">
+            <label for="categoryFilter">Filtrer par catégorie</label>
+            <select id="categoryFilter">
+              <option value="all">Toutes les catégories</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="sortSelect">Trier par prix</label>
+            <select id="sortSelect">
+              <option value="default">Par défaut</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+            </select>
+          </div>
         </div>
         <div id="productsGrid" class="section-grid"></div>
       </div>

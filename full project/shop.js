@@ -1,8 +1,17 @@
+// ===============================
+// Mini boutique e-commerce (JS)
+// ===============================
+// allProducts : catalogue complet chargé depuis products.json
+// cart        : panier utilisateur en mémoire
 let allProducts = [];
 let cart = [];
+const CART_KEY = "boutique_demo_cart";
 
+// Récupération des éléments DOM principaux
 const productsGrid = document.getElementById("productsGrid");
 const categoryFilter = document.getElementById("categoryFilter");
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
 const cartBody = document.getElementById("cartBody");
 const cartTotal = document.getElementById("cartTotal");
 const cartEmpty = document.getElementById("cartEmpty");
@@ -11,6 +20,26 @@ const clearCartBtn = document.getElementById("clearCartBtn");
 // Formate le prix avec l'unité XAF
 function formatPrice(price) {
   return `${price} XAF`;
+}
+
+// Sauvegarde le panier dans le navigateur
+function saveCart() {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+// Charge le panier depuis le navigateur (si disponible)
+function loadCartFromStorage() {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      cart = parsed;
+    }
+  } catch (error) {
+    console.warn("Panier localStorage invalide :", error.message);
+    cart = [];
+  }
 }
 
 // Retourne un libellé court selon la catégorie (exemple d'usage de switch)
@@ -32,6 +61,7 @@ function getCategoryBadge(category) {
 }
 
 function renderProducts(products) {
+  // Nettoie la grille avant d'afficher la nouvelle liste
   productsGrid.innerHTML = "";
 
   if (!products.length) {
@@ -64,6 +94,7 @@ function renderProducts(products) {
 }
 
 function renderCategories(products) {
+  // Crée une liste unique des catégories
   const categories = [...new Set(products.map((p) => p.category))];
   for (let i = 0; i < categories.length; i += 1) {
     const category = categories[i];
@@ -72,6 +103,36 @@ function renderCategories(products) {
     option.textContent = category;
     categoryFilter.appendChild(option);
   }
+}
+
+// Applique recherche + filtre catégorie + tri prix
+function applyFilters() {
+  let result = [...allProducts];
+
+  const searchValue = (searchInput.value || "").trim().toLowerCase();
+  const categoryValue = categoryFilter.value;
+  const sortValue = sortSelect.value;
+
+  if (searchValue) {
+    result = result.filter((p) => p.name.toLowerCase().includes(searchValue));
+  }
+
+  if (categoryValue !== "all") {
+    result = result.filter((p) => p.category === categoryValue);
+  }
+
+  switch (sortValue) {
+    case "price-asc":
+      result.sort((a, b) => a.price - b.price);
+      break;
+    case "price-desc":
+      result.sort((a, b) => b.price - a.price);
+      break;
+    default:
+      break;
+  }
+
+  renderProducts(result);
 }
 
 function addToCart(productId) {
@@ -91,6 +152,7 @@ function addToCart(productId) {
 }
 
 function calculateCartTotal() {
+  // Calcule le total général du panier
   let total = 0;
   for (let i = 0; i < cart.length; i += 1) {
     total += cart[i].price * cart[i].qty;
@@ -99,11 +161,13 @@ function calculateCartTotal() {
 }
 
 function renderCart() {
+  // Réaffiche entièrement le tableau panier
   cartBody.innerHTML = "";
 
   if (!cart.length) {
     cartEmpty.style.display = "block";
     cartTotal.textContent = "Total : 0 XAF";
+    saveCart();
     return;
   }
 
@@ -131,9 +195,11 @@ function renderCart() {
   }
 
   cartTotal.textContent = `Total : ${calculateCartTotal()} XAF`;
+  saveCart();
 }
 
 function updateCartItem(productId, action) {
+  // Met à jour la quantité d'un article selon l'action
   const item = cart.find((c) => c.id === productId);
   if (!item) return;
 
@@ -154,11 +220,14 @@ function updateCartItem(productId, action) {
 }
 
 function removeCartItem(productId) {
+  // Supprime complètement une ligne du panier
   cart = cart.filter((c) => c.id !== productId);
   renderCart();
 }
 
 async function loadProducts() {
+  // Charge les produits depuis le JSON.
+  // Si ça échoue (ex: ouverture locale sans serveur), on utilise un fallback.
   try {
     const res = await fetch("products.json");
     if (!res.ok) throw new Error("Impossible de charger products.json");
@@ -177,25 +246,29 @@ async function loadProducts() {
   renderProducts(allProducts);
 }
 
+// Filtrage du catalogue par catégorie
 categoryFilter.addEventListener("change", () => {
-  const value = categoryFilter.value;
-
-  // switch simple pour montrer un cas pédagogique
-  switch (value) {
-    case "all":
-      renderProducts(allProducts);
-      break;
-    default:
-      renderProducts(allProducts.filter((p) => p.category === value));
-      break;
-  }
+  applyFilters();
 });
 
+// Recherche en direct
+searchInput.addEventListener("input", () => {
+  applyFilters();
+});
+
+// Tri du catalogue
+sortSelect.addEventListener("change", () => {
+  applyFilters();
+});
+
+// Vider complètement le panier
 clearCartBtn.addEventListener("click", () => {
   cart = [];
   renderCart();
 });
 
+// Délégation d'événements sur le tableau panier :
+// un seul listener gère +, -, supprimer
 cartBody.addEventListener("click", (event) => {
   const btn = event.target.closest("button");
   if (!btn) return;
@@ -213,5 +286,7 @@ cartBody.addEventListener("click", (event) => {
   }
 });
 
+// Initialisation de la page
+loadCartFromStorage();
 loadProducts();
 renderCart();
