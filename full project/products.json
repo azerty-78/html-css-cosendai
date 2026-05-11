@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Clavier Gamer K20",
+      "category": "Informatique",
+      "price": 299
+    },
+    {
+      "id": 2,
+      "name": "Souris Sans Fil M8",
+      "category": "Informatique",
+      "price": 149
+    },
+    {
+      "id": 3,
+      "name": "Casque Audio Hifi X2",
+      "category": "Audio",
+      "price": 399
+    },
+    {
+      "id": 4,
+      "name": "Montre Connectée FitPro",
+      "category": "Accessoires",
+      "price": 599
+    },
+    {
+      "id": 5,
+      "name": "Sac à Dos Urbain",
+      "category": "Mode",
+      "price": 219
+    },
+    {
+      "id": 6,
+      "name": "Lampe Bureau LED",
+      "category": "Maison",
+      "price": 179
+    }
+  ]
+}

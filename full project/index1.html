@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Plateforme - Accueil</title>
+  <title>Boutique Demo - E-commerce</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="index1.html">WebSkills Hub</a>
+      <a class="brand" href="index1.html">Boutique Demo</a>
       <nav class="nav-links">
         <a href="#home">Accueil</a>
-        <a href="#programmes">Programmes</a>
-        <a href="#planning">Planning</a>
-        <a href="#contact">Contact</a>
+        <a href="#catalogue">Catalogue</a>
+        <a href="#panier">Panier</a>
+        <a href="#infos">Infos</a>
         <a href="index2.html">Connexion</a>
       </nav>
     </div>
@@ -22,134 +22,91 @@
 
   <main class="container">
     <section class="hero" id="home">
-      <h1>Plateforme d'apprentissage web</h1>
+      <h1>Mini site e-commerce</h1>
       <p>
-        WebSkills Hub est une plateforme de formation web complète, pensée pour apprendre
-        et pratiquer HTML, CSS et JavaScript dans un environnement simple, structuré et
-        accessible. Elle propose un parcours progressif, un espace membre et des contenus
-        orientés projet pour passer rapidement de la théorie à la pratique.
+        Cette boutique démo charge ses articles depuis un fichier <code>products.json</code>.
+        Tu peux filtrer les produits, les ajouter au panier et voir le total en temps réel.
+        Le code reste simple pour que tes étudiants comprennent facilement.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#programmes">Voir les programmes</a>
-        <a class="btn btn-light" href="index2.html">Accéder à l'espace membre</a>
+        <a class="btn btn-primary" href="#catalogue">Voir les produits</a>
+        <a class="btn btn-light" href="#panier">Voir le panier</a>
       </div>
     </section>
 
-    <section id="programmes" class="section-block">
-      <h2>Programmes disponibles</h2>
-      <div class="section-grid">
-        <article class="section-card">
-          <h3>HTML Fondamentaux</h3>
-          <p>Structure d'une page, sémantique, formulaires et bonnes pratiques.</p>
-          <span class="tag">Niveau : Débutant</span>
-        </article>
-
-        <article class="section-card">
-          <h3>CSS Essentiel</h3>
-          <p>Mise en page, responsive, composants visuels et style propre.</p>
-          <span class="tag">Niveau : Débutant+</span>
-        </article>
-
-        <article class="section-card">
-          <h3>JavaScript Pratique</h3>
-          <p>Logique, DOM, événements et mini interactions réelles.</p>
-          <span class="tag">Niveau : Intermédiaire</span>
-        </article>
+    <section id="catalogue" class="section-block">
+      <h2>Catalogue produits</h2>
+      <div class="panel">
+        <div class="form-row" style="max-width: 280px;">
+          <label for="categoryFilter">Filtrer par catégorie</label>
+          <select id="categoryFilter">
+            <option value="all">Toutes les catégories</option>
+          </select>
+        </div>
+        <div id="productsGrid" class="section-grid"></div>
       </div>
     </section>
 
-    <section id="planning" class="section-block">
-      <h2>Planning hebdomadaire</h2>
+    <section id="panier" class="section-block">
+      <h2>Panier</h2>
       <div class="panel">
         <table class="simple-table">
           <thead>
             <tr>
-              <th>Jour</th>
-              <th>Module</th>
-              <th>Durée</th>
-              <th>Format</th>
+              <th>Article</th>
+              <th>Prix unitaire</th>
+              <th>Quantité</th>
+              <th>Sous-total</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Lundi</td>
-              <td>HTML Fondamentaux</td>
-              <td>2h</td>
-              <td>Cours + atelier</td>
-            </tr>
-            <tr>
-              <td>Mercredi</td>
-              <td>CSS Essentiel</td>
-              <td>2h</td>
-              <td>Exemples guidés</td>
-            </tr>
-            <tr>
-              <td>Vendredi</td>
-              <td>JavaScript Pratique</td>
-              <td>2h30</td>
-              <td>Projet mini app</td>
-            </tr>
-          </tbody>
+          <tbody id="cartBody"></tbody>
         </table>
+        <p id="cartEmpty" class="muted-text">Le panier est vide.</p>
+        <h3 id="cartTotal" style="margin-top:0.8rem;">Total : 0 MAD</h3>
+        <div style="margin-top:0.8rem;">
+          <button class="btn btn-light" id="clearCartBtn" type="button">Vider le panier</button>
+        </div>
       </div>
     </section>
 
-    <section class="section-block">
-      <h2>Fonctionnalités de la plateforme</h2>
+    <section id="infos" class="section-block">
+      <h2>Informations boutique</h2>
       <div class="panel">
         <ul class="feature-list">
-          <li>Navigation simple entre les modules et l'espace membre.</li>
-          <li>Contenus progressifs avec exemples courts et compréhensibles.</li>
-          <li>Page de connexion liée à une base locale `users.json`.</li>
-          <li>Structure de projet claire pour démarrer rapidement.</li>
+          <li>Livraison standard : 24h à 72h.</li>
+          <li>Paiement à la livraison ou carte bancaire.</li>
+          <li>Support client : 7j/7.</li>
+          <li>Retour produit : 7 jours.</li>
         </ul>
       </div>
-    </section>
-
-    <section id="contact" class="section-block">
-      <h2>Contact rapide</h2>
-      <form class="panel contact-form">
-        <div class="form-row">
-          <label for="name">Nom</label>
-          <input id="name" type="text" placeholder="Votre nom">
-        </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" type="email" placeholder="votre@email.com">
-        </div>
-        <div class="form-row">
-          <label for="message">Message</label>
-          <textarea id="message" placeholder="Votre message..."></textarea>
-        </div>
-        <button type="button" class="btn btn-primary">Envoyer</button>
-      </form>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-title">WebSkills Hub</p>
-        <p>Plateforme web de formation HTML, CSS, JavaScript.</p>
+        <p class="footer-title">Boutique Demo</p>
+        <p>Mini e-commerce pédagogique en HTML, CSS et JavaScript.</p>
       </div>
       <div>
         <p class="footer-title">Navigation</p>
         <div class="footer-links">
           <a href="#home">Accueil</a>
-          <a href="#programmes">Programmes</a>
-          <a href="#planning">Planning</a>
+          <a href="#catalogue">Catalogue</a>
+          <a href="#panier">Panier</a>
           <a href="index2.html">Connexion</a>
         </div>
       </div>
       <div>
-        <p class="footer-title">Informations</p>
-        <p>contact@webskillshub.local</p>
+        <p class="footer-title">Contact</p>
+        <p>contact@boutiquedemo.local</p>
         <p>+212 6 00 00 00 00</p>
       </div>
     </div>
     <div class="container footer-copy">
-      &copy; 2026 WebSkills Hub. Tous droits réservés.
+      &copy; 2026 Boutique Demo. Tous droits réservés.
     </div>
   </footer>
+  <script src="shop.js"></script>
 </body>
 </html>
