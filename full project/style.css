@@ -248,6 +248,28 @@ a {
   padding: 0 1rem;
 }
 
+.auth-title {
+  margin-bottom: 0.45rem;
+}
+
+.auth-subtitle {
+  margin-bottom: 0.9rem;
+}
+
+.auth-section {
+  margin-bottom: 1rem;
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fbfdff;
+}
+
+.auth-section h2 {
+  margin-bottom: 0.55rem;
+  font-size: 1.05rem;
+  color: var(--primary-dark);
+}
+
 .tabs {
   display: flex;
   gap: 0.5rem;

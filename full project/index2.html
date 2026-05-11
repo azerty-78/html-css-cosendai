@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Authentification - Mini Plateforme</title>
+  <title>Connexion - WebSkills Hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,24 +14,19 @@
         <a href="index1.html">Accueil</a>
         <a href="index1.html#programmes">Programmes</a>
         <a href="index1.html#planning">Planning</a>
-        <a href="index2.html">Authentification</a>
+        <a href="index2.html">Connexion</a>
       </nav>
     </div>
   </header>
 
   <main class="auth-wrapper">
     <section class="auth-card">
-      <h1 style="margin-bottom:0.5rem;">Espace Authentification</h1>
-      <p class="muted-text" style="margin-bottom:0.9rem;">Connecte-toi, crée un compte, ou réinitialise ton mot de passe.</p>
-
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="signin">Sign in</button>
-        <button class="tab-btn" data-tab="signup">Sign up</button>
-        <button class="tab-btn" data-tab="forgot">Forgot password</button>
-      </div>
+      <h1 class="auth-title">Connexion</h1>
+      <p class="muted-text auth-subtitle">Accède à ton compte, crée un nouveau profil, ou récupère ton mot de passe.</p>
 
       <!-- Sign in -->
-      <section class="auth-panel active" id="panel-signin">
+      <section id="panel-signin" class="auth-section">
+        <h2>Se connecter</h2>
         <div class="form-row">
           <label for="loginEmail">Email</label>
           <input id="loginEmail" type="email" placeholder="exemple@mail.com">
@@ -45,7 +40,8 @@
       </section>
 
       <!-- Sign up -->
-      <section class="auth-panel" id="panel-signup">
+      <section id="panel-signup" class="auth-section">
+        <h2>Créer un compte</h2>
         <div class="form-row">
           <label for="signupName">Nom complet</label>
           <input id="signupName" type="text" placeholder="Votre nom">
@@ -63,7 +59,8 @@
       </section>
 
       <!-- Forgot -->
-      <section class="auth-panel" id="panel-forgot">
+      <section id="panel-forgot" class="auth-section">
+        <h2>Mot de passe oublié</h2>
         <div class="form-row">
           <label for="forgotEmail">Email du compte</label>
           <input id="forgotEmail" type="email" placeholder="exemple@mail.com">
