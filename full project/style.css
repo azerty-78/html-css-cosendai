@@ -37,11 +37,12 @@ a {
 
 /* ===== Header / nav ===== */
 .site-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, #ffffff, #f2f7ff);
+  border-bottom: 1px solid #cfe0ff;
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
 }
 
 .site-header .container {
@@ -55,6 +56,7 @@ a {
 .brand {
   font-weight: 700;
   color: var(--primary);
+  font-size: 1.05rem;
 }
 
 .nav-links {
@@ -65,11 +67,14 @@ a {
 
 .nav-links a {
   font-size: 0.95rem;
-  color: var(--muted);
+  color: #475569;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
 }
 
 .nav-links a:hover {
-  color: var(--primary);
+  color: var(--primary-dark);
+  background: #e9f1ff;
 }
 
 /* ===== Common blocks ===== */
@@ -186,6 +191,18 @@ a {
   padding: 1rem;
 }
 
+.info-description {
+  color: #475569;
+  margin-bottom: 0.8rem;
+}
+
+.info-badges {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
 .feature-list {
   margin-left: 1rem;
 }
@@ -261,8 +278,8 @@ a {
 
 .footer {
   margin-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
+  border-top: 1px solid #c7dafc;
+  background: linear-gradient(180deg, #f8fbff, #eef4ff);
 }
 
 .footer-grid {
@@ -275,7 +292,7 @@ a {
 }
 
 .footer-title {
-  color: var(--text);
+  color: var(--primary-dark);
   font-weight: 700;
   margin-bottom: 0.35rem;
 }
@@ -290,10 +307,10 @@ a {
 }
 
 .footer-copy {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #d3e1fb;
   margin-top: 0.7rem;
   padding: 0.75rem 1rem 1rem;
-  color: var(--muted);
+  color: #546173;
   font-size: 0.88rem;
 }
 
