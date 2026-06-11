@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employé — NovaCorp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-detail">
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container header-top-inner">
+        <a class="header-top-item" href="mailto:contact@novacorp.fr">contact@novacorp.fr</a>
+        <span class="header-top-sep" aria-hidden="true">|</span>
+        <span class="header-top-item">Lun – Ven · 8h – 18h</span>
+        <span class="header-top-sep" aria-hidden="true">|</span>
+        <span class="header-top-item">Douala, Cameroun</span>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-logo" aria-hidden="true">N</span>
+          <span class="brand-text">
+            <strong>NovaCorp</strong>
+            <small>Annuaire interne</small>
+          </span>
+        </a>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav-links" id="mainNav">
+          <a href="index.html">Accueil</a>
+          <a href="index.html#employes" class="active">Employés</a>
+          <a href="index.html#apropos">À propos</a>
+          <a class="btn btn-header" href="index.html#employes">Voir l'annuaire</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="content-section employee-detail-section">
+      <div class="container container-profile">
+        <a href="index.html" class="page-back-link">&larr; Retour à l'annuaire</a>
+
+        <div id="loadingState" class="state-box">
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Chargement du profil employé…</p>
+        </div>
+
+        <div id="errorState" class="state-box state-error hidden">
+          <p id="errorMessage">Employé introuvable.</p>
+          <a class="btn btn-primary" href="index.html">Retour à l'accueil</a>
+        </div>
+
+        <article id="employeeDetail" class="profile-card hidden">
+          <header class="profile-header">
+            <div class="profile-header-accent" aria-hidden="true"></div>
+            <div class="profile-hero">
+              <button type="button" id="editEmployeeBtn" class="btn btn-accent btn-hero-edit">
+                Modifier le profil
+              </button>
+              <div class="profile-hero-main">
+                <div class="profile-avatar" id="employeeAvatarWrap">
+                  <img id="employeeAvatarImg" class="avatar-img avatar-img-lg hidden" alt="">
+                  <span id="employeeAvatarInitials" aria-hidden="true">NC</span>
+                </div>
+                <div class="profile-identity">
+                  <div class="profile-badges">
+                    <span class="badge badge-id">Matricule <strong id="employeeId">—</strong></span>
+                    <span class="badge badge-company">NovaCorp</span>
+                    <span class="badge badge-sex" id="employeeSexBadge">—</span>
+                  </div>
+                  <h1 id="employeeName">Nom de l'employé</h1>
+                  <p class="profile-role" id="employeeJob">—</p>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div id="feedbackMessage" class="feedback hidden" role="status"></div>
+
+          <div class="profile-body">
+            <div class="profile-grid">
+              <section class="profile-panel panel-contact">
+                <h2 class="panel-title">
+                  <span class="panel-icon" aria-hidden="true">☎</span>
+                  Coordonnées
+                </h2>
+                <dl class="detail-list">
+                  <div class="detail-row">
+                    <dt>Email</dt>
+                    <dd><a id="employeeEmail" href="#">—</a></dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Téléphone</dt>
+                    <dd><a id="employeePhone" href="#">—</a></dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Adresse</dt>
+                    <dd id="employeeAddress">—</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section class="profile-panel panel-personal">
+                <h2 class="panel-title">
+                  <span class="panel-icon" aria-hidden="true">◎</span>
+                  Informations personnelles
+                </h2>
+                <dl class="detail-list">
+                  <div class="detail-row">
+                    <dt>Sexe</dt>
+                    <dd id="employeeSex">—</dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Date de naissance</dt>
+                    <dd id="employeeBirthDate">—</dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Poste</dt>
+                    <dd id="employeeJobDetail">—</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section class="profile-panel panel-meta panel-wide">
+                <h2 class="panel-title">
+                  <span class="panel-icon" aria-hidden="true">◷</span>
+                  Fiche employé
+                </h2>
+                <dl class="detail-list detail-list-cols">
+                  <div class="detail-row">
+                    <dt>Entreprise</dt>
+                    <dd>NovaCorp</dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Date d'embauche</dt>
+                    <dd id="employeeCreatedAt">—</dd>
+                  </div>
+                  <div class="detail-row">
+                    <dt>Avatar</dt>
+                    <dd><a id="employeeAvatarLink" href="#" target="_blank" rel="noopener noreferrer">—</a></dd>
+                  </div>
+                </dl>
+              </section>
+            </div>
+          </div>
+
+          <footer class="profile-footer">
+            <a class="btn btn-ghost" href="index.html">Voir tous les employés</a>
+            <button type="button" id="editEmployeeBtnFooter" class="btn btn-accent-outline">
+              Modifier les informations
+            </button>
+          </footer>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal modification -->
+  <div id="editModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-box">
+      <header class="modal-header">
+        <h2 id="editModalTitle">Modifier l'employé</h2>
+        <button type="button" id="closeModalBtn" class="modal-close" aria-label="Fermer">&times;</button>
+      </header>
+
+      <form id="editForm" class="modal-form">
+        <fieldset class="form-section">
+          <legend>Informations principales</legend>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="editName">Nom complet</label>
+              <input type="text" id="editName" name="name" required>
+            </div>
+            <div class="form-field">
+              <label for="editEmail">Email</label>
+              <input type="email" id="editEmail" name="email" required>
+            </div>
+            <div class="form-field">
+              <label for="editJob">Poste</label>
+              <input type="text" id="editJob" name="job" required>
+            </div>
+            <div class="form-field">
+              <label for="editPhone">Téléphone</label>
+              <input type="tel" id="editPhone" name="phone" required>
+            </div>
+            <div class="form-field">
+              <label for="editSex">Sexe</label>
+              <select id="editSex" name="sex" required>
+                <option value="male">Homme</option>
+                <option value="female">Femme</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+            <div class="form-field form-field-full">
+              <label for="editAddress">Adresse</label>
+              <input type="text" id="editAddress" name="address" required>
+            </div>
+            <div class="form-field">
+              <label for="editBirthDate">Date de naissance</label>
+              <input type="date" id="editBirthDate" name="birth_date" required>
+            </div>
+            <div class="form-field form-field-full">
+              <label for="editAvatar">URL de l'avatar</label>
+              <input type="url" id="editAvatar" name="avatar" placeholder="https://...">
+            </div>
+          </div>
+        </fieldset>
+
+        <footer class="modal-footer">
+          <button type="button" id="cancelEditBtn" class="btn btn-ghost">Annuler</button>
+          <button type="submit" id="saveEditBtn" class="btn btn-accent">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-accent" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <a class="footer-brand" href="index.html">
+            <span class="brand-logo brand-logo-sm" aria-hidden="true">N</span>
+            <strong>NovaCorp</strong>
+          </a>
+          <p class="footer-desc">
+            Entreprise fictive spécialisée en solutions numériques.
+            Cet annuaire présente l'ensemble de nos collaborateurs via une API REST.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Navigation</h3>
+          <nav class="footer-nav">
+            <a href="index.html">Accueil</a>
+            <a href="index.html#employes">Annuaire employés</a>
+            <a href="index.html#apropos">À propos</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-contact">
+            <li><a href="mailto:contact@novacorp.fr">contact@novacorp.fr</a></li>
+            <li><a href="tel:+237600000000">+237 600 000 000</a></li>
+            <li>Avenue de l'Innovation, Douala</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Ressources</h3>
+          <nav class="footer-nav">
+            <a href="index.html#employes">API employés</a>
+            <a href="index.html#employes">Liste des employés</a>
+            <a href="index.html#apropos">Documentation projet</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 NovaCorp. Tous droits réservés.</p>
+        <nav class="footer-legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api-get.js"></script>
+  <script src="js/api-post.js"></script>
+  <script src="js/api-put.js"></script>
+  <script src="js/api-delete.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/list-page.js"></script>
+  <script src="js/detail-page.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

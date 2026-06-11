@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — Annuaire des employés</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container header-top-inner">
+        <a class="header-top-item" href="mailto:contact@novacorp.fr">contact@novacorp.fr</a>
+        <span class="header-top-sep" aria-hidden="true">|</span>
+        <span class="header-top-item">Lun – Ven · 8h – 18h</span>
+        <span class="header-top-sep" aria-hidden="true">|</span>
+        <span class="header-top-item">Douala, Cameroun</span>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-logo" aria-hidden="true">N</span>
+          <span class="brand-text">
+            <strong>NovaCorp</strong>
+            <small>Annuaire interne</small>
+          </span>
+        </a>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav-links" id="mainNav">
+          <a href="index.html" class="active">Accueil</a>
+          <a href="#employes">Employés</a>
+          <a href="#apropos">À propos</a>
+          <a class="btn btn-header" href="#employes">Voir l'annuaire</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="hero-badge">REST API · Annuaire interne</p>
+        <h1>Notre équipe NovaCorp</h1>
+        <p class="hero-text">
+          Consultez l'annuaire des employés de notre entreprise fictive.
+          Les données sont chargées dynamiquement depuis une API REST.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section" id="employes">
+      <div class="container">
+        <div class="section-head">
+          <h2>Tous les employés</h2>
+          <p id="employeesCount" class="muted-text">Chargement en cours…</p>
+        </div>
+
+        <div id="loadingState" class="state-box">
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Récupération des employés depuis l'API…</p>
+        </div>
+
+        <div id="errorState" class="state-box state-error hidden">
+          <p>Impossible de charger les employés. Vérifiez votre connexion internet.</p>
+          <button class="btn btn-primary" id="retryBtn" type="button">Réessayer</button>
+        </div>
+
+        <div id="employeesTableWrap" class="table-wrap hidden">
+          <table class="employees-table">
+            <thead>
+              <tr>
+                <th>Matricule</th>
+                <th>Employé</th>
+                <th>Email</th>
+                <th>Poste</th>
+                <th>Téléphone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="employeesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section about-section" id="apropos">
+      <div class="container">
+        <div class="about-card">
+          <h2>À propos de NovaCorp</h2>
+          <p>
+            <strong>NovaCorp</strong> est une entreprise fictive créée à des fins pédagogiques.
+            Ce mini-site utilise <code>fetch</code> pour consommer une API REST
+            et afficher les profils employés (nom, poste, téléphone, adresse, avatar…).
+          </p>
+          <ul class="about-list">
+            <li>Page d'accueil : liste de tous les employés</li>
+            <li>Page détail : fiche complète au clic sur un employé</li>
+            <li>Design responsive adapté mobile, tablette et desktop</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-accent" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-about">
+          <a class="footer-brand" href="index.html">
+            <span class="brand-logo brand-logo-sm" aria-hidden="true">N</span>
+            <strong>NovaCorp</strong>
+          </a>
+          <p class="footer-desc">
+            Entreprise fictive spécialisée en solutions numériques.
+            Cet annuaire présente l'ensemble de nos collaborateurs via une API REST.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Navigation</h3>
+          <nav class="footer-nav">
+            <a href="index.html">Accueil</a>
+            <a href="#employes">Annuaire employés</a>
+            <a href="#apropos">À propos</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-contact">
+            <li><a href="mailto:contact@novacorp.fr">contact@novacorp.fr</a></li>
+            <li><a href="tel:+237600000000">+237 600 000 000</a></li>
+            <li>Avenue de l'Innovation, Douala</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Ressources</h3>
+          <nav class="footer-nav">
+            <a href="#employes">API employés</a>
+            <a href="#employes">Liste des employés</a>
+            <a href="#apropos">Documentation projet</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 NovaCorp. Tous droits réservés.</p>
+        <nav class="footer-legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api-get.js"></script>
+  <script src="js/api-post.js"></script>
+  <script src="js/api-put.js"></script>
+  <script src="js/api-delete.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/list-page.js"></script>
+  <script src="js/detail-page.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
